@@ -1,5 +1,8 @@
 import { EXDB } from './exercises-data.js'
-import { USER_EXERCISE_MUSCLE_OVERRIDES, exerciseMuscleMetadataFor } from './exercise-muscle-batch-1.js'
+import {
+  USER_EXERCISE_MUSCLE_OVERRIDES,
+  exerciseMuscleMetadataFor
+} from './exercise-muscle-batch-1.js'
 import { t, getVersion, exerciseNameSearchText } from './i18n-core.js'
 
 export { EXDB }
@@ -15,7 +18,11 @@ const catalogueExercise = ex => {
   // A future dataset row may carry explicit arrays of its own; preserve those over generated
   // defaults unless the owner has deliberately supplied a correction for the same field.
   for (const key of ['primaries', 'secondaries']) {
-    if (Object.prototype.hasOwnProperty.call(ex, key) && !Object.prototype.hasOwnProperty.call(user, key)) out[key] = ex[key]
+    if (
+      Object.prototype.hasOwnProperty.call(ex, key) &&
+      !Object.prototype.hasOwnProperty.call(user, key)
+    )
+      out[key] = ex[key]
   }
   if (Array.isArray(out.primaries)) out.primaries = [...out.primaries]
   if (Array.isArray(out.secondaries)) out.secondaries = [...out.secondaries]
@@ -31,7 +38,7 @@ const SECONDARY_ADDITIONS = {
   '0027': ['rear deltoids'], // barbell bent over row
   '0293': ['rear deltoids'], // dumbbell bent over row
   '0499': ['rear deltoids'], // inverted row
-  '0861': ['rear deltoids'], // cable seated row
+  '0861': ['rear deltoids'] // cable seated row
 }
 
 // Secondary muscles for an exercise, with the small conservative additions applied as an
@@ -39,12 +46,14 @@ const SECONDARY_ADDITIONS = {
 // (export, print, import) keep reading EXDB untouched, while the muscle map sees the
 // enriched list. Values follow the dataset's existing alias vocabulary.
 export const smOf = ex => {
-  const base = Array.isArray(ex?.sm) ? ex.sm : (ex?.sm ? [ex.sm] : [])
+  const base = Array.isArray(ex?.sm) ? ex.sm : ex?.sm ? [ex.sm] : []
   return [...new Set([...base, ...(SECONDARY_ADDITIONS[ex?.id] || [])])]
 }
 
 export const EXIDX = {}
-CATALOGUE.forEach(e => { EXIDX[e.id] = e })
+CATALOGUE.forEach(e => {
+  EXIDX[e.id] = e
+})
 export const BODYPARTS = [...new Set(CATALOGUE.map(e => e.bp))].sort()
 
 // Equipment options present in a given list of exercises, most common first (issue #6).
@@ -52,7 +61,9 @@ export const BODYPARTS = [...new Set(CATALOGUE.map(e => e.bp))].sort()
 // every body-part × equipment combination on screen has results behind it.
 export function equipmentOf(list) {
   const c = {}
-  list.forEach(e => { if (e.eq) c[e.eq] = (c[e.eq] || 0) + 1 })
+  list.forEach(e => {
+    if (e.eq) c[e.eq] = (c[e.eq] || 0) + 1
+  })
   return Object.keys(c).sort((a, b) => c[b] - c[a] || (a < b ? -1 : 1))
 }
 
@@ -66,7 +77,9 @@ export function registerCustom(list) {
     if (builtIn) EXIDX[id] = builtIn
   })
   customIds = (list || []).map(e => e.id)
-  ;(list || []).forEach(e => { EXIDX[e.id] = e })
+  ;(list || []).forEach(e => {
+    EXIDX[e.id] = e
+  })
 }
 // Full searchable catalogue — customs first so your own exercises are easy to find.
 export const allExercises = st => [...(st.customEx || []), ...CATALOGUE]
@@ -74,7 +87,11 @@ export const allExercises = st => [...(st.customEx || []), ...CATALOGUE]
 function searchableText(value) {
   if (Array.isArray(value)) return value.map(searchableText).join(' ')
   if (value == null) return ''
-  try { return String(value) } catch { return '' }
+  try {
+    return String(value)
+  } catch {
+    return ''
+  }
 }
 
 /** Case-insensitive search over built-in and legacy custom exercise metadata. */
@@ -97,7 +114,17 @@ export function searchScore(exercise, query) {
   const needle = searchableText(query).toLowerCase().trim()
   if (!needle) return 1
   const source = exercise && typeof exercise === 'object' ? exercise : {}
-  const fields = [['n', 100], ['tg', 40], ['eq', 40], ['sm', 30], ['muscleGroups', 30], ['primaries', 30], ['secondaries', 30], ['desc', 10], ['cues', 10]]
+  const fields = [
+    ['n', 100],
+    ['tg', 40],
+    ['eq', 40],
+    ['sm', 30],
+    ['muscleGroups', 30],
+    ['primaries', 30],
+    ['secondaries', 30],
+    ['desc', 10],
+    ['cues', 10]
+  ]
   // Token-level matching: every query word must match somewhere (any order), so
   // "press bench" finds "Bench Press". The score sums each token's best hit.
   const tokens = needle.split(/[^a-z0-9]+/).filter(Boolean)
@@ -112,8 +139,10 @@ export function searchScore(exercise, query) {
       else if (hay.startsWith(token)) best = Math.max(best, weight * 3)
       const idx = hay.indexOf(token)
       if (idx > 0) best = Math.max(best, weight * 2 - Math.min(idx, 20) * 0.5)
-      if (hay.split(/[^a-z0-9]+/).some(w => w.startsWith(token))) best = Math.max(best, weight * 2.5)
-      if (isSubsequence(token, hay)) best = Math.max(best, weight + Math.max(0, 10 - (hay.length - token.length)))
+      if (hay.split(/[^a-z0-9]+/).some(w => w.startsWith(token)))
+        best = Math.max(best, weight * 2.5)
+      if (isSubsequence(token, hay))
+        best = Math.max(best, weight + Math.max(0, 10 - (hay.length - token.length)))
     }
     if (!best) return 0 // every token must match
     total += best
@@ -136,7 +165,8 @@ export const imgSrc = ex => IMG_BASE + ex.img
 export const gifSrc = ex => GIF_BASE + ex.gif
 
 // Cardio exercises log time + speed instead of weight × reps.
-export const isCardio = idOrEx => (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.bp === 'cardio'
+export const isCardio = idOrEx =>
+  (typeof idOrEx === 'string' ? EXIDX[idOrEx] : idOrEx)?.bp === 'cardio'
 
 // Exercises the dataset already knows carry no external load (issue #32) — a quarter of the
 // catalogue. This seeds the `bw` flag on a fresh config so a push-up never asks for a weight
@@ -149,14 +179,24 @@ export const isBodyweightEq = idOrEx =>
 // a custom exercise deleted on another device before the sync arrived — still has to
 // render. A placeholder keeps it visible (and removable) instead of taking the whole view
 // down on the first `ex.n`.
-export const exOr = id => EXIDX[id] ||
-  { id, n: t('Unknown exercise'), bp: '', tg: '', eq: '', sm: [], st: [], missing: true }
+export const exOr = id =>
+  EXIDX[id] || {
+    id,
+    n: t('Unknown exercise'),
+    bp: '',
+    tg: '',
+    eq: '',
+    sm: [],
+    st: [],
+    missing: true
+  }
 
 // Normalizes text by lowercasing and stripping diacritics/accents (e.g. "elevação" -> "elevacao")
-export const normalizeStr = s => (s || '')
-  .normalize('NFD')
-  .replace(/[\u0300-\u036f]/g, '')
-  .toLowerCase()
+export const normalizeStr = s =>
+  (s || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
 
 // Multi-token, accent-insensitive and multilingual exercise search.
 // Matches when all whitespace-separated words in the query appear anywhere in the exercise's
@@ -175,14 +215,20 @@ function corpusOf(e) {
   const hit = corpusCache.get(e)
   if (hit && hit.v === v) return hit.s
   const sm = Array.isArray(e?.sm) ? e.sm : []
-  const s = normalizeStr([
-    exerciseNameSearchText(e),
-    e?.tg || '', t(e?.tg || ''),
-    e?.eq || '', t(e?.eq || ''),
-    e?.bp || '', t(e?.bp || ''),
-    ...sm, ...sm.map(m => t(m)),
-    e?.desc || ''
-  ].join(' '))
+  const s = normalizeStr(
+    [
+      exerciseNameSearchText(e),
+      e?.tg || '',
+      t(e?.tg || ''),
+      e?.eq || '',
+      t(e?.eq || ''),
+      e?.bp || '',
+      t(e?.bp || ''),
+      ...sm,
+      ...sm.map(m => t(m)),
+      e?.desc || ''
+    ].join(' ')
+  )
   corpusCache.set(e, { v, s })
   return s
 }

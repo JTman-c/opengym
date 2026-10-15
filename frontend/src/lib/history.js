@@ -1,15 +1,25 @@
 // Pure helpers over the state object S (ported 1:1 from the vanilla app).
 import { todayISO, isoOf, weekKey, weekStartOf, fmtNum } from './format.js'
 import { isCardio, isBodyweightEq } from './exercises.js'
-import { phaseForSet, modeForSet, modeForEntry, isWarmupRow, normalizeMode, extraVolumeOf, nextDropWeight, splitBurstReps } from './workout-model.js'
-const objectOf = value => value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+import {
+  phaseForSet,
+  modeForSet,
+  modeForEntry,
+  isWarmupRow,
+  normalizeMode,
+  extraVolumeOf,
+  nextDropWeight,
+  splitBurstReps
+} from './workout-model.js'
+const objectOf = value => (value && typeof value === 'object' && !Array.isArray(value) ? value : {})
 // Completed-state-independent work rows whose authoritative mode matches the requested mode.
 const workRowsForMode = (entry = {}, mode = 'reps') => {
   const source = objectOf(entry)
   const target = objectOf(source.target || source)
   const expectedMode = normalizeMode(mode, 'reps')
-  return (Array.isArray(source.sets) ? source.sets : [])
-    .filter(set => phaseForSet(set) === 'work' && modeForSet(set, target) === expectedMode)
+  return (Array.isArray(source.sets) ? source.sets : []).filter(
+    set => phaseForSet(set) === 'work' && modeForSet(set, target) === expectedMode
+  )
 }
 // i18n-core, not i18n: this file is imported by mcp/, which is plain Node with no Vite and no
 // React. i18n.js is the Vite half — import.meta.glob over the locale packs, useSyncExternalStore
@@ -45,7 +55,8 @@ export const isTimed = cfg => modeOf(cfg) === 'time'
 //                means the same thing beats two that need a legend.
 // Both are absent on every plan, workout and backup written before they existed, and absent
 // reads as false, so nothing needs migrating.
-export const isBw = cfg => (cfg && cfg.bodyweight != null ? !!cfg.bodyweight : isBodyweightEq(cfg && cfg.id))
+export const isBw = cfg =>
+  cfg && cfg.bodyweight != null ? !!cfg.bodyweight : isBodyweightEq(cfg && cfg.id)
 export const isPerSide = cfg => !!(cfg && cfg.side)
 // What one side did, for display only. Half of an odd total is shown as it falls (8.5) rather
 // than rounded away: it means the sides were not even, which is worth seeing.
@@ -89,13 +100,13 @@ export function stepEffort(kind, cur, dir) {
 // A typed effort is capped but not floored — clamping up while someone types "10" would turn
 // the first keystroke into the floor and fight the input.
 export const capEffort = (kind, v) =>
-  (v == null || !EFFORT[kind] ? v : Math.min(EFFORT[kind].max, v))
+  v == null || !EFFORT[kind] ? v : Math.min(EFFORT[kind].max, v)
 // Which scale a profile logs. `showRir` is the boolean this replaced and is only consulted
 // when the profile has no answer of its own — an explicit 'none' has to win over it, or a
 // backup or another device that still carries the old flag would switch the column back on.
 export const effortOf = S => {
   const e = S && S.effort
-  return e === 'none' || EFFORT[e] ? e : (S && S.showRir ? 'rir' : 'none')
+  return e === 'none' || EFFORT[e] ? e : S && S.showRir ? 'rir' : 'none'
 }
 // The "(RIR 2)" / "(RPE 8)" tail on a set summary, empty when nothing was logged.
 const effortTail = s => {
@@ -189,7 +200,9 @@ export function pairAdjacent(items, first, second, groupId) {
   const right = Math.max(first, second)
   const group = groupId || next[left].sg || next[right].sg || freshSg(next, left, right)
   const members = new Set([...contiguousSgGroup(next, left), ...contiguousSgGroup(next, right)])
-  members.forEach(i => { next[i].sg = group })
+  members.forEach(i => {
+    next[i].sg = group
+  })
   return next
 }
 
@@ -268,9 +281,11 @@ export function freestyleConfig(S, cfg) {
 }
 export function bestWeightFor(S, exId) {
   let best = 0
-  S.workouts.forEach(w => w.entries.forEach(e => {
-    if (e.id === exId) best = Math.max(best, bestWeightForEntry(e))
-  }))
+  S.workouts.forEach(w =>
+    w.entries.forEach(e => {
+      if (e.id === exId) best = Math.max(best, bestWeightForEntry(e))
+    })
+  )
   return best
 }
 export function effectiveRoutineId(S, iso) {
@@ -341,12 +356,16 @@ function buildWorkSets(S, cfg, options = {}) {
   const sets = []
   // A deload routine must use its own prescription instead of carrying regular-session values
   // into the workout. Other planned sessions keep the existing history-first behaviour.
-  const prevAt = i => (!useTarget && last ? (last.sets[i] || last.sets[last.sets.length - 1]) : null)
+  const prevAt = i => (!useTarget && last ? last.sets[i] || last.sets[last.sets.length - 1] : null)
 
   if (mode === 'cardio') {
     for (let i = 0; i < n; i++) {
       const prev = prevAt(i)
-      sets.push({ min: prev ? prev.min : (cfg.min || 20), speed: prev ? prev.speed : (cfg.speed || 8), done: false })
+      sets.push({
+        min: prev ? prev.min : cfg.min || 20,
+        speed: prev ? prev.speed : cfg.speed || 8,
+        done: false
+      })
     }
     return sets
   }
@@ -356,7 +375,11 @@ function buildWorkSets(S, cfg, options = {}) {
       // exercise from reps to time must not seed the duration from a rep count.
       const prev = prevAt(i)
       const carried = prev && prev.sec > 0 ? prev : null
-      sets.push({ sec: carried ? carried.sec : (cfg.sec || 45), w: carried ? (carried.w || 0) : (cfg.weight || 0), done: false })
+      sets.push({
+        sec: carried ? carried.sec : cfg.sec || 45,
+        w: carried ? carried.w || 0 : cfg.weight || 0,
+        done: false
+      })
     }
     return sets
   }
@@ -368,10 +391,20 @@ function buildWorkSets(S, cfg, options = {}) {
     // the load of each matching set when that option is requested.
     // A deload uses the routine's target weight; a routine that never set one (weight 0) falls
     // back to the last regular load rather than prescribing an empty bar.
-    const lastRegular = last ? (last.sets[i] || last.sets[last.sets.length - 1]) : null
+    const lastRegular = last ? last.sets[i] || last.sets[last.sets.length - 1] : null
     const w = useTarget
-      ? (cfg.weight > 0 ? cfg.weight : (lastRegular && lastRegular.r > 0 ? lastRegular.w : cfg.weight))
-      : preferLast && usable ? usable.w : (conf && conf.w > 0 ? conf.w : (usable ? usable.w : cfg.weight))
+      ? cfg.weight > 0
+        ? cfg.weight
+        : lastRegular && lastRegular.r > 0
+          ? lastRegular.w
+          : cfg.weight
+      : preferLast && usable
+        ? usable.w
+        : conf && conf.w > 0
+          ? conf.w
+          : usable
+            ? usable.w
+            : cfg.weight
     sets.push({ w, r: usable ? usable.r : cfg.reps, done: false })
   }
   return sets
@@ -396,7 +429,10 @@ export function applyIntensifierPlan(sets, cfg) {
       if (isWarmupRow(s)) return s
       const drops = []
       let w = s.w || 0
-      for (let k = 0; k < count; k++) { w = nextDropWeight(w, pct); drops.push({ w, r: s.r }) }
+      for (let k = 0; k < count; k++) {
+        w = nextDropWeight(w, pct)
+        drops.push({ w, r: s.r })
+      }
       return { ...s, type: 'dropset', drops }
     })
   }
@@ -412,7 +448,13 @@ export function applyIntensifierPlan(sets, cfg) {
   const totalReps = Math.max(1, Math.round(cfg.intensifier.totalReps) || 1)
   const w = (sets.find(s => !isWarmupRow(s)) || sets[0] || {}).w || 0
   const warmup = { w, r: Math.max(1, Math.round(cfg.reps) || 1), done: false, phase: 'warmup' }
-  const work = { w, r: totalReps, done: false, type: 'restpause', clusters: splitBurstReps(totalReps).map(r => ({ r, restSec })) }
+  const work = {
+    w,
+    r: totalReps,
+    done: false,
+    type: 'restpause',
+    clusters: splitBurstReps(totalReps).map(r => ({ r, restSec }))
+  }
   return [warmup, work]
 }
 export function workoutVolume(w) {
@@ -425,19 +467,30 @@ export function workoutVolume(w) {
   // does it; this line was the one that did not, which only stopped being harmless when a
   // routine started planning warm-ups by default. The number is written into the saved
   // workout, so an inflated one would stay wrong forever.
-  w.entries.forEach(e => e.sets.forEach(s => {
-    if (s.done && !isWarmupRow(s)) v += (s.w || 0) * (s.r || 0) + extraVolumeOf(s)
-  }))
+  w.entries.forEach(e =>
+    e.sets.forEach(s => {
+      if (s.done && !isWarmupRow(s)) v += (s.w || 0) * (s.r || 0) + extraVolumeOf(s)
+    })
+  )
   return v
 }
 export function setsDone(w) {
   let n = 0
-  w.entries.forEach(e => e.sets.forEach(s => { if (s.done) n++ }))
+  w.entries.forEach(e =>
+    e.sets.forEach(s => {
+      if (s.done) n++
+    })
+  )
   return n
 }
 export function setsDoneActive(A) {
   let n = 0
-  if (A) A.entries.forEach(e => e.sets.forEach(s => { if (s.done) n++ }))
+  if (A)
+    A.entries.forEach(e =>
+      e.sets.forEach(s => {
+        if (s.done) n++
+      })
+    )
   return n
 }
 export const lastBW = S => (S.bodyweight.length ? S.bodyweight[S.bodyweight.length - 1] : null)
@@ -469,7 +522,9 @@ export function moveSupersetUnit(items, index, direction) {
   reordered[target] = selected
   return reordered.flat().map(i => items[i])
 }
-export function unitOf(units, idx) { return units.find(u => u.includes(idx)) || [idx] }
+export function unitOf(units, idx) {
+  return units.find(u => u.includes(idx)) || [idx]
+}
 
 export function streakWeeks(S) {
   if (!S.workouts.length) return 0
@@ -536,10 +591,14 @@ export function rerampWarmups(rows, step = 2.5) {
   const out = rows.slice()
   let from = 0
   for (let i = 0; i < firstWork; i++) {
-    if (out[i].done) { from = out[i].w || 0; continue }
-    const w = target > from
-      ? Math.max(0, Math.min(target, Math.floor((from + (target - from) / 2) / step) * step))
-      : target
+    if (out[i].done) {
+      from = out[i].w || 0
+      continue
+    }
+    const w =
+      target > from
+        ? Math.max(0, Math.min(target, Math.floor((from + (target - from) / 2) / step) * step))
+        : target
     out[i] = { ...out[i], w }
     from = w
   }
@@ -549,10 +608,10 @@ export function rerampWarmups(rows, step = 2.5) {
 export function insertWarmupRow(rows, mode, target, step = 2.5) {
   const firstWork = rows.findIndex(x => !isWarmupRow(x))
   const at = firstWork === -1 ? rows.length : firstWork
-  const prev = at > 0 ? rows[at - 1] : null            // the warm-up this one ramps from
+  const prev = at > 0 ? rows[at - 1] : null // the warm-up this one ramps from
   const work = firstWork === -1 ? null : rows[firstWork]
   const rampTo = to => {
-    const from = prev ? (prev.w || 0) : 0
+    const from = prev ? prev.w || 0 : 0
     // Nothing to ramp toward: bodyweight, cardio, a timed hold with no load.
     if (!(to > 0)) return 0
     // Already at or past the work weight — which happens when a warm-up was edited by hand
@@ -563,23 +622,30 @@ export function insertWarmupRow(rows, mode, target, step = 2.5) {
     // lands a notch heavy is a set you have to strip plates off before you can use it.
     return Math.max(0, Math.min(to, Math.floor((from + (to - from) / 2) / step) * step))
   }
-  const warm = mode === 'cardio'
-    ? {
-      min: prev ? prev.min : (work ? work.min : (target.min || 20)),
-      speed: prev ? prev.speed : (work ? work.speed : (target.speed || 8)),
-      done: false, phase: 'warmup', warmup: true,
-    }
-    : mode === 'time'
+  const warm =
+    mode === 'cardio'
       ? {
-        sec: prev ? prev.sec : (work ? work.sec : (target.sec || 45)),
-        w: rampTo(work ? (work.w || 0) : (target.weight || 0)),
-        done: false, phase: 'warmup', warmup: true,
-      }
-      : {
-        w: rampTo(work ? (work.w || 0) : (target.weight || 0)),
-        r: work ? work.r : (prev ? prev.r : target.reps),
-        done: false, phase: 'warmup', warmup: true,
-      }
+          min: prev ? prev.min : work ? work.min : target.min || 20,
+          speed: prev ? prev.speed : work ? work.speed : target.speed || 8,
+          done: false,
+          phase: 'warmup',
+          warmup: true
+        }
+      : mode === 'time'
+        ? {
+            sec: prev ? prev.sec : work ? work.sec : target.sec || 45,
+            w: rampTo(work ? work.w || 0 : target.weight || 0),
+            done: false,
+            phase: 'warmup',
+            warmup: true
+          }
+        : {
+            w: rampTo(work ? work.w || 0 : target.weight || 0),
+            r: work ? work.r : prev ? prev.r : target.reps,
+            done: false,
+            phase: 'warmup',
+            warmup: true
+          }
   const next = rows.slice()
   next.splice(at, 0, warm)
   return next
@@ -596,12 +662,14 @@ export function removeRowAt(rows, i) {
 /** Completed non-warm-up sets across a workout's entries. */
 export function workSetsDone(w) {
   return (w?.entries || []).reduce(
-    (n, e) => n + (e.sets || []).filter(s => s.done && !isWarmupRow(s)).length, 0,
+    (n, e) => n + (e.sets || []).filter(s => s.done && !isWarmupRow(s)).length,
+    0
   )
 }
 
 const METRIC_MODES = ['reps', 'time', 'cardio']
-const completedRowsForMode = (entry, mode) => workRowsForMode(entry, mode).filter(s => s.done === true && !isWarmupRow(s))
+const completedRowsForMode = (entry, mode) =>
+  workRowsForMode(entry, mode).filter(s => s.done === true && !isWarmupRow(s))
 
 export function metricRowsForEntry(entry, mode) {
   const requested = typeof mode === 'string' ? mode.trim().toLowerCase() : ''
@@ -646,7 +714,13 @@ export function bestWeightForEntry(entry = {}) {
   const topWeight = Number(entry.topW)
   // topW predates phase-tagged warm-ups. It remains a fallback for legacy all-work records,
   // but cannot override resolved work rows once any warm-up marker exists.
-  if (parentMode === 'reps' && !hasNonRepsWorkRow && !hasWarmupRow
-    && Number.isFinite(topWeight) && topWeight > best) best = topWeight
+  if (
+    parentMode === 'reps' &&
+    !hasNonRepsWorkRow &&
+    !hasWarmupRow &&
+    Number.isFinite(topWeight) &&
+    topWeight > best
+  )
+    best = topWeight
   return best
 }

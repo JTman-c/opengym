@@ -11,7 +11,7 @@ const mocks = vi.hoisted(() => {
     closeSheet(id) {
       state.sheets = state.sheets.filter(sheet => sheet.id !== id)
       listeners.forEach(listener => listener())
-    },
+    }
   }
   return {
     state,
@@ -22,17 +22,18 @@ const mocks = vi.hoisted(() => {
     setSheets(sheets) {
       state.sheets = sheets
       listeners.forEach(listener => listener())
-    },
+    }
   }
 })
 
 vi.mock('../store/useUI.js', async () => {
   const React = await import('react')
-  const useUI = (selector = state => state) => React.useSyncExternalStore(
-    mocks.subscribe,
-    () => selector(mocks.state),
-    () => selector(mocks.state),
-  )
+  const useUI = (selector = state => state) =>
+    React.useSyncExternalStore(
+      mocks.subscribe,
+      () => selector(mocks.state),
+      () => selector(mocks.state)
+    )
   useUI.getState = () => mocks.state
   return { useUI }
 })
@@ -67,11 +68,15 @@ function installDom() {
 }
 
 async function setSheets(sheets) {
-  await act(async () => { mocks.setSheets(sheets) })
+  await act(async () => {
+    mocks.setSheets(sheets)
+  })
 }
 
 async function popstate() {
-  await act(async () => { window.dispatchEvent(new dom.Event('popstate')) })
+  await act(async () => {
+    window.dispatchEvent(new dom.Event('popstate'))
+  })
 }
 
 function mouse(target, type, clientY, clientX = 0) {
@@ -79,7 +84,7 @@ function mouse(target, type, clientY, clientX = 0) {
   Object.defineProperties(event, {
     button: { value: 0 },
     clientX: { value: clientX },
-    clientY: { value: clientY },
+    clientY: { value: clientY }
   })
   target.dispatchEvent(event)
 }
@@ -87,11 +92,16 @@ function mouse(target, type, clientY, clientX = 0) {
 beforeEach(async () => {
   mocks.state.sheets = []
   installDom()
-  await act(async () => { root.render(React.createElement(Modals)) })
+  await act(async () => {
+    root.render(React.createElement(Modals))
+  })
 })
 
 afterEach(async () => {
-  if (root) await act(async () => { root.unmount() })
+  if (root)
+    await act(async () => {
+      root.unmount()
+    })
   root = null
   container = null
   dom = null
@@ -112,7 +122,9 @@ describe('Modals sheet history accounting', () => {
     await popstate()
     expect(mocks.state.sheets).toEqual([summary])
 
-    await act(async () => { mocks.state.closeSheet('summary') })
+    await act(async () => {
+      mocks.state.closeSheet('summary')
+    })
     expect(historyMock.go).not.toHaveBeenCalled()
   })
 
@@ -164,9 +176,11 @@ describe('Modals sheet history accounting', () => {
 
 describe('Modals mouse dragging', () => {
   it('leaves range sliders opted out of sheet dragging', async () => {
-    await setSheets([sheet('slider', {
-      render: () => React.createElement('input', { type: 'range' }),
-    })])
+    await setSheets([
+      sheet('slider', {
+        render: () => React.createElement('input', { type: 'range' })
+      })
+    ])
     const sheetEl = container.querySelector('.sheet')
     const slider = container.querySelector('input[type="range"]')
     sheetEl.scrollTop = 0
@@ -191,14 +205,19 @@ describe('Modals mouse dragging', () => {
 
     await act(async () => {
       mouse(sheetEl, 'mousedown', 10)
-      now = 300; mouse(sheetEl, 'mousemove', 60)
+      now = 300
+      mouse(sheetEl, 'mousemove', 60)
     })
     expect(sheetEl.style.transform).toBe('translateY(50px)')
 
-    await act(async () => { window.dispatchEvent(new dom.Event('mouseup')) })
+    await act(async () => {
+      window.dispatchEvent(new dom.Event('mouseup'))
+    })
     expect(sheetEl.style.transform).toBe('')
 
-    await act(async () => { mouse(sheetEl, 'mousemove', 120) })
+    await act(async () => {
+      mouse(sheetEl, 'mousemove', 120)
+    })
     expect(sheetEl.style.transform).toBe('')
     expect(mocks.state.sheets).toHaveLength(1)
   })
@@ -222,9 +241,16 @@ describe('Modals drag axis lock and dismiss', () => {
   })
 
   it('leaves horizontal chip strips to their own scrolling', async () => {
-    await setSheets([sheet('chips', {
-      render: () => React.createElement('div', { className: 'chips' }, React.createElement('button', { className: 'chip' }, 'a')),
-    })])
+    await setSheets([
+      sheet('chips', {
+        render: () =>
+          React.createElement(
+            'div',
+            { className: 'chips' },
+            React.createElement('button', { className: 'chip' }, 'a')
+          )
+      })
+    ])
     const sheetEl = container.querySelector('.sheet')
     sheetEl.scrollTop = 0
 
@@ -248,10 +274,14 @@ describe('Modals drag axis lock and dismiss', () => {
     })
     expect(sheetEl.style.transform).toBe('translateY(100px)')
 
-    await act(async () => { mouse(sheetEl, 'mousemove', 5) })
+    await act(async () => {
+      mouse(sheetEl, 'mousemove', 5)
+    })
     expect(sheetEl.style.transform).toBe('translateY(0px)')
 
-    await act(async () => { window.dispatchEvent(new dom.Event('mouseup')) })
+    await act(async () => {
+      window.dispatchEvent(new dom.Event('mouseup'))
+    })
     expect(sheetEl.style.transform).toBe('')
     expect(mocks.state.sheets).toHaveLength(1)
   })
@@ -266,12 +296,16 @@ describe('Modals drag axis lock and dismiss', () => {
 
     await act(async () => {
       mouse(sheetEl, 'mousedown', 10)
-      now = 20; mouse(sheetEl, 'mousemove', 40)
-      now = 60; mouse(sheetEl, 'mousemove', 80)   // 70px in 60ms: ~1 px/ms
+      now = 20
+      mouse(sheetEl, 'mousemove', 40)
+      now = 60
+      mouse(sheetEl, 'mousemove', 80) // 70px in 60ms: ~1 px/ms
       window.dispatchEvent(new dom.Event('mouseup'))
     })
     expect(sheetEl.style.transform).toBe('translateY(110%)')
-    await act(async () => { vi.advanceTimersByTime(200) })
+    await act(async () => {
+      vi.advanceTimersByTime(200)
+    })
     expect(mocks.state.sheets).toHaveLength(0)
     vi.useRealTimers()
   })
@@ -285,7 +319,8 @@ describe('Modals drag axis lock and dismiss', () => {
 
     await act(async () => {
       mouse(sheetEl, 'mousedown', 10)
-      now = 400; mouse(sheetEl, 'mousemove', 80)
+      now = 400
+      mouse(sheetEl, 'mousemove', 80)
       window.dispatchEvent(new dom.Event('mouseup'))
     })
     expect(sheetEl.style.transform).toBe('')

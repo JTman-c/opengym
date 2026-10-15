@@ -11,7 +11,9 @@ describe('decideBack', () => {
   })
 
   it('lets a locked sheet swallow the press', () => {
-    expect(decideBack({ top: { id: 's1', locked: true }, canGoBack: true, exitArmed: true })).toBe('ignore')
+    expect(decideBack({ top: { id: 's1', locked: true }, canGoBack: true, exitArmed: true })).toBe(
+      'ignore'
+    )
   })
 
   it('walks history when nothing is open', () => {
@@ -30,13 +32,29 @@ function harness() {
   let now = 1000
   const handler = makeBackHandler({
     getSheets: () => sheets,
-    closeSheet: id => { calls.closed.push(id); sheets = sheets.filter(s => s.id !== id) },
+    closeSheet: id => {
+      calls.closed.push(id)
+      sheets = sheets.filter(s => s.id !== id)
+    },
     toast: m => calls.toasts.push(m),
-    goBack: () => { calls.back++ },
-    exit: () => { calls.exit++ },
-    now: () => now,
+    goBack: () => {
+      calls.back++
+    },
+    exit: () => {
+      calls.exit++
+    },
+    now: () => now
   })
-  return { calls, handler, setSheets: s => { sheets = s }, tick: ms => { now += ms } }
+  return {
+    calls,
+    handler,
+    setSheets: s => {
+      sheets = s
+    },
+    tick: ms => {
+      now += ms
+    }
+  }
 }
 
 describe('makeBackHandler', () => {

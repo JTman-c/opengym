@@ -20,9 +20,18 @@ describe('compound-lift muscle metadata batch 1', () => {
       expect(metadata.primaries.length, id).toBeGreaterThan(0)
       expect(duplicateFree(metadata.primaries), id).toBe(true)
       expect(duplicateFree(metadata.secondaries), id).toBe(true)
-      expect(metadata.primaries.some(muscle => metadata.secondaries.includes(muscle)), id).toBe(false)
-      expect(metadata.primaries.every(muscle => MUSCLES.includes(muscle)), id).toBe(true)
-      expect(metadata.secondaries.every(muscle => MUSCLES.includes(muscle)), id).toBe(true)
+      expect(
+        metadata.primaries.some(muscle => metadata.secondaries.includes(muscle)),
+        id
+      ).toBe(false)
+      expect(
+        metadata.primaries.every(muscle => MUSCLES.includes(muscle)),
+        id
+      ).toBe(true)
+      expect(
+        metadata.secondaries.every(muscle => MUSCLES.includes(muscle)),
+        id
+      ).toBe(true)
       expect(EXIDX[id]).toMatchObject(metadata)
     }
   })
@@ -39,18 +48,24 @@ describe('compound-lift muscle metadata batch 1', () => {
       secondaries: ['quadriceps', 'adductors', 'calves', 'abs', 'obliques']
     })
     expect(COMPOUND_LIFT_BATCH_1['0025']).toEqual({
-      bp: 'chest', primaries: ['chest'], secondaries: ['triceps', 'deltoids', 'biceps']
+      bp: 'chest',
+      primaries: ['chest'],
+      secondaries: ['triceps', 'deltoids', 'biceps']
     })
     expect(COMPOUND_LIFT_BATCH_1['0091']).toEqual({
-      bp: 'shoulders', primaries: ['deltoids'],
+      bp: 'shoulders',
+      primaries: ['deltoids'],
       secondaries: ['chest', 'triceps', 'trapezius', 'serratus']
     })
     expect(COMPOUND_LIFT_BATCH_1['0027']).toEqual({
-      bp: 'back', primaries: ['upper-back'],
+      bp: 'back',
+      primaries: ['upper-back'],
       secondaries: ['biceps', 'deltoids', 'forearm']
     })
     expect(COMPOUND_LIFT_BATCH_1['0652']).toEqual({
-      bp: 'back', primaries: ['upper-back'], secondaries: ['biceps', 'deltoids', 'forearm']
+      bp: 'back',
+      primaries: ['upper-back'],
+      secondaries: ['biceps', 'deltoids', 'forearm']
     })
     expect(musclesOf(EXDB.find(exercise => exercise.id === '0587'))).toMatchObject({ chest: 0.4 })
     expect(musclesOf(EXIDX['0587'])).toMatchObject({ chest: 0.4 })
@@ -58,10 +73,13 @@ describe('compound-lift muscle metadata batch 1', () => {
 
   it('keeps torso bracing secondary and does not label the twisting press full body', () => {
     expect(COMPOUND_LIFT_BATCH_1['0414']).toEqual({
-      bp: 'shoulders', primaries: ['deltoids'], secondaries: ['triceps', 'trapezius', 'abs']
+      bp: 'shoulders',
+      primaries: ['deltoids'],
+      secondaries: ['triceps', 'trapezius', 'abs']
     })
     expect(COMPOUND_LIFT_BATCH_1['1012']).toEqual({
-      bp: 'shoulders', primaries: ['deltoids'],
+      bp: 'shoulders',
+      primaries: ['deltoids'],
       secondaries: ['triceps', 'trapezius', 'abs', 'obliques']
     })
     expect(COMPOUND_LIFT_BATCH_1['1012'].primaries).not.toContain('abs')
@@ -69,7 +87,10 @@ describe('compound-lift muscle metadata batch 1', () => {
   })
 
   it('marks the cross-region lifts as Full body while keeping classic areas available', () => {
-    expect(EXIDX['0069']).toMatchObject({ bp: 'full body', primaries: ['quadriceps', 'gluteal', 'adductors'] })
+    expect(EXIDX['0069']).toMatchObject({
+      bp: 'full body',
+      primaries: ['quadriceps', 'gluteal', 'adductors']
+    })
     expect(EXIDX['0032'].bp).toBe('full body')
     expect(BODYPARTS).toContain('full body')
     expect(EXIDX['0025'].bp).toBe('chest')
@@ -77,7 +98,15 @@ describe('compound-lift muscle metadata batch 1', () => {
   })
 
   it('lets an explicit user exercise override the batch and restores the catalogue afterward', () => {
-    registerCustom([{ id: '0025', n: 'Owner bench correction', bp: 'chest', primaries: ['triceps'], secondaries: [] }])
+    registerCustom([
+      {
+        id: '0025',
+        n: 'Owner bench correction',
+        bp: 'chest',
+        primaries: ['triceps'],
+        secondaries: []
+      }
+    ])
     expect(EXIDX['0025']).toMatchObject({ primaries: ['triceps'], secondaries: [] })
     registerCustom([])
     expect(EXIDX['0025']).toMatchObject(COMPOUND_LIFT_BATCH_1['0025'])

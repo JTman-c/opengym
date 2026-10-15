@@ -25,13 +25,28 @@ process.env.TZ = 'UTC'
 const cells = new WeakMap()
 
 class MemoryStorage {
-  constructor() { cells.set(this, new Map()) }
-  get length() { return cells.get(this).size }
-  key(i) { return Array.from(cells.get(this).keys())[i] ?? null }
-  getItem(k) { const m = cells.get(this); return m.has(String(k)) ? m.get(String(k)) : null }
-  setItem(k, v) { cells.get(this).set(String(k), String(v)) }
-  removeItem(k) { cells.get(this).delete(String(k)) }
-  clear() { cells.get(this).clear() }
+  constructor() {
+    cells.set(this, new Map())
+  }
+  get length() {
+    return cells.get(this).size
+  }
+  key(i) {
+    return Array.from(cells.get(this).keys())[i] ?? null
+  }
+  getItem(k) {
+    const m = cells.get(this)
+    return m.has(String(k)) ? m.get(String(k)) : null
+  }
+  setItem(k, v) {
+    cells.get(this).set(String(k), String(v))
+  }
+  removeItem(k) {
+    cells.get(this).delete(String(k))
+  }
+  clear() {
+    cells.get(this).clear()
+  }
 }
 
 const define = (target, name, value) =>
@@ -49,6 +64,7 @@ if (missing.length) {
     define(globalThis, name, value)
     // Keep window and globalThis pointing at the same object — the app reaches for the bare
     // global, the odd test reaches through window, and they must not diverge.
-    if (globalThis.window && globalThis.window !== globalThis) define(globalThis.window, name, value)
+    if (globalThis.window && globalThis.window !== globalThis)
+      define(globalThis.window, name, value)
   }
 }

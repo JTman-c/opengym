@@ -60,10 +60,14 @@ if (!missing.length) {
   process.exit(0)
 }
 
-console.log(`${used.size} translated strings in src/, ${missing.length} defined in no locale pack:\n`)
+console.log(
+  `${used.size} translated strings in src/, ${missing.length} defined in no locale pack:\n`
+)
 for (const key of missing) {
   console.log(`  ${JSON.stringify(key)}`)
   for (const f of [...used.get(key)].sort()) console.log(`      ${f}`)
 }
-console.log(`\nThese render English in all ${readdirSync(localesDir).filter(f => f.endsWith('.js')).length} translated languages.`)
+console.log(
+  `\nThese render English in all ${readdirSync(localesDir).filter(f => f.endsWith('.js')).length} translated languages.`
+)
 process.exit(strict ? 1 : 0)

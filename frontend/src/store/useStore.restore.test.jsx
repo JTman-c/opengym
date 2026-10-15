@@ -41,7 +41,13 @@ describe('saved workout state sync and restore', () => {
   })
 
   it('adopts a newer clean remote state while preserving a local active workout', async () => {
-    const active = { id: 'active-1', d: '2026-08-29', routineId: 'local', name: 'Local', entries: [] }
+    const active = {
+      id: 'active-1',
+      d: '2026-08-29',
+      routineId: 'local',
+      name: 'Local',
+      entries: []
+    }
     const local = { ...clone(DEF), _ts: 10, routines: [routine('local')], active }
     const remote = { ...clone(DEF), _ts: 20, routines: [routine('remote')], active: null }
     useStore.setState({ S: local, user: { id: 'user-1' }, ready: true })

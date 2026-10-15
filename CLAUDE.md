@@ -73,8 +73,9 @@ cd frontend && npm run build
 cd frontend && npm run build:mobile   # + cap sync, points media at the CDN dataset
 ```
 
-There is no linter/formatter configured (no ESLint/Prettier config in the repo) and no
-TypeScript — match the existing style by hand.
+Formatting is Biome (`biome.json` at the root, formatter only — no linter, no TypeScript):
+`npm run format` rewrites, `npm run format:check` is what CI runs. Generated data (instr/,
+exercise-names/, exercises-data.js, body-paths.js, hevy-id-map.js) and CSS are excluded.
 
 Upstream's CI gate is `.gitlab-ci.yml` on GitLab, its canonical remote (see README): it runs the
 `frontend/` tests on Node 22 — the same version as `web/Dockerfile` / `api/Dockerfile`

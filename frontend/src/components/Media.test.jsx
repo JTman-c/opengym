@@ -14,7 +14,7 @@ const mocks = vi.hoisted(() => {
       const next = structuredClone(state.S)
       mut(next)
       state.S = next
-    },
+    }
   })
   return state
 })
@@ -45,7 +45,9 @@ describe('Media gifSize', () => {
     mount({ minimizable: true })
     expect(host.querySelector('.exmedia img')).toBeTruthy()
     expect(host.querySelector('.exmedia.mini')).toBeFalsy()
-    act(() => { host.querySelector('.giftoggle').click() })
+    act(() => {
+      host.querySelector('.giftoggle').click()
+    })
     expect(mocks.S.gifSize).toBe('mini')
     mount({ minimizable: true })
     expect(host.querySelector('.exmedia.mini')).toBeTruthy()

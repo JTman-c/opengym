@@ -6,14 +6,14 @@ import { MUSCLES, levelsOf } from './muscles.js'
 const FATIGUE_BANDS = [
   { at: 0, level: 4 },
   { at: 0.25, level: 2 },
-  { at: 0.5, level: 0, exclusive: true },
+  { at: 0.5, level: 0, exclusive: true }
 ]
 const STRENGTH_BANDS = [
   { at: 0.5, level: 0 },
   { at: 0.625, level: 1 },
   { at: 0.75, level: 2 },
   { at: 0.875, level: 3 },
-  { at: 1, level: 4 },
+  { at: 1, level: 4 }
 ]
 
 describe('production recovery view selectors', () => {
@@ -31,11 +31,14 @@ describe('production recovery view selectors', () => {
   })
 
   it('renders fatigue bands on a fixed absolute scale rather than relative to the map maximum', () => {
-    const levels = levelsOf({
-      chest: 0.25,
-      biceps: 0.6,
-      triceps: 0.1,
-    }, FATIGUE_BANDS)
+    const levels = levelsOf(
+      {
+        chest: 0.25,
+        biceps: 0.6,
+        triceps: 0.1
+      },
+      FATIGUE_BANDS
+    )
     expect(levels.chest).toBe(2)
     expect(levels.biceps).toBe(0)
     expect(levels.triceps).toBe(4)

@@ -28,9 +28,7 @@
   // Attaches the custom domain and creates the DNS record at deploy time. Must match RP_ID.
   // Delete this block to deploy to *.workers.dev instead — fine for a look, not for passkeys
   // you intend to keep, because workers.dev is on the Public Suffix List (worker/README.md).
-  "routes": [
-    { "pattern": "opengym.rcn.sh", "custom_domain": true }
-  ],
+  "routes": [{ "pattern": "opengym.rcn.sh", "custom_domain": true }],
 
   "d1_databases": [
     {

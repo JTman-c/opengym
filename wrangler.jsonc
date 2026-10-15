@@ -50,9 +50,7 @@
 
   // SQLite-backed is the only class the Workers Free plan can create, and it is what the alarms
   // API needs here.
-  "migrations": [
-    { "tag": "v1", "new_sqlite_classes": ["RestTimer"] }
-  ],
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["RestTimer"] }],
 
   // Upstream scans every user every 10s. One minute is the finest granularity Cron Triggers
   // offer, so a day reminder can land up to ~60s after its target minute instead of ~9s.

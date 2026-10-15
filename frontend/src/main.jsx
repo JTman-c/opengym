@@ -8,7 +8,9 @@ import './index.css'
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode><App /></StrictMode>
+  <StrictMode>
+    <App />
+  </StrictMode>
 )
 
 // Not in the mobile build: the native shell already serves everything from disk.

@@ -30,25 +30,20 @@ try {
 }
 
 for (const t of TOOLS) {
-  server.tool(
-    t.name,
-    t.description,
-    t.schema,
-    async (params) => {
-      try {
-        // No-op on the file backend, which re-reads on mtime change inside getState().
-        await refresh()
-        const result = t.handler(params || {})
-        return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
-      } catch (err) {
-        const code = err.code || 'ERROR'
-        return {
-          isError: true,
-          content: [{ type: 'text', text: `${code}: ${err.message}` }]
-        }
+  server.tool(t.name, t.description, t.schema, async params => {
+    try {
+      // No-op on the file backend, which re-reads on mtime change inside getState().
+      await refresh()
+      const result = t.handler(params || {})
+      return { content: [{ type: 'text', text: JSON.stringify(result, null, 2) }] }
+    } catch (err) {
+      const code = err.code || 'ERROR'
+      return {
+        isError: true,
+        content: [{ type: 'text', text: `${code}: ${err.message}` }]
       }
     }
-  )
+  })
 }
 
 const transport = new StdioServerTransport()

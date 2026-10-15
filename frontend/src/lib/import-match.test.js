@@ -25,14 +25,14 @@ const MAPS = {
   'Battle Ropes': '0128',
   'Hack Squat (Machine)': '0743',
   'Seated Cable Row - Bar Grip': '0218',
-  'Single Arm Lateral Raise (Cable)': '0192',
+  'Single Arm Lateral Raise (Cable)': '0192'
 }
 
 describe('foreign exercise names resolve to the catalogue', () => {
   for (const [name, id] of Object.entries(MAPS)) {
     it(`maps "${name}" to ${id}`, () => {
       expect(matchExercise(name)).toBe(id)
-      expect(EXIDX[id]).toBeTruthy()   // an alias pointing at a dropped id is worse than no alias
+      expect(EXIDX[id]).toBeTruthy() // an alias pointing at a dropped id is worse than no alias
     })
   }
 
@@ -81,7 +81,8 @@ describe('foreign exercise names resolve to the catalogue', () => {
 // and a third of an imported history was attributed to the legs in the muscle map. With no
 // category to read, the body part comes off the name instead.
 describe('invented exercises get a body part from their name', () => {
-  const HEAD = 'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe'
+  const HEAD =
+    'title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe'
   const row = name => `W,"09 Oct 2025, 19:22","09 Oct 2025, 20:22",,"${name}",,,0,normal,40,10,,,`
   const bpOf = name => {
     const r = parseWorkoutCSV([HEAD, row(name)].join('\n'), { unit: 'kg' })
@@ -105,7 +106,9 @@ describe('invented exercises get a body part from their name', () => {
 
   it('still prefers an explicit category column when the file has one', () => {
     const head = 'Date,Exercise,Category,Weight,Reps'
-    const r = parseWorkoutCSV([head, '2025-10-09,Some Invented Lift,Shoulders,40,10'].join('\n'), { unit: 'kg' })
+    const r = parseWorkoutCSV([head, '2025-10-09,Some Invented Lift,Shoulders,40,10'].join('\n'), {
+      unit: 'kg'
+    })
     expect(r.customEx[0].bp).toBe('shoulders')
   })
 })
@@ -116,7 +119,7 @@ describe('Hevy CSV uses the generated title map', () => {
     'Push,2026-08-01 10:00:00,2026-08-01 11:00:00,,Bulgarian Split Squat (Dumbbell),,,0,normal,40,10,0,,',
     'Push,2026-08-01 10:00:00,2026-08-01 11:00:00,,Lat Pulldown - Close Grip (Cable),,,0,warmup,25,15,0,,',
     'Push,2026-08-01 10:00:00,2026-08-01 11:00:00,,Lat Pulldown - Close Grip (Cable),,,1,normal,52,12,0,,8',
-    'Push,2026-08-01 10:00:00,2026-08-01 11:00:00,,Reverse Lunge (Dumbbell),,,0,normal,20,10,0,,',
+    'Push,2026-08-01 10:00:00,2026-08-01 11:00:00,,Reverse Lunge (Dumbbell),,,0,normal,20,10,0,,'
   ].join('\n')
 
   it('detects the Hevy export dialect', () => {

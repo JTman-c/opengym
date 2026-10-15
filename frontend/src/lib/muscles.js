@@ -14,11 +14,24 @@ import { todayISO, weekKey, MONDAY } from './format.js'
 // The muscles a map can shade, in head-to-toe order — also the order of any list
 // built from them, so "what am I neglecting" reads top-down like a body.
 export const MUSCLES = [
-  'trapezius', 'deltoids', 'chest', 'upper-back', 'serratus',
-  'biceps', 'triceps', 'forearm',
-  'abs', 'obliques', 'lower-back',
-  'gluteal', 'quadriceps', 'hamstring', 'adductors', 'hip-flexors',
-  'calves', 'tibialis',
+  'trapezius',
+  'deltoids',
+  'chest',
+  'upper-back',
+  'serratus',
+  'biceps',
+  'triceps',
+  'forearm',
+  'abs',
+  'obliques',
+  'lower-back',
+  'gluteal',
+  'quadriceps',
+  'hamstring',
+  'adductors',
+  'hip-flexors',
+  'calves',
+  'tibialis'
 ]
 
 // Drawn as the silhouette, never shaded: they carry no training load.
@@ -26,32 +39,80 @@ export const INERT = ['head', 'hair', 'neck', 'hands', 'feet', 'knees', 'ankles'
 
 // English display names; these strings are the i18n keys (see lib/i18n.js).
 export const MUSCLE_NAME = {
-  trapezius: 'Traps', deltoids: 'Shoulders', chest: 'Chest', 'upper-back': 'Upper back',
-  serratus: 'Serratus', biceps: 'Biceps', triceps: 'Triceps', forearm: 'Forearms',
-  abs: 'Abs', obliques: 'Obliques', 'lower-back': 'Lower back', gluteal: 'Glutes',
-  quadriceps: 'Quads', hamstring: 'Hamstrings', adductors: 'Adductors',
-  'hip-flexors': 'Hip flexors', calves: 'Calves', tibialis: 'Shins',
+  trapezius: 'Traps',
+  deltoids: 'Shoulders',
+  chest: 'Chest',
+  'upper-back': 'Upper back',
+  serratus: 'Serratus',
+  biceps: 'Biceps',
+  triceps: 'Triceps',
+  forearm: 'Forearms',
+  abs: 'Abs',
+  obliques: 'Obliques',
+  'lower-back': 'Lower back',
+  gluteal: 'Glutes',
+  quadriceps: 'Quads',
+  hamstring: 'Hamstrings',
+  adductors: 'Adductors',
+  'hip-flexors': 'Hip flexors',
+  calves: 'Calves',
+  tibialis: 'Shins'
 }
 
 // Every spelling that occurs in the dataset's `tg` and `sm` fields. null = not drawable.
 const ALIAS = {
   // primaries
-  abs: 'abs', pectorals: 'chest', biceps: 'biceps', glutes: 'gluteal', delts: 'deltoids',
-  triceps: 'triceps', 'upper back': 'upper-back', lats: 'upper-back', calves: 'calves',
-  quads: 'quadriceps', forearms: 'forearm', hamstrings: 'hamstring', spine: 'lower-back',
-  traps: 'trapezius', adductors: 'adductors', 'serratus anterior': 'serratus',
-  abductors: 'gluteal', 'levator scapulae': 'trapezius', 'cardiovascular system': null,
+  abs: 'abs',
+  pectorals: 'chest',
+  biceps: 'biceps',
+  glutes: 'gluteal',
+  delts: 'deltoids',
+  triceps: 'triceps',
+  'upper back': 'upper-back',
+  lats: 'upper-back',
+  calves: 'calves',
+  quads: 'quadriceps',
+  forearms: 'forearm',
+  hamstrings: 'hamstring',
+  spine: 'lower-back',
+  traps: 'trapezius',
+  adductors: 'adductors',
+  'serratus anterior': 'serratus',
+  abductors: 'gluteal',
+  'levator scapulae': 'trapezius',
+  'cardiovascular system': null,
   // secondaries
-  shoulders: 'deltoids', deltoids: 'deltoids', 'rear deltoids': 'deltoids',
-  'rotator cuff': 'deltoids', quadriceps: 'quadriceps', core: 'abs', abdominals: 'abs',
-  'lower abs': 'abs', chest: 'chest', 'upper chest': 'chest', 'hip flexors': 'hip-flexors',
-  obliques: 'obliques', 'lower back': 'lower-back', rhomboids: 'upper-back',
-  trapezius: 'trapezius', back: 'upper-back', 'latissimus dorsi': 'upper-back',
-  brachialis: 'biceps', soleus: 'calves', shins: 'tibialis', wrists: 'forearm',
-  'wrist flexors': 'forearm', 'wrist extensors': 'forearm', 'grip muscles': 'forearm',
-  groin: 'adductors', 'inner thighs': 'adductors',
-  ankles: null, feet: null, hands: null, 'ankle stabilizers': null,
-  sternocleidomastoid: null,
+  shoulders: 'deltoids',
+  deltoids: 'deltoids',
+  'rear deltoids': 'deltoids',
+  'rotator cuff': 'deltoids',
+  quadriceps: 'quadriceps',
+  core: 'abs',
+  abdominals: 'abs',
+  'lower abs': 'abs',
+  chest: 'chest',
+  'upper chest': 'chest',
+  'hip flexors': 'hip-flexors',
+  obliques: 'obliques',
+  'lower back': 'lower-back',
+  rhomboids: 'upper-back',
+  trapezius: 'trapezius',
+  back: 'upper-back',
+  'latissimus dorsi': 'upper-back',
+  brachialis: 'biceps',
+  soleus: 'calves',
+  shins: 'tibialis',
+  wrists: 'forearm',
+  'wrist flexors': 'forearm',
+  'wrist extensors': 'forearm',
+  'grip muscles': 'forearm',
+  groin: 'adductors',
+  'inner thighs': 'adductors',
+  ankles: null,
+  feet: null,
+  hands: null,
+  'ankle stabilizers': null,
+  sternocleidomastoid: null
 }
 
 // Custom exercises carry only a body part, so they fall back to it. Weights inside a
@@ -66,13 +127,21 @@ const BY_BODYPART = {
   'upper legs': { quadriceps: 0.4, hamstring: 0.35, gluteal: 0.25 },
   'lower legs': { calves: 0.8, tibialis: 0.2 },
   neck: { trapezius: 1 },
-  'full body': { chest: 0.2, 'upper-back': 0.2, gluteal: 0.2, quadriceps: 0.2, hamstring: 0.1, abs: 0.1 },
-  cardio: {},
+  'full body': {
+    chest: 0.2,
+    'upper-back': 0.2,
+    gluteal: 0.2,
+    quadriceps: 0.2,
+    hamstring: 0.1,
+    abs: 0.1
+  },
+  cardio: {}
 }
 
-const SECONDARY = 0.4   // a supporting muscle counts this much against a primary
+const SECONDARY = 0.4 // a supporting muscle counts this much against a primary
 
-const arrayOf = value => Array.isArray(value) ? value : value == null || value === '' ? [] : [value]
+const arrayOf = value =>
+  Array.isArray(value) ? value : value == null || value === '' ? [] : [value]
 
 function firstPresent(object, keys) {
   if (!object || typeof object !== 'object') return null
@@ -88,12 +157,24 @@ function firstPresent(object, keys) {
 function metadataOf(ex) {
   if (!ex || typeof ex !== 'object') return ex
   const DIRECT_KEYS = [
-    'muscleGroups', 'muscles', 'targetMuscles', 'muscleWeights',
-    'primaries', 'primaryMuscles', 'primary', 'secondaries', 'secondaryMuscles', 'secondary',
+    'muscleGroups',
+    'muscles',
+    'targetMuscles',
+    'muscleWeights',
+    'primaries',
+    'primaryMuscles',
+    'primary',
+    'secondaries',
+    'secondaryMuscles',
+    'secondary'
   ]
-  const hasDirect = DIRECT_KEYS.some(key => Object.prototype.hasOwnProperty.call(ex, key))
-    || [ex.tg, ex.mg, ...arrayOf(ex.sm)].some(value => value != null && value !== '')
-  return !hasDirect && ex.muscleSnapshot && typeof ex.muscleSnapshot === 'object' && !Array.isArray(ex.muscleSnapshot)
+  const hasDirect =
+    DIRECT_KEYS.some(key => Object.prototype.hasOwnProperty.call(ex, key)) ||
+    [ex.tg, ex.mg, ...arrayOf(ex.sm)].some(value => value != null && value !== '')
+  return !hasDirect &&
+    ex.muscleSnapshot &&
+    typeof ex.muscleSnapshot === 'object' &&
+    !Array.isArray(ex.muscleSnapshot)
     ? ex.muscleSnapshot
     : ex
 }
@@ -102,9 +183,11 @@ function explicitPartsOf(ex) {
   if (!ex || typeof ex !== 'object') return null
   const primary = firstPresent(ex, ['primaries', 'primaryMuscles', 'primary'])
   const secondary = firstPresent(ex, ['secondaries', 'secondaryMuscles', 'secondary'])
-  if (primary !== null || secondary !== null) return {
-    primary: arrayOf(primary), secondary: arrayOf(secondary)
-  }
+  if (primary !== null || secondary !== null)
+    return {
+      primary: arrayOf(primary),
+      secondary: arrayOf(secondary)
+    }
   return null
 }
 
@@ -130,14 +213,17 @@ export function hasExplicitMuscleMetadata(entry) {
   const ex = metadataOf(entry)
   if (!ex || typeof ex !== 'object') return false
   const parts = explicitPartsOf(ex)
-  if (parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value))) return true
+  if (parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value)))
+    return true
   const groups = explicitGroupsOf(ex)
   if (groups && groups.some(value => canonicalMuscle(value))) return true
   return [ex.tg, ex.mg, ...arrayOf(smOf(ex))].some(value => canonicalMuscle(value))
 }
 
 function canonicalMuscle(value) {
-  const name = String(value || '').toLowerCase().trim()
+  const name = String(value || '')
+    .toLowerCase()
+    .trim()
   if (MUSCLES.includes(name)) return name
   return ALIAS[name] || null
 }
@@ -156,7 +242,8 @@ export function muscleGroupsOf(entry) {
   const ex = metadataOf(entry)
   const parts = explicitPartsOf(ex)
   const explicit = explicitGroupsOf(ex)
-  const useParts = parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value))
+  const useParts =
+    parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value))
   const source = useParts
     ? [...parts.primary, ...parts.secondary]
     : explicit || [ex?.tg, ex?.mg, ...arrayOf(smOf(ex))]
@@ -182,7 +269,11 @@ export function musclesOf(ex) {
   if (!ex) return {}
   const sourceEx = metadataOf(ex)
   if (sourceEx !== ex) return musclesOf(sourceEx)
-  if (ex.muscleWeights && typeof ex.muscleWeights === 'object' && !Array.isArray(ex.muscleWeights)) {
+  if (
+    ex.muscleWeights &&
+    typeof ex.muscleWeights === 'object' &&
+    !Array.isArray(ex.muscleWeights)
+  ) {
     const snapshot = {}
     MUSCLES.forEach(slug => {
       const weight = Number(ex.muscleWeights[slug])
@@ -197,7 +288,8 @@ export function musclesOf(ex) {
   }
   const parts = explicitPartsOf(ex)
   const explicit = explicitGroupsOf(ex)
-  const useParts = parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value))
+  const useParts =
+    parts && [...parts.primary, ...parts.secondary].some(value => canonicalMuscle(value))
   if (useParts) {
     parts.primary.forEach(m => add(m, 1))
     parts.secondary.forEach(m => add(m, SECONDARY))
@@ -243,7 +335,7 @@ export function loadOf(items) {
     const { id, sets } = item || {}
     if (!sets) return
     const historical = item.ex || item.exercise
-    const source = historical?.muscleWeights ? historical : (EXIDX[id] || historical || item)
+    const source = historical?.muscleWeights ? historical : EXIDX[id] || historical || item
     const m = musclesOf(source)
     for (const slug in m) load[slug] = (load[slug] || 0) + m[slug] * sets
   })
@@ -257,8 +349,15 @@ export function loadOf(items) {
  * near failure.
  */
 export const loadOfWorkouts = (workouts, pick) =>
-  loadOf((workouts || []).flatMap(w =>
-    (w.entries || []).map(e => ({ id: e.id, ex: e.exercise || e, sets: (e.sets || []).filter(s => s.done && !isWarmupRow(s) && (!pick || pick(s))).length }))))
+  loadOf(
+    (workouts || []).flatMap(w =>
+      (w.entries || []).map(e => ({
+        id: e.id,
+        ex: e.exercise || e,
+        sets: (e.sets || []).filter(s => s.done && !isWarmupRow(s) && (!pick || pick(s))).length
+      }))
+    )
+  )
 
 /**
  * Workouts in one existing Muscle balance range, with time injected for deterministic tests.
@@ -266,12 +365,20 @@ export const loadOfWorkouts = (workouts, pick) =>
  * The 7-day range is "this week", not "the last seven days", so it moves with the profile's
  * first weekday — the caller passes it since this takes workouts rather than the whole state.
  */
-export function muscleBalanceWindow(workouts, win, now = Date.now(), today = todayISO(), ws = MONDAY) {
-  return (workouts || []).filter(workout => win === 0
-    ? true
-    : win === 7
-      ? weekKey(workout.d, ws) === weekKey(today, ws)
-      : (workout.start || new Date(workout.d).getTime()) > now - win * 86400000)
+export function muscleBalanceWindow(
+  workouts,
+  win,
+  now = Date.now(),
+  today = todayISO(),
+  ws = MONDAY
+) {
+  return (workouts || []).filter(workout =>
+    win === 0
+      ? true
+      : win === 7
+        ? weekKey(workout.d, ws) === weekKey(today, ws)
+        : (workout.start || new Date(workout.d).getTime()) > now - win * 86400000
+  )
 }
 
 /** Load a routine *would* produce, from its planned set counts. */
@@ -280,7 +387,13 @@ export const loadOfRoutine = routine =>
 
 /** Load for a workout still in progress — the sets ticked so far. */
 export const loadOfActive = active =>
-  loadOf((active?.entries || []).map(e => ({ id: e.id, ex: e.exercise || e, sets: (e.sets || []).filter(s => s.done && !isWarmupRow(s)).length })))
+  loadOf(
+    (active?.entries || []).map(e => ({
+      id: e.id,
+      ex: e.exercise || e,
+      sets: (e.sets || []).filter(s => s.done && !isWarmupRow(s)).length
+    }))
+  )
 
 /**
  * Shade buckets 0–4 per muscle.
@@ -312,15 +425,16 @@ export function levelsOf(load, thresholds) {
   const lv = {}
   MUSCLES.forEach(m => {
     const v = load[m] || 0
-    lv[m] = !v ? 0 : max <= 0 ? 0 : Math.max(1, Math.min(4, Math.ceil(v / max * 4)))
+    lv[m] = !v ? 0 : max <= 0 ? 0 : Math.max(1, Math.min(4, Math.ceil((v / max) * 4)))
   })
   return lv
 }
 
 /** Muscles sorted hardest-worked first; untrained ones last, in body order. */
 export function rankOf(load) {
-  const worked = MUSCLES.filter(m => (load[m] || 0) > 0)
-    .sort((a, b) => load[b] - load[a] || MUSCLES.indexOf(a) - MUSCLES.indexOf(b))
+  const worked = MUSCLES.filter(m => (load[m] || 0) > 0).sort(
+    (a, b) => load[b] - load[a] || MUSCLES.indexOf(a) - MUSCLES.indexOf(b)
+  )
   const missed = MUSCLES.filter(m => !(load[m] > 0))
   return { worked, missed }
 }

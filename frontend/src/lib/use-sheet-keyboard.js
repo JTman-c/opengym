@@ -68,7 +68,7 @@ export function tappable(onClick) {
     tabIndex: 0,
     onClick,
     onKeyDown: e => {
-      if (e.target !== e.currentTarget) return   // a nested control handles its own keys
+      if (e.target !== e.currentTarget) return // a nested control handles its own keys
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
         onClick(e)

@@ -21,8 +21,13 @@ function entry(id, done = false) {
 function installActive() {
   const S = clone(DEF)
   S.active = {
-    id: 'swap-test', d: '2026-08-27', start: Date.now(), routineId: null,
-    name: 'Swap test', bw: null, cur: 1,
+    id: 'swap-test',
+    d: '2026-08-27',
+    start: Date.now(),
+    routineId: null,
+    name: 'Swap test',
+    bw: null,
+    cur: 1,
     entries: [entry(ids[0]), entry(ids[0]), entry(ids[1])]
   }
   useStore.setState({ S, user: null })
@@ -59,7 +64,13 @@ describe('active exercise swap sheet flow', () => {
     expect(useUI.getState().work).toBeNull()
     expect(callback).not.toHaveBeenCalled()
     expect(active.entries.map(value => value.id)).toEqual([ids[0], ids[2], ids[1]])
-    expect(active.entries[1].target).toMatchObject({ mode: 'reps', sets: 2, reps: 8, weight: 30, note: 'New target' })
+    expect(active.entries[1].target).toMatchObject({
+      mode: 'reps',
+      sets: 2,
+      reps: 8,
+      weight: 30,
+      note: 'New target'
+    })
     expect(active.entries[0].sets).toEqual([{ w: 40, r: 5, done: false }])
     expect(active.entries[2].sets).toEqual([{ w: 40, r: 5, done: false }])
     expect(active.cur).toBe(1)

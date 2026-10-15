@@ -7,14 +7,17 @@ export const workoutsOn = (S, iso) => (S.workouts || []).filter(w => w.d === iso
 // Epoch of `iso` at the given wall-clock time, in the browser's zone — the same zone
 // todayISO() and isoOf() use, so `d` and `start` agree the way they do for a live session.
 export const backfillStart = (iso, time = '18:00') => {
-  const [h, m] = String(time || '18:00').split(':').map(Number)
+  const [h, m] = String(time || '18:00')
+    .split(':')
+    .map(Number)
   const d = new Date(iso + 'T12:00:00')
   d.setHours(h || 0, m || 0, 0, 0)
   return d.getTime()
 }
 
 // A live session ends when you tap finish; a logged one ends when you said it did.
-export const backfillEnd = active => active.start + Math.max(1, active.backfill?.durationMin || 60) * 60000
+export const backfillEnd = active =>
+  active.start + Math.max(1, active.backfill?.durationMin || 60) * 60000
 
 // The workouts array is chronological (History reverses it), so a past workout cannot just be
 // pushed — it goes where its date and start time put it, after anything from the same moment.

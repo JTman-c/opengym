@@ -27,28 +27,43 @@ describe('machine muscle metadata batch 2', () => {
       expect(metadata.primaries.length, id).toBeGreaterThan(0)
       expect(duplicateFree(metadata.primaries), id).toBe(true)
       expect(duplicateFree(metadata.secondaries), id).toBe(true)
-      expect(metadata.primaries.some(muscle => metadata.secondaries.includes(muscle)), id).toBe(false)
-      expect(metadata.primaries.every(muscle => MUSCLES.includes(muscle)), id).toBe(true)
-      expect(metadata.secondaries.every(muscle => MUSCLES.includes(muscle)), id).toBe(true)
+      expect(
+        metadata.primaries.some(muscle => metadata.secondaries.includes(muscle)),
+        id
+      ).toBe(false)
+      expect(
+        metadata.primaries.every(muscle => MUSCLES.includes(muscle)),
+        id
+      ).toBe(true)
+      expect(
+        metadata.secondaries.every(muscle => MUSCLES.includes(muscle)),
+        id
+      ).toBe(true)
       expect(EXIDX[id]).toMatchObject(metadata)
     }
   })
 
   it('maps the pec-deck family from the lever seated-fly template', () => {
     expectMapping('0596', {
-      bp: 'chest', primaries: ['chest'], secondaries: ['deltoids', 'biceps', 'serratus']
+      bp: 'chest',
+      primaries: ['chest'],
+      secondaries: ['deltoids', 'biceps', 'serratus']
     })
   })
 
   it('maps chest-press machines to chest with pressing assistants', () => {
     expectMapping('0577', {
-      bp: 'chest', primaries: ['chest'], secondaries: ['deltoids', 'triceps', 'biceps']
+      bp: 'chest',
+      primaries: ['chest'],
+      secondaries: ['deltoids', 'triceps', 'biceps']
     })
   })
 
   it('maps cable crossovers to drawing-ready upper-back support', () => {
     expectMapping('0155', {
-      bp: 'chest', primaries: ['chest'], secondaries: ['upper-back', 'trapezius']
+      bp: 'chest',
+      primaries: ['chest'],
+      secondaries: ['upper-back', 'trapezius']
     })
   })
 
@@ -83,38 +98,52 @@ describe('machine muscle metadata batch 2', () => {
 
   it('maps lever triceps extension without ExRx synergist secondaries', () => {
     expectMapping('0607', {
-      bp: 'upper arms', primaries: ['triceps'], secondaries: []
+      bp: 'upper arms',
+      primaries: ['triceps'],
+      secondaries: []
     })
   })
 
   it('maps sled leg presses to the multi-primary lower-body template', () => {
     expectMapping('0739', {
-      bp: 'upper legs', primaries: ['quadriceps', 'gluteal', 'adductors'], secondaries: ['hamstring', 'calves']
+      bp: 'upper legs',
+      primaries: ['quadriceps', 'gluteal', 'adductors'],
+      secondaries: ['hamstring', 'calves']
     })
   })
 
   it('maps leg extensions as quadriceps isolation', () => {
     expectMapping('0585', {
-      bp: 'upper legs', primaries: ['quadriceps'], secondaries: []
+      bp: 'upper legs',
+      primaries: ['quadriceps'],
+      secondaries: []
     })
   })
 
   it('maps seated leg curls to hamstrings with calf assistance', () => {
     expectMapping('0599', {
-      bp: 'upper legs', primaries: ['hamstring'], secondaries: ['calves', 'adductors']
+      bp: 'upper legs',
+      primaries: ['hamstring'],
+      secondaries: ['calves', 'adductors']
     })
   })
 
   it('maps machine shoulder presses to deltoids with direct press support', () => {
     expectMapping('0603', {
-      bp: 'shoulders', primaries: ['deltoids'],
+      bp: 'shoulders',
+      primaries: ['deltoids'],
       secondaries: ['chest', 'triceps', 'trapezius', 'serratus', 'biceps']
     })
   })
 
   it('preserves raw dataset metadata while enriching only the runtime catalogue', () => {
     const raw = catalogue.get('0577')
-    expect(raw).toMatchObject({ id: '0577', n: 'lever chest press', tg: 'pectorals', mg: 'triceps' })
+    expect(raw).toMatchObject({
+      id: '0577',
+      n: 'lever chest press',
+      tg: 'pectorals',
+      mg: 'triceps'
+    })
     expect(raw).not.toHaveProperty('primaries')
     expect(raw).not.toHaveProperty('secondaries')
     expect(musclesOf(raw)).toEqual({ chest: 1, deltoids: 0.4, triceps: 0.4 })
@@ -122,10 +151,15 @@ describe('machine muscle metadata batch 2', () => {
   })
 
   it('gives an explicit custom collision precedence and restores the machine overlay', () => {
-    registerCustom([{
-      id: '0577', n: 'Owner machine press correction', bp: 'chest',
-      primaries: ['triceps'], secondaries: []
-    }])
+    registerCustom([
+      {
+        id: '0577',
+        n: 'Owner machine press correction',
+        bp: 'chest',
+        primaries: ['triceps'],
+        secondaries: []
+      }
+    ])
     expect(EXIDX['0577']).toMatchObject({ primaries: ['triceps'], secondaries: [] })
     expect(musclesOf(EXIDX['0577'])).toEqual({ triceps: 1 })
     registerCustom([])

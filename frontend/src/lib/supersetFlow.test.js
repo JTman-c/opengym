@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { insertionIndexAfterCurrentUnit, nextUnfinishedUnit, setProgressHighWater, supersetFlowStep, restAfterSet, restOnRecheck, restSecFor } from './supersetFlow.js'
+import {
+  insertionIndexAfterCurrentUnit,
+  nextUnfinishedUnit,
+  setProgressHighWater,
+  supersetFlowStep,
+  restAfterSet,
+  restOnRecheck,
+  restSecFor
+} from './supersetFlow.js'
 
 const entry = done => ({ sets: done.map(value => ({ done: value })) })
 
@@ -100,7 +108,7 @@ describe('restSecFor', () => {
   const entries = [
     { id: 'a', target: { mode: 'reps' } },
     { id: 'b', target: { mode: 'reps', restSec: 180 } },
-    { id: 'c', target: { mode: 'reps', restSec: 45 } },
+    { id: 'c', target: { mode: 'reps', restSec: 45 } }
   ]
 
   it('prefers the exercise’s own rest over the global default', () => {

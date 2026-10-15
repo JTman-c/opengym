@@ -7,8 +7,16 @@ import { useStore } from './useStore.js'
 
 // Fire-and-forget: lets the server push a "rest over" alert if this tab gets suspended
 // before the local timer completes. No-ops for guests / offline.
-const pushRestTimer = sec => { if (useStore.getState().user) api('/api/push/rest-timer', { method: 'POST', body: JSON.stringify({ seconds: sec }) }).catch(() => {}) }
-const cancelPushRestTimer = () => { if (useStore.getState().user) api('/api/push/rest-timer/cancel', { method: 'POST', body: '{}' }).catch(() => {}) }
+const pushRestTimer = sec => {
+  if (useStore.getState().user)
+    api('/api/push/rest-timer', { method: 'POST', body: JSON.stringify({ seconds: sec }) }).catch(
+      () => {}
+    )
+}
+const cancelPushRestTimer = () => {
+  if (useStore.getState().user)
+    api('/api/push/rest-timer/cancel', { method: 'POST', body: '{}' }).catch(() => {})
+}
 
 const notificationsSupported = () => typeof window !== 'undefined' && 'Notification' in window
 let requestRestNotificationPermissionP = null
@@ -54,12 +62,12 @@ let workTick = null
 let workDone = null
 
 export const useUI = create((set, get) => ({
-  sheets: [],          // { id, render:(close)=>JSX, kind:'sheet'|'center', locked }
+  sheets: [], // { id, render:(close)=>JSX, kind:'sheet'|'center', locked }
   toastMsg: '',
-  timer: null,         // rest countdown between sets — { left, total, endsAt, forIdx }
-                       // forIdx: index of the active entry whose set started the rest (undefined when unknown)
-  work: null,          // work countdown DURING a timed set (issue #16) — { left, total, endsAt, label }
-  timerFlashId: 0,     // changing the id remounts the four-pulse visual alert
+  timer: null, // rest countdown between sets — { left, total, endsAt, forIdx }
+  // forIdx: index of the active entry whose set started the rest (undefined when unknown)
+  work: null, // work countdown DURING a timed set (issue #16) — { left, total, endsAt, label }
+  timerFlashId: 0, // changing the id remounts the four-pulse visual alert
 
   flashTimer() {
     if (!useStore.getState().S.timerFlash) return
@@ -70,10 +78,18 @@ export const useUI = create((set, get) => ({
     const id = uid()
     set(s => ({ sheets: [...s.sheets, { id, render, kind, locked }] }))
     const close = () => get().closeSheet(id)
-    return { id, close, lock: v => set(s => ({ sheets: s.sheets.map(x => x.id === id ? { ...x, locked: v } : x) })) }
+    return {
+      id,
+      close,
+      lock: v => set(s => ({ sheets: s.sheets.map(x => (x.id === id ? { ...x, locked: v } : x)) }))
+    }
   },
-  closeSheet(id) { set(s => ({ sheets: s.sheets.filter(x => x.id !== id) })) },
-  closeAll() { set({ sheets: [] }) },
+  closeSheet(id) {
+    set(s => ({ sheets: s.sheets.filter(x => x.id !== id) }))
+  },
+  closeAll() {
+    set({ sheets: [] })
+  },
 
   toast(msg) {
     set({ toastMsg: msg })
@@ -97,8 +113,15 @@ export const useUI = create((set, get) => ({
       if (left === tm.left) return
       const snd = useStore.getState().S.sound
       if (left <= 0) {
-        beep(snd, 880, 0.15); beep(snd, 880, 0.15, 0.25); beep(snd, 1320, 0.4, 0.5)
-        vibrate([200, 100, 200]); get().flashTimer(); maybeRestNotification(); get().toast(t('Rest over — next set!')); get().stopRest(); return
+        beep(snd, 880, 0.15)
+        beep(snd, 880, 0.15, 0.25)
+        beep(snd, 1320, 0.4, 0.5)
+        vibrate([200, 100, 200])
+        get().flashTimer()
+        maybeRestNotification()
+        get().toast(t('Rest over — next set!'))
+        get().stopRest()
+        return
       }
       if (left <= 3) beep(snd, 660, 0.1)
       set({ timer: { ...tm, left } })
@@ -112,7 +135,10 @@ export const useUI = create((set, get) => ({
     const left = tm.left + sec
     // taking off more than is left means "I'm ready now" — same as skipping, and it keeps a
     // negative duration out of both the progress bar and the server-side push schedule
-    if (left <= 0) { get().stopRest(); return }
+    if (left <= 0) {
+      get().stopRest()
+      return
+    }
     set({ timer: { ...tm, left, total: tm.total + sec, endsAt: tm.endsAt + sec * 1000 } })
     pushRestTimer(left)
   },
@@ -124,8 +150,10 @@ export const useUI = create((set, get) => ({
     set({ timer: { ...tm, forIdx: tm.forIdx + delta } })
   },
   stopRest() {
-    if (timerInt) clearInterval(timerInt); timerInt = null
-    if (timerTick) document.removeEventListener('visibilitychange', timerTick); timerTick = null
+    if (timerInt) clearInterval(timerInt)
+    timerInt = null
+    if (timerTick) document.removeEventListener('visibilitychange', timerTick)
+    timerTick = null
     if (get().timer) cancelPushRestTimer()
     set({ timer: null })
   },
@@ -152,8 +180,11 @@ export const useUI = create((set, get) => ({
       if (left === wk.left) return
       const snd = useStore.getState().S.sound
       if (left <= 0) {
-        beep(snd, 880, 0.15); beep(snd, 880, 0.15, 0.25); beep(snd, 1320, 0.4, 0.5)
-        vibrate([200, 100, 200]); get().flashTimer()
+        beep(snd, 880, 0.15)
+        beep(snd, 880, 0.15, 0.25)
+        beep(snd, 1320, 0.4, 0.5)
+        vibrate([200, 100, 200])
+        get().flashTimer()
         const done = workDone
         get().stopWork()
         if (done) done(wk.total)
@@ -177,8 +208,10 @@ export const useUI = create((set, get) => ({
   },
   // Abandon without logging anything.
   stopWork() {
-    if (workInt) clearInterval(workInt); workInt = null
-    if (workTick) document.removeEventListener('visibilitychange', workTick); workTick = null
+    if (workInt) clearInterval(workInt)
+    workInt = null
+    if (workTick) document.removeEventListener('visibilitychange', workTick)
+    workTick = null
     workDone = null
     set({ work: null })
   }

@@ -19,8 +19,7 @@ export const HARD_RIR = 3
 export const MIN_RATED = 5
 
 /** A set's effort in RIR, or null when it was never rated. 0 is a rating, not "empty". */
-export const rirOf = s =>
-  !s ? null : s.rir != null ? s.rir : s.rpe != null ? 10 - s.rpe : null
+export const rirOf = s => (!s ? null : s.rir != null ? s.rir : s.rpe != null ? 10 - s.rpe : null)
 
 /** RIR → the scale being displayed. The reverse of rirOf, for one number. */
 export const toScale = (kind, rir) =>
@@ -34,8 +33,12 @@ export const toScale = (kind, rir) =>
 export function displayScale(S) {
   const k = effortOf(S)
   if (EFFORT[k]) return k
-  let rir = 0, rpe = 0
-  eachDoneSet(S, s => { if (s.rir != null) rir++; else if (s.rpe != null) rpe++ })
+  let rir = 0,
+    rpe = 0
+  eachDoneSet(S, s => {
+    if (s.rir != null) rir++
+    else if (s.rpe != null) rpe++
+  })
   return rpe > rir ? 'rpe' : 'rir'
 }
 export const scaleName = kind => EFFORT[kind].hd
@@ -45,7 +48,11 @@ export const scaleName = kind => EFFORT[kind].hd
 function eachDoneSet(S, fn) {
   ;(S.workouts || []).forEach(w =>
     (w.entries || []).forEach(e =>
-      (e.sets || []).forEach(s => { if (s.done && !isWarmupRow(s)) fn(s, w, e) })))
+      (e.sets || []).forEach(s => {
+        if (s.done && !isWarmupRow(s)) fn(s, w, e)
+      })
+    )
+  )
 }
 
 // A window in days, counted back from now. 0 = everything, which is also what an empty
@@ -65,17 +72,23 @@ export const avgRir = sets => {
  * would quietly speak for sets that were never rated.
  */
 export function effortSummary(S, days) {
-  let done = 0, rated = 0, sum = 0, hard = 0
+  let done = 0,
+    rated = 0,
+    sum = 0,
+    hard = 0
   eachDoneSet(S, (s, w) => {
     if (!inWindow(w, days)) return
     done++
     const r = rirOf(s)
     if (r == null) return
-    rated++; sum += r
+    rated++
+    sum += r
     if (r <= HARD_RIR) hard++
   })
   return {
-    done, rated, hard,
+    done,
+    rated,
+    hard,
     avg: rated >= MIN_RATED ? sum / rated : null,
     hardPct: rated >= MIN_RATED ? hard / rated : null
   }
@@ -84,7 +97,9 @@ export function effortSummary(S, days) {
 /** Does this profile hold any rated set at all? Decides whether the effort UI exists. */
 export function hasEffort(S) {
   let any = false
-  eachDoneSet(S, s => { if (!any && rirOf(s) != null) any = true })
+  eachDoneSet(S, s => {
+    if (!any && rirOf(s) != null) any = true
+  })
   return any
 }
 
@@ -101,12 +116,17 @@ export function effortWeeks(S, days) {
     if (!inWindow(w, days)) return
     const k = weekKey(w.d, ws)
     let e = wk.get(k)
-    if (!e) wk.set(k, e = { k, t: startOfWeek(w.d, ws).getTime(), sum: 0, n: 0, sets: 0 })
+    if (!e) wk.set(k, (e = { k, t: startOfWeek(w.d, ws).getTime(), sum: 0, n: 0, sets: 0 }))
     e.sets++
     const r = rirOf(s)
-    if (r != null) { e.sum += r; e.n++ }
+    if (r != null) {
+      e.sum += r
+      e.n++
+    }
   })
-  return [...wk.values()].filter(e => e.n >= 2).sort((a, b) => a.t - b.t)
+  return [...wk.values()]
+    .filter(e => e.n >= 2)
+    .sort((a, b) => a.t - b.t)
     .map(e => ({ t: e.t, rir: e.sum / e.n, n: e.n, sets: e.sets }))
 }
 
@@ -116,7 +136,7 @@ export function effortWeeks(S, days) {
  * failure, or leaving nothing for the next session" — an average alone hides both, because
  * half the sets at 0 and half at 4 average to a healthy-looking 2.
  */
-export const BUCKETS = 4        // 0,1,2,3 and a "4+" tail
+export const BUCKETS = 4 // 0,1,2,3 and a "4+" tail
 export function effortHistogram(S, days) {
   const bins = new Array(BUCKETS + 1).fill(0)
   let rated = 0
@@ -131,4 +151,7 @@ export function effortHistogram(S, days) {
 }
 
 /** A set that counts as hard — the filter behind the muscle map's "hard sets" mode. */
-export const isHardSet = s => { const r = rirOf(s); return r != null && r <= HARD_RIR }
+export const isHardSet = s => {
+  const r = rirOf(s)
+  return r != null && r <= HARD_RIR
+}

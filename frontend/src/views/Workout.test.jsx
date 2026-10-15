@@ -19,10 +19,14 @@ const mocks = vi.hoisted(() => {
     exConfigSheet: vi.fn(),
     toast: vi.fn(),
     scrollCalls: [],
-    swapActiveWorkoutExercise: vi.fn(),
+    swapActiveWorkoutExercise: vi.fn()
   }
-  state.stopRest = vi.fn(() => { state.timer = null })
-  state.stopWork = vi.fn(() => { state.work = null })
+  state.stopRest = vi.fn(() => {
+    state.timer = null
+  })
+  state.stopWork = vi.fn(() => {
+    state.work = null
+  })
   state.storeSnapshot = () => ({
     S: state.S,
     user: null,
@@ -30,7 +34,7 @@ const mocks = vi.hoisted(() => {
       const next = structuredClone(state.S)
       mut(next)
       state.S = next
-    },
+    }
   })
   state.uiSnapshot = () => ({
     timer: state.timer,
@@ -40,7 +44,7 @@ const mocks = vi.hoisted(() => {
     stopWork: state.stopWork,
     shiftRestOwner: vi.fn(),
     startWork: vi.fn(),
-    toast: state.toast,
+    toast: state.toast
   })
   return state
 })
@@ -51,7 +55,7 @@ vi.mock('../store/useStore.js', () => {
   return { useStore }
 })
 vi.mock('../store/useUI.js', () => {
-  const useUI = selector => selector ? selector(mocks.uiSnapshot()) : mocks.uiSnapshot()
+  const useUI = selector => (selector ? selector(mocks.uiSnapshot()) : mocks.uiSnapshot())
   useUI.getState = mocks.uiSnapshot
   return { useUI }
 })
@@ -69,14 +73,16 @@ vi.mock('../sheets.jsx', () => ({
   // Both note sheets belong here even though the tests never open one: Workout.jsx reads
   // sessionNoteSheet during render, so a missing export is a render crash, not a no-op.
   exerciseNoteSheet: vi.fn(),
-  sessionNoteSheet: vi.fn(),
+  sessionNoteSheet: vi.fn()
 }))
 vi.mock('../components/Media.jsx', () => ({ default: () => null }))
 // api.js reads navigator.userAgent at module scope. This file installs its own DOM inside the
 // tests rather than declaring a vitest environment, so it must not depend on an ambient one.
 vi.mock('../lib/api.js', () => ({
   api: vi.fn(() => Promise.resolve({})),
-  IS_APPLE: false, IS_ANDROID: false, BIO: 'biometrics',
+  IS_APPLE: false,
+  IS_ANDROID: false,
+  BIO: 'biometrics'
 }))
 
 let dom
@@ -88,17 +94,30 @@ function exercise(id, sets, extra = {}) {
     id,
     target: { mode: 'reps', reps: 5, weight: 60, bodyweight: false },
     sets: sets.map(done => ({ w: 60, r: 5, done })),
-    ...extra,
+    ...extra
   }
 }
 
 function workout(entries, cur = 0, overrides = {}) {
   const { active: activeOverrides = {}, ...stateOverrides } = overrides
   return {
-    unit: 'kg', restSec: 90, sound: false, effort: 'none', gifSize: 'full',
-    workouts: [], exWeights: {}, routines: [],
-    active: { id: 'active', name: 'Test workout', start: Date.now(), cur, entries, ...activeOverrides },
-    ...stateOverrides,
+    unit: 'kg',
+    restSec: 90,
+    sound: false,
+    effort: 'none',
+    gifSize: 'full',
+    workouts: [],
+    exWeights: {},
+    routines: [],
+    active: {
+      id: 'active',
+      name: 'Test workout',
+      start: Date.now(),
+      cur,
+      entries,
+      ...activeOverrides
+    },
+    ...stateOverrides
   }
 }
 
@@ -120,12 +139,16 @@ function installDom() {
 async function mount(entries, cur = 0, overrides = {}) {
   mocks.S = workout(entries, cur, overrides)
   installDom()
-  await act(async () => { root.render(React.createElement(Workout)) })
+  await act(async () => {
+    root.render(React.createElement(Workout))
+  })
 }
 
 async function unmount() {
   if (!root) return
-  await act(async () => { root.unmount() })
+  await act(async () => {
+    root.unmount()
+  })
   root = null
   container = null
   dom = null
@@ -134,44 +157,64 @@ async function unmount() {
 async function toggleSet(index) {
   const checkbox = container.querySelectorAll('[role="checkbox"]')[index]
   expect(checkbox).toBeTruthy()
-  await act(async () => { checkbox.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+  await act(async () => {
+    checkbox.dispatchEvent(new dom.Event('click', { bubbles: true }))
+  })
 }
 
 async function pressProgression(index = 0) {
   const button = container.querySelectorAll('.progline')[index]
   expect(button).toBeTruthy()
-  await act(async () => { button.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+  await act(async () => {
+    button.dispatchEvent(new dom.Event('click', { bubbles: true }))
+  })
   return button
 }
 
 async function requestDiscard() {
   const button = container.querySelector('button[aria-label="Discard"]')
   expect(button).toBeTruthy()
-  await act(async () => { button.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+  await act(async () => {
+    button.dispatchEvent(new dom.Event('click', { bubbles: true }))
+  })
 }
 
 async function rerender() {
-  await act(async () => { root.render(React.createElement(Workout)) })
+  await act(async () => {
+    root.render(React.createElement(Workout))
+  })
 }
 
-async function addExerciseThroughSheets(ex = { id: 'added-exercise' }, cfg = { mode: 'reps', sets: 1, reps: 5, weight: 0 }) {
-  const addButton = [...container.querySelectorAll('button')]
-    .find(button => button.textContent.trim() === 'Add exercise')
+async function addExerciseThroughSheets(
+  ex = { id: 'added-exercise' },
+  cfg = { mode: 'reps', sets: 1, reps: 5, weight: 0 }
+) {
+  const addButton = [...container.querySelectorAll('button')].find(
+    button => button.textContent.trim() === 'Add exercise'
+  )
   expect(addButton).toBeTruthy()
-  await act(async () => { addButton.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+  await act(async () => {
+    addButton.dispatchEvent(new dom.Event('click', { bubbles: true }))
+  })
 
   const pickerCall = mocks.exercisePicker.mock.calls.at(-1)
   expect(pickerCall?.[0]).toEqual(expect.any(Function))
-  await act(async () => { pickerCall[0](ex) })
+  await act(async () => {
+    pickerCall[0](ex)
+  })
 
   const configCall = mocks.exConfigSheet.mock.calls.at(-1)
   expect(configCall?.[2]).toEqual(expect.any(Function))
-  await act(async () => { configCall[2](cfg) })
+  await act(async () => {
+    configCall[2](cfg)
+  })
 }
 
 async function rerenderAt(cur) {
   mocks.S.active.cur = cur
-  await act(async () => { root.render(React.createElement(Workout)) })
+  await act(async () => {
+    root.render(React.createElement(Workout))
+  })
 }
 
 beforeEach(() => {
@@ -196,9 +239,11 @@ describe('Workout set completion flow', () => {
 
     await unmount()
     vi.clearAllMocks()
-    await mount([exercise('plain-treadmill', [false], {
-      target: { mode: 'cardio', min: 20, speed: 8 },
-    })])
+    await mount([
+      exercise('plain-treadmill', [false], {
+        target: { mode: 'cardio', min: 20, speed: 8 }
+      })
+    ])
     await toggleSet(0)
 
     expect(mocks.stopRest).toHaveBeenCalledOnce()
@@ -214,30 +259,33 @@ describe('Workout set completion flow', () => {
           asked: true,
           sets: [
             { w: 30, r: 5, done: false, phase },
-            { w: 60, r: 5, done: false },
-          ],
-        }),
+            { w: 60, r: 5, done: false }
+          ]
+        })
       ])
 
       await toggleSet(0)
 
       expect(mocks.S.active.cur).toBe(1)
       expect(mocks.startRest).not.toHaveBeenCalled()
-    },
+    }
   )
 
   it('does not start transition rest when a completed superset advances to an incomplete warm-up', async () => {
-    await mount([
-      exercise('superset-a', [true], { sg: 'group', asked: true }),
-      exercise('superset-b', [false], { sg: 'group', asked: true }),
-      exercise('next', [false, false], {
-        asked: true,
-        sets: [
-          { w: 30, r: 5, done: false, phase: 'warmup' },
-          { w: 60, r: 5, done: false },
-        ],
-      }),
-    ], 1)
+    await mount(
+      [
+        exercise('superset-a', [true], { sg: 'group', asked: true }),
+        exercise('superset-b', [false], { sg: 'group', asked: true }),
+        exercise('next', [false, false], {
+          asked: true,
+          sets: [
+            { w: 30, r: 5, done: false, phase: 'warmup' },
+            { w: 60, r: 5, done: false }
+          ]
+        })
+      ],
+      1
+    )
 
     await toggleSet(1)
 
@@ -252,9 +300,9 @@ describe('Workout set completion flow', () => {
         asked: true,
         sets: [
           { w: 30, r: 5, done: false, phase: 'warmup' },
-          { w: 60, r: 5, done: false },
-        ],
-      }),
+          { w: 60, r: 5, done: false }
+        ]
+      })
     ])
 
     await toggleSet(0)
@@ -271,9 +319,9 @@ describe('Workout set completion flow', () => {
         asked: true,
         sets: [
           { w: 30, r: 5, done: false, phase: 'warmup' },
-          { w: 60, r: 5, done: false },
-        ],
-      }),
+          { w: 60, r: 5, done: false }
+        ]
+      })
     ])
 
     await toggleSet(0)
@@ -286,11 +334,14 @@ describe('Workout set completion flow', () => {
 
   it('leaves a completed superset selected while its top-weight sheet owns the advance choice', async () => {
     const group = 'superset-1'
-    await mount([
-      exercise('superset-a', [true, true, true], { sg: group, asked: true }),
-      exercise('superset-b', [true, true, false], { sg: group }),
-      exercise('next-exercise', [false, false, false]),
-    ], 1)
+    await mount(
+      [
+        exercise('superset-a', [true, true, true], { sg: group, asked: true }),
+        exercise('superset-b', [true, true, false], { sg: group }),
+        exercise('next-exercise', [false, false, false])
+      ],
+      1
+    )
     await toggleSet(5)
 
     expect(mocks.topWeightSheet).toHaveBeenCalledWith(1)
@@ -300,10 +351,13 @@ describe('Workout set completion flow', () => {
 
   it('skips completed intervening units and selects the next unfinished superset as one unit', async () => {
     await mount([
-      exercise('current-hold', [false], { asked: true, target: { mode: 'time', sec: 30, weight: 0 } }),
+      exercise('current-hold', [false], {
+        asked: true,
+        target: { mode: 'time', sec: 30, weight: 0 }
+      }),
       exercise('already-done', [true], { asked: true }),
       exercise('pending-a', [false], { sg: 'pending-group' }),
-      exercise('pending-b', [false], { sg: 'pending-group' }),
+      exercise('pending-b', [false], { sg: 'pending-group' })
     ])
 
     await toggleSet(0)
@@ -315,10 +369,16 @@ describe('Workout set completion flow', () => {
   })
 
   it('wraps to earlier unfinished work instead of showing a false completion prompt', async () => {
-    await mount([
-      exercise('pending-earlier', [false], { asked: true }),
-      exercise('current-hold', [false], { asked: true, target: { mode: 'time', sec: 30, weight: 0 } }),
-    ], 1)
+    await mount(
+      [
+        exercise('pending-earlier', [false], { asked: true }),
+        exercise('current-hold', [false], {
+          asked: true,
+          target: { mode: 'time', sec: 30, weight: 0 }
+        })
+      ],
+      1
+    )
 
     await toggleSet(0)
 
@@ -330,7 +390,7 @@ describe('Workout set completion flow', () => {
   it('keeps top-weight confirmation in control without declaring completion while work remains', async () => {
     await mount([
       exercise('current-loaded', [false]),
-      exercise('pending', [false], { asked: true }),
+      exercise('pending', [false], { asked: true })
     ])
 
     await toggleSet(0)
@@ -341,10 +401,16 @@ describe('Workout set completion flow', () => {
   })
 
   it('shows workout completion only when no unfinished unit remains', async () => {
-    await mount([
-      exercise('already-done', [true], { asked: true }),
-      exercise('final-hold', [false], { asked: true, target: { mode: 'time', sec: 30, weight: 0 } }),
-    ], 1)
+    await mount(
+      [
+        exercise('already-done', [true], { asked: true }),
+        exercise('final-hold', [false], {
+          asked: true,
+          target: { mode: 'time', sec: 30, weight: 0 }
+        })
+      ],
+      1
+    )
 
     await toggleSet(0)
 
@@ -356,46 +422,64 @@ describe('Workout set completion flow', () => {
 describe('Workout add exercise flow', () => {
   it.each([
     ['freestyle', {}],
-    ['planned', {
-      active: { routineId: 'routine-1' },
-      routines: [{ id: 'routine-1', ex: [] }],
-    }],
-  ])('inserts after the current unit and continues to pending work in a %s session', async (_label, overrides) => {
-    await mount([
-      exercise('current', [true], { asked: true }),
-      exercise('pending', [false], { asked: true }),
-    ], 0, overrides)
+    [
+      'planned',
+      {
+        active: { routineId: 'routine-1' },
+        routines: [{ id: 'routine-1', ex: [] }]
+      }
+    ]
+  ])(
+    'inserts after the current unit and continues to pending work in a %s session',
+    async (_label, overrides) => {
+      await mount(
+        [
+          exercise('current', [true], { asked: true }),
+          exercise('pending', [false], { asked: true })
+        ],
+        0,
+        overrides
+      )
 
-    await addExerciseThroughSheets(
-      { id: 'inserted' },
-      { mode: 'time', sets: 1, sec: 30, weight: 0 },
-    )
+      await addExerciseThroughSheets(
+        { id: 'inserted' },
+        { mode: 'time', sets: 1, sec: 30, weight: 0 }
+      )
 
-    expect(mocks.S.active.entries.map(entry => entry.id)).toEqual(['current', 'inserted', 'pending'])
-    expect(mocks.S.active.cur).toBe(1)
+      expect(mocks.S.active.entries.map(entry => entry.id)).toEqual([
+        'current',
+        'inserted',
+        'pending'
+      ])
+      expect(mocks.S.active.cur).toBe(1)
 
-    await rerender()
-    await toggleSet(0)
+      await rerender()
+      await toggleSet(0)
 
-    expect(mocks.S.active.entries[1].sets[0].done).toBe(true)
-    expect(mocks.S.active.cur).toBe(2)
-    expect(mocks.workoutCompleteSheet).not.toHaveBeenCalled()
-  })
+      expect(mocks.S.active.entries[1].sets[0].done).toBe(true)
+      expect(mocks.S.active.cur).toBe(2)
+      expect(mocks.workoutCompleteSheet).not.toHaveBeenCalled()
+    }
+  )
 
   it('inserts after the complete current superset without splitting the group', async () => {
     await mount([
       exercise('current-a', [true], { sg: 'current-group', asked: true }),
       exercise('current-b', [true], { sg: 'current-group', asked: true }),
-      exercise('pending', [false], { asked: true }),
+      exercise('pending', [false], { asked: true })
     ])
 
     await addExerciseThroughSheets({ id: 'inserted' })
 
     expect(mocks.S.active.entries.map(entry => entry.id)).toEqual([
-      'current-a', 'current-b', 'inserted', 'pending',
+      'current-a',
+      'current-b',
+      'inserted',
+      'pending'
     ])
     expect(mocks.S.active.entries.slice(0, 2).map(entry => entry.sg)).toEqual([
-      'current-group', 'current-group',
+      'current-group',
+      'current-group'
     ])
     expect(mocks.S.active.cur).toBe(2)
   })
@@ -425,7 +509,9 @@ describe('Workout discard timer lifecycle', () => {
     await mount([exercise('timed-plank', [false])])
     await requestDiscard()
 
-    await act(async () => { mocks.confirmSheet.mock.calls[0][0].onConfirm() })
+    await act(async () => {
+      mocks.confirmSheet.mock.calls[0][0].onConfirm()
+    })
 
     expect(mocks.S.active).toBeNull()
     expect(mocks.timer).toBeNull()
@@ -437,27 +523,34 @@ describe('Workout discard timer lifecycle', () => {
 
 describe('progression guidance', () => {
   it('labels the visible outcome with the policy that calculated it', async () => {
-    await mount([exercise('plain-bench', [false, false, false], {
-      plan: {
-        policy: 'linear',
-        kind: 'up',
-        weight: 62.5,
-        why: ['Every rep last time — {0} {1} more.', 2.5, 'kg'],
-      },
-    })])
+    await mount([
+      exercise('plain-bench', [false, false, false], {
+        plan: {
+          policy: 'linear',
+          kind: 'up',
+          weight: 62.5,
+          why: ['Every rep last time — {0} {1} more.', 2.5, 'kg']
+        }
+      })
+    ])
 
-    expect(container.querySelector('.progline')?.textContent)
-      .toContain('Linear progression · Every rep last time — 2.5 kg more.')
+    expect(container.querySelector('.progline')?.textContent).toContain(
+      'Linear progression · Every rep last time — 2.5 kg more.'
+    )
   })
 
   it('is a keyboard-accessible button that opens settings for the pressed grouped entry', async () => {
     const plan = {
-      policy: 'linear', kind: 'up', weight: 62.5,
-      why: ['Every rep last time — {0} {1} more.', 2.5, 'kg'],
+      policy: 'linear',
+      kind: 'up',
+      weight: 62.5,
+      why: ['Every rep last time — {0} {1} more.', 2.5, 'kg']
     }
     const first = exercise('plain-bench', [false], { sg: 'group', plan })
     const second = exercise('plain-bench', [false], {
-      sg: 'group', plan, target: { mode: 'reps', reps: 8, weight: 80, bodyweight: false },
+      sg: 'group',
+      plan,
+      target: { mode: 'reps', reps: 8, weight: 80, bodyweight: false }
     })
     await mount([first, second])
     const firstBefore = JSON.stringify(mocks.S.active.entries[0])
@@ -480,9 +573,11 @@ describe('progression guidance', () => {
   it('leaves the active entry unchanged when progression settings are cancelled', async () => {
     const entry = exercise('plain-bench', [true, false], {
       plan: {
-        policy: 'linear', kind: 'up', weight: 62.5,
-        why: ['Every rep last time — {0} {1} more.', 2.5, 'kg'],
-      },
+        policy: 'linear',
+        kind: 'up',
+        weight: 62.5,
+        why: ['Every rep last time — {0} {1} more.', 2.5, 'kg']
+      }
     })
     await mount([entry])
     const before = JSON.stringify(mocks.S.active.entries[0])
@@ -495,19 +590,28 @@ describe('progression guidance', () => {
   it('saves the active policy, preserves completed rows, and refreshes guidance immediately', async () => {
     const entry = exercise('plain-bench', [true, false], {
       plan: {
-        policy: 'linear', kind: 'up', weight: 62.5,
-        why: ['Every rep last time — {0} {1} more.', 2.5, 'kg'],
-      },
+        policy: 'linear',
+        kind: 'up',
+        weight: 62.5,
+        why: ['Every rep last time — {0} {1} more.', 2.5, 'kg']
+      }
     })
     await mount([entry])
-    mocks.S.workouts = [{
-      d: '2026-08-27',
-      entries: [{
-        id: entry.id,
-        target: { sets: 2, reps: 5, weight: 60 },
-        sets: [{ w: 60, r: 5, done: true }, { w: 60, r: 5, done: true }],
-      }],
-    }]
+    mocks.S.workouts = [
+      {
+        d: '2026-08-27',
+        entries: [
+          {
+            id: entry.id,
+            target: { sets: 2, reps: 5, weight: 60 },
+            sets: [
+              { w: 60, r: 5, done: true },
+              { w: 60, r: 5, done: true }
+            ]
+          }
+        ]
+      }
+    ]
     const completed = mocks.S.active.entries[0].sets[0]
     await pressProgression()
     const save = mocks.exConfigSheet.mock.calls[0][2]
@@ -522,16 +626,20 @@ describe('progression guidance', () => {
     expect(saved.sets[0]).toEqual(completed)
     expect(saved.sets[0]).toEqual({ w: 60, r: 5, done: true })
     expect(saved.sets[1]).toEqual({ w: 62.5, r: 3, done: false })
-    expect(container.querySelector('.progline')?.textContent)
-      .toContain('Double progression · Top of the rep range in every set — 2.5 kg more, back to 3 reps.')
+    expect(container.querySelector('.progline')?.textContent).toContain(
+      'Double progression · Top of the rep range in every set — 2.5 kg more, back to 3 reps.'
+    )
 
     const persisted = JSON.parse(JSON.stringify(mocks.S))
     await unmount()
     mocks.S = persisted
     installDom()
-    await act(async () => { root.render(React.createElement(Workout)) })
-    expect(container.querySelector('.progline')?.textContent)
-      .toContain('Double progression · Top of the rep range in every set — 2.5 kg more, back to 3 reps.')
+    await act(async () => {
+      root.render(React.createElement(Workout))
+    })
+    expect(container.querySelector('.progline')?.textContent).toContain(
+      'Double progression · Top of the rep range in every set — 2.5 kg more, back to 3 reps.'
+    )
   })
 })
 
@@ -542,11 +650,14 @@ describe('superset flow survives an exercise being removed mid-session', () => {
   // — no advance, and no rest at the end of the round.
   it('still advances and rests for sets completed after a removal', async () => {
     // warm(2 sets, both done) ahead of a bench/row superset with nothing done yet.
-    await mount([
-      exercise('warm', [true, true]),
-      exercise('bench', [false, false], { sg: 'g1' }),
-      exercise('row', [false, false], { sg: 'g1' }),
-    ], 1)
+    await mount(
+      [
+        exercise('warm', [true, true]),
+        exercise('bench', [false, false], { sg: 'g1' }),
+        exercise('row', [false, false], { sg: 'g1' })
+      ],
+      1
+    )
 
     // Drop the first exercise: bench moves 1 -> 0, row moves 2 -> 1.
     // Stale marks would be [2, 0, 0] against entries that are now [bench, row].
@@ -559,7 +670,9 @@ describe('superset flow survives an exercise being removed mid-session', () => {
 
     // First member of the group: real progress, so the flow advances to the partner.
     await toggleSet(0)
-    await act(async () => { root.render(React.createElement(Workout)) })
+    await act(async () => {
+      root.render(React.createElement(Workout))
+    })
     expect(mocks.S.active.cur).toBe(1)
 
     // Partner closes the round (each still has a second set), which is what starts the rest.
@@ -572,7 +685,7 @@ describe('superset actionable-set centring', () => {
   it('centres the newly active exercise first incomplete set row', async () => {
     await mount([
       exercise('bench', [true, false], { sg: 'g1' }),
-      exercise('row', [true, false, false], { sg: 'g1' }),
+      exercise('row', [true, false, false], { sg: 'g1' })
     ])
     mocks.scrollCalls.length = 0
 
@@ -580,14 +693,14 @@ describe('superset actionable-set centring', () => {
 
     const rows = container.querySelector('[data-exidx="1"]').querySelectorAll('.setrow')
     expect(mocks.scrollCalls).toEqual([
-      { node: rows[1], options: { behavior: 'smooth', block: 'center' } },
+      { node: rows[1], options: { behavior: 'smooth', block: 'center' } }
     ])
   })
 
   it('centres the last set row when the newly active exercise is complete', async () => {
     await mount([
       exercise('bench', [true, false], { sg: 'g1' }),
-      exercise('row', [true, true], { sg: 'g1' }),
+      exercise('row', [true, true], { sg: 'g1' })
     ])
     mocks.scrollCalls.length = 0
 
@@ -595,30 +708,24 @@ describe('superset actionable-set centring', () => {
 
     const rows = container.querySelector('[data-exidx="1"]').querySelectorAll('.setrow')
     expect(mocks.scrollCalls).toEqual([
-      { node: rows[1], options: { behavior: 'smooth', block: 'center' } },
+      { node: rows[1], options: { behavior: 'smooth', block: 'center' } }
     ])
   })
 
   it('centres the exercise wrapper when the newly active exercise has no set row', async () => {
-    await mount([
-      exercise('bench', [true, false], { sg: 'g1' }),
-      exercise('row', [], { sg: 'g1' }),
-    ])
+    await mount([exercise('bench', [true, false], { sg: 'g1' }), exercise('row', [], { sg: 'g1' })])
     mocks.scrollCalls.length = 0
 
     await rerenderAt(1)
 
     const wrapper = container.querySelector('[data-exidx="1"]')
     expect(mocks.scrollCalls).toEqual([
-      { node: wrapper, options: { behavior: 'smooth', block: 'center' } },
+      { node: wrapper, options: { behavior: 'smooth', block: 'center' } }
     ])
   })
 
   it('does not auto-scroll set rows for ordinary exercise navigation', async () => {
-    await mount([
-      exercise('bench', [true, false]),
-      exercise('row', [false, false]),
-    ])
+    await mount([exercise('bench', [true, false]), exercise('row', [false, false])])
     mocks.scrollCalls.length = 0
 
     await rerenderAt(1)
@@ -634,21 +741,35 @@ describe('active workout whole-unit move controls', () => {
     const selected = exercise('duplicate', [false], {
       occurrenceId: 'duplicate#2',
       target: { mode: 'reps', reps: 7, weight: 82.5, notes: 'Keep this target' },
-      sets: [{ w: 77.5, r: 6, done: true, rir: 2 }],
+      sets: [{ w: 77.5, r: 6, done: true, rir: 2 }]
     })
-    await mount([
-      exercise('duplicate', [false], { occurrenceId: 'duplicate#1' }),
-      exercise('middle', [false]),
-      selected,
-    ], 2)
+    await mount(
+      [
+        exercise('duplicate', [false], { occurrenceId: 'duplicate#1' }),
+        exercise('middle', [false]),
+        selected
+      ],
+      2
+    )
 
     expect(action('Move up')?.textContent.trim()).toBe('Move up')
     expect(action('Move down')?.textContent.trim()).toBe('Move down')
-    await act(async () => { action('Move up').dispatchEvent(new dom.Event('click', { bubbles: true })) })
+    await act(async () => {
+      action('Move up').dispatchEvent(new dom.Event('click', { bubbles: true }))
+    })
 
-    expect(mocks.S.active.entries.map(entry => entry.occurrenceId || entry.id)).toEqual(['duplicate#1', 'duplicate#2', 'middle'])
+    expect(mocks.S.active.entries.map(entry => entry.occurrenceId || entry.id)).toEqual([
+      'duplicate#1',
+      'duplicate#2',
+      'middle'
+    ])
     expect(mocks.S.active.entries[1]).toEqual(selected)
-    expect(mocks.S.active.entries[1].target).toEqual({ mode: 'reps', reps: 7, weight: 82.5, notes: 'Keep this target' })
+    expect(mocks.S.active.entries[1].target).toEqual({
+      mode: 'reps',
+      reps: 7,
+      weight: 82.5,
+      notes: 'Keep this target'
+    })
     expect(mocks.S.active.entries[1].sets).toEqual([{ w: 77.5, r: 6, done: true, rir: 2 }])
     expect(mocks.S.active.cur).toBe(1)
     expect(mocks.stopWork).toHaveBeenCalledOnce()
@@ -659,17 +780,19 @@ describe('active workout whole-unit move controls', () => {
     const first = exercise('group-a', [false], { sg: 'pair', occurrenceId: 'group-a#1' })
     const selected = exercise('group-b', [true], { sg: 'pair', occurrenceId: 'group-b#1' })
     const groupMeta = { pair: { kind: 'complex', label: 'Carry pair', cues: 'Stay braced.' } }
-    await mount([
-      exercise('before', [false]),
-      first,
-      selected,
-      exercise('after', [false]),
-    ], 2)
+    await mount([exercise('before', [false]), first, selected, exercise('after', [false])], 2)
     mocks.S.active.groupMeta = groupMeta
 
-    await act(async () => { action('Move up').dispatchEvent(new dom.Event('click', { bubbles: true })) })
+    await act(async () => {
+      action('Move up').dispatchEvent(new dom.Event('click', { bubbles: true }))
+    })
 
-    expect(mocks.S.active.entries.map(entry => entry.id)).toEqual(['group-a', 'group-b', 'before', 'after'])
+    expect(mocks.S.active.entries.map(entry => entry.id)).toEqual([
+      'group-a',
+      'group-b',
+      'before',
+      'after'
+    ])
     expect(mocks.S.active.entries.slice(0, 2)).toEqual([first, selected])
     expect(mocks.S.active.entries.slice(0, 2).map(entry => entry.sg)).toEqual(['pair', 'pair'])
     expect(mocks.S.active.groupMeta).toEqual(groupMeta)
@@ -687,11 +810,16 @@ describe('active workout whole-unit move controls', () => {
 
 describe('active exercise swap control', () => {
   it('opens the swap flow for the selected duplicate occurrence', async () => {
-    await mount([exercise('bench', [false]), exercise('bench', [false]), exercise('row', [false])], 1)
+    await mount(
+      [exercise('bench', [false]), exercise('bench', [false]), exercise('row', [false])],
+      1
+    )
 
     const swap = container.querySelector('button[aria-label="Swap exercise"]')
     expect(swap).toBeTruthy()
-    await act(async () => { swap.dispatchEvent(new dom.Event('click', { bubbles: true })) })
+    await act(async () => {
+      swap.dispatchEvent(new dom.Event('click', { bubbles: true }))
+    })
 
     expect(mocks.swapActiveWorkoutExercise).toHaveBeenCalledOnce()
     expect(mocks.swapActiveWorkoutExercise).toHaveBeenCalledWith(1)

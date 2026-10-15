@@ -1,5 +1,9 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
-import { strengthExerciseRows, strengthExerciseRowsForMuscle, primaryMuscleOf } from './strength-exercises.js'
+import {
+  strengthExerciseRows,
+  strengthExerciseRowsForMuscle,
+  primaryMuscleOf
+} from './strength-exercises.js'
 import { registerCustom } from './exercises.js'
 
 const DAY = 86400000
@@ -11,7 +15,7 @@ const CUSTOMS = [
   { id: 'fly', n: 'Cable Crossovers', tg: 'deltoids', mg: 'chest' },
   { id: 'pushdown', n: 'Triceps Pushdown', tg: 'triceps' },
   { id: 'undone', n: 'Undone Lift', tg: 'upper-back' },
-  { id: 'stretch', n: 'Chest Stretch', tg: 'chest' },
+  { id: 'stretch', n: 'Chest Stretch', tg: 'chest' }
 ]
 
 beforeEach(() => registerCustom(CUSTOMS))
@@ -23,37 +27,57 @@ function workout(dayAgo, entries) {
   return { id: 'x' + iso, d: iso, start: NOW - dayAgo * DAY, unit: 'kg', entries }
 }
 
-const bench = { id: 'bench', n: 'Bench Press', muscleWeights: { chest: 1, triceps: 0.4, deltoids: 0.4 }, sets: [
-  { phase: 'warmup', w: 40, r: 8, done: true, unit: 'kg' },
-  { phase: 'work', w: 80, r: 8, done: true, unit: 'kg' },
-  { phase: 'work', w: 85, r: 6, done: true, unit: 'kg' },
-] }
+const bench = {
+  id: 'bench',
+  n: 'Bench Press',
+  muscleWeights: { chest: 1, triceps: 0.4, deltoids: 0.4 },
+  sets: [
+    { phase: 'warmup', w: 40, r: 8, done: true, unit: 'kg' },
+    { phase: 'work', w: 80, r: 8, done: true, unit: 'kg' },
+    { phase: 'work', w: 85, r: 6, done: true, unit: 'kg' }
+  ]
+}
 // est 85x6 -> 102.0 ; 80x8 -> 101.3 ; warmup 40x8 -> 50.7 (must never win)
 
-const squat = { id: 'squat', n: 'Squat', muscleWeights: { quadriceps: 1, glutes: 0.4 }, sets: [
-  { phase: 'work', w: 100, r: 5, done: true, unit: 'kg' },
-] }
+const squat = {
+  id: 'squat',
+  n: 'Squat',
+  muscleWeights: { quadriceps: 1, glutes: 0.4 },
+  sets: [{ phase: 'work', w: 100, r: 5, done: true, unit: 'kg' }]
+}
 // est 100x5 -> 116.7 ; trained 30 days ago -> quadriceps decayed (30d - 14d = 16d / 28d half-life)
 
-const fly = { id: 'fly', n: 'Cable Crossovers', muscleWeights: { chest: 0.4, deltoids: 1 }, sets: [
-  { phase: 'work', w: 20, r: 12, done: true, unit: 'kg' },
-] }
+const fly = {
+  id: 'fly',
+  n: 'Cable Crossovers',
+  muscleWeights: { chest: 0.4, deltoids: 1 },
+  sets: [{ phase: 'work', w: 20, r: 12, done: true, unit: 'kg' }]
+}
 // est 20x12 -> 28 ; chest is SECONDARY here
 
-const pushdown = { id: 'pushdown', n: 'Triceps Pushdown', muscleWeights: { triceps: 1 }, sets: [
-  { phase: 'work', w: 30, r: 10, done: true, unit: 'kg' },
-] }
+const pushdown = {
+  id: 'pushdown',
+  n: 'Triceps Pushdown',
+  muscleWeights: { triceps: 1 },
+  sets: [{ phase: 'work', w: 30, r: 10, done: true, unit: 'kg' }]
+}
 // est 30x10 -> 40
 
-const undone = { id: 'undone', n: 'Undone Lift', muscleWeights: { 'upper-back': 1 }, sets: [
-  { phase: 'work', w: 200, r: 5, done: false, unit: 'kg' },
-] }
+const undone = {
+  id: 'undone',
+  n: 'Undone Lift',
+  muscleWeights: { 'upper-back': 1 },
+  sets: [{ phase: 'work', w: 200, r: 5, done: false, unit: 'kg' }]
+}
 
-const noLoad = { id: 'stretch', n: 'Chest Stretch', muscleWeights: { chest: 0.4 }, sets: [
-  { phase: 'work', w: 0, r: 10, done: true },
-] }
+const noLoad = {
+  id: 'stretch',
+  n: 'Chest Stretch',
+  muscleWeights: { chest: 0.4 },
+  sets: [{ phase: 'work', w: 0, r: 10, done: true }]
+}
 
-const unitState = (workouts) => ({ unit: 'kg', workouts })
+const unitState = workouts => ({ unit: 'kg', workouts })
 
 describe('strengthExerciseRows', () => {
   it('lists every exercise with an estimate, warm-ups excluded, sorted by expected current 1RM', () => {
@@ -61,7 +85,7 @@ describe('strengthExerciseRows', () => {
       workout(3, [bench]),
       workout(30, [squat]),
       workout(3, [fly, pushdown]),
-      workout(2, [undone, noLoad]),
+      workout(2, [undone, noLoad])
     ])
     const rows = strengthExerciseRows(S, NOW)
     // undone (no completed set) and stretch (no load) have no estimate -> omitted
@@ -97,12 +121,17 @@ describe('strengthExerciseRows', () => {
     const deleted = {
       id: 'deleted-custom',
       muscleSnapshot: { n: 'Deleted custom', muscleWeights: { chest: 1 } },
-      sets: [{ phase: 'work', warmup: true, w: 80, r: 8, done: true, unit: 'kg' }],
+      sets: [{ phase: 'work', warmup: true, w: 80, r: 8, done: true, unit: 'kg' }]
     }
     const S = unitState([workout(3, [deleted])])
     const rows = strengthExerciseRows(S, NOW)
     expect(rows).toHaveLength(1)
-    expect(rows[0]).toMatchObject({ id: 'deleted-custom', name: 'Deleted custom', primary: 'chest', est: 101.3 })
+    expect(rows[0]).toMatchObject({
+      id: 'deleted-custom',
+      name: 'Deleted custom',
+      primary: 'chest',
+      est: 101.3
+    })
     expect(strengthExerciseRowsForMuscle(S, NOW, 'chest')[0].name).toBe('Deleted custom')
   })
 

@@ -21,8 +21,14 @@ const LIB = new URL('../../frontend/src/lib/', import.meta.url)
 // Every frontend/src/lib module the server reaches today. Named individually so a failure says
 // which one, rather than which import chain.
 const MODULES = [
-  'i18n-core.js', 'format.js', 'exercises.js', 'exercises-data.js',
-  'history.js', 'muscles.js', 'onerm.js', 'progression.js'
+  'i18n-core.js',
+  'format.js',
+  'exercises.js',
+  'exercises-data.js',
+  'history.js',
+  'muscles.js',
+  'onerm.js',
+  'progression.js'
 ]
 
 let failed = 0
@@ -49,7 +55,9 @@ for (const entry of ['../src/state.js', '../src/tools.js']) {
 }
 
 if (failed) {
-  console.error(`\n${failed} module(s) do not load under plain node — the MCP server would not start.`)
+  console.error(
+    `\n${failed} module(s) do not load under plain node — the MCP server would not start.`
+  )
   process.exit(1)
 }
 console.log('\nthe whole MCP import graph loads under plain node.')

@@ -18,7 +18,7 @@ export const FORMULAS = {
   // Epley 1985 — w · (1 + r/30)
   epley: (w, r) => w * (1 + r / 30),
   // Brzycki 1993 — w · 36/(37 − r); undefined at r ≥ 37, but REP_CAP is far below that
-  brzycki: (w, r) => w * 36 / (37 - r),
+  brzycki: (w, r) => (w * 36) / (37 - r),
   // Lombardi 1989 — w · r^0.10
   lombardi: (w, r) => w * Math.pow(r, 0.1)
 }
@@ -47,7 +47,8 @@ export function bestSetOf(entry, formula = DEFAULT_FORMULA) {
   ;(entry?.sets || []).forEach(s => {
     if (!s.done || isWarmupRow(s)) return
     const est = estimate1RM(s.w, s.r, formula)
-    if (est !== null && (!best || est > best.est)) best = { est, w: Number(s.w), r: Math.round(Number(s.r)) }
+    if (est !== null && (!best || est > best.est))
+      best = { est, w: Number(s.w), r: Math.round(Number(s.r)) }
   })
   return best
 }
@@ -69,7 +70,9 @@ export function e1rmSeries(S, exId, formula = DEFAULT_FORMULA) {
 // matters, because "142.5 kg est. from 100×10" is a very different claim from "from 140×1".
 export function best1RM(S, exId, formula = DEFAULT_FORMULA) {
   let best = null
-  e1rmSeries(S, exId, formula).forEach(p => { if (!best || p.y > best.est) best = { est: p.y, w: p.w, r: p.r, d: p.d, t: p.t } })
+  e1rmSeries(S, exId, formula).forEach(p => {
+    if (!best || p.y > best.est) best = { est: p.y, w: p.w, r: p.r, d: p.d, t: p.t }
+  })
   return best
 }
 
