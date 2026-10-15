@@ -15,7 +15,8 @@
     "test:smoke": "node worker/test/smoke.mjs",
     "size": "wrangler deploy --dry-run --outdir=.build",
     "format": "biome format --write .",
-    "format:check": "biome format ."
+    "format:check": "biome format .",
+    "prepare": "lefthook install || true"
   },
   "dependencies": {
     "@simplewebauthn/server": "^14.0.3",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.5.15",
     "js-yaml": "^5.4.2",
+    "lefthook": "2.2.2",
     "wrangler": "^4.142.0"
   },
   "allowScripts": {

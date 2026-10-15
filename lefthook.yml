@@ -1,0 +1,9 @@
+# Git hooks (https://lefthook.dev). Installed by `npm install` via the root `prepare` script.
+# Skip once with `LEFTHOOK=0 git commit ...`.
+pre-commit:
+  commands:
+    format:
+      # Only the staged files, and re-staged after formatting. biome.json's files.includes still
+      # applies, so generated data and other excluded paths are left alone.
+      run: npx --no biome format --write --no-errors-on-unmatched --files-ignore-unknown=true {staged_files}
+      stage_fixed: true
