@@ -2,8 +2,9 @@ import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { bestWeightForEntry, metricModeForEntry, metricRowsForEntry } from '../lib/history.js'
 
-const source = readFileSync(new URL('./Stats.jsx', import.meta.url), 'utf8')
-const uiSource = readFileSync(new URL('../components/ui.jsx', import.meta.url), 'utf8')
+// Whitespace collapsed so these source checks survive `npm run format` re-wrapping lines.
+const source = readFileSync(new URL('./Stats.jsx', import.meta.url), 'utf8').replace(/\s+/g, ' ')
+const uiSource = readFileSync(new URL('../components/ui.jsx', import.meta.url), 'utf8').replace(/\s+/g, ' ')
 const cssSource = readFileSync(new URL('../index.css', import.meta.url), 'utf8')
 
 describe('Stats mixed-entry metric contract', () => {
@@ -18,7 +19,7 @@ describe('Stats mixed-entry metric contract', () => {
   })
 
   it('renders one clickable muscle exercise list rather than a duplicate non-clickable copy', () => {
-    expect((source.match(/muscleExercises\.length \? muscleExercises\.map\(row =>/g) || []).length).toBe(1)
+    expect((source.match(/muscleExercises\.length \? \(? ?muscleExercises\.map\(row =>/g) || []).length).toBe(1)
     expect(source).toContain('{...tappable(() => onExercise && onExercise(row.id))}')
   })
 
