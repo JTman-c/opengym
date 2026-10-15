@@ -76,6 +76,9 @@ cd frontend && npm run build:mobile   # + cap sync, points media at the CDN data
 Formatting is Biome (`biome.json` at the root, formatter only — no linter, no TypeScript):
 `npm run format` rewrites, `npm run format:check` is what CI runs. Generated data (instr/,
 exercise-names/, exercises-data.js, body-paths.js, hevy-id-map.js) and CSS are excluded.
+A Lefthook pre-commit hook (`lefthook.yml`, installed by `npm install`) formats staged files and
+re-stages them. Still run `npm run format` before committing: the CI `format` job fails on
+unformatted code, and the hook never sees files committed with `--no-verify` or `LEFTHOOK=0`.
 
 Upstream's CI gate is `.gitlab-ci.yml` on GitLab, its canonical remote (see README): it runs the
 `frontend/` tests on Node 22 — the same version as `web/Dockerfile` / `api/Dockerfile`
