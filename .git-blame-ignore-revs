@@ -1,0 +1,5 @@
+# Mechanical reformats. Use with: git config blame.ignoreRevsFile .git-blame-ignore-revs
+# (GitHub applies this file automatically.)
+
+# style: reformat with Biome
+0f3f951930ad4375c874945cb90f553055af509a
