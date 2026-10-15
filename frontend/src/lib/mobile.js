@@ -20,16 +20,29 @@ const FILE = 'opengym-state.json'
 export async function nativeLoad() {
   try {
     const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
-    const r = await Filesystem.readFile({ path: FILE, directory: Directory.Data, encoding: Encoding.UTF8 })
+    const r = await Filesystem.readFile({
+      path: FILE,
+      directory: Directory.Data,
+      encoding: Encoding.UTF8
+    })
     return JSON.parse(r.data)
-  } catch (e) { return null }   // first launch, or unreadable — localStorage copy takes over
+  } catch (e) {
+    return null
+  } // first launch, or unreadable — localStorage copy takes over
 }
 
 export async function nativeSave(state) {
   try {
     const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
-    await Filesystem.writeFile({ path: FILE, directory: Directory.Data, data: JSON.stringify(state), encoding: Encoding.UTF8 })
-  } catch (e) { /* keep the localStorage copy */ }
+    await Filesystem.writeFile({
+      path: FILE,
+      directory: Directory.Data,
+      data: JSON.stringify(state),
+      encoding: Encoding.UTF8
+    })
+  } catch (e) {
+    /* keep the localStorage copy */
+  }
 }
 
 // "Connect to my server" mode (lib/remote.js): which of local-only / a paired remote account this
@@ -41,16 +54,29 @@ const REMOTE_FILE = 'opengym-remote.json'
 export async function loadRemoteFile() {
   try {
     const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
-    const r = await Filesystem.readFile({ path: REMOTE_FILE, directory: Directory.Data, encoding: Encoding.UTF8 })
+    const r = await Filesystem.readFile({
+      path: REMOTE_FILE,
+      directory: Directory.Data,
+      encoding: Encoding.UTF8
+    })
     return JSON.parse(r.data)
-  } catch (e) { return null }   // never decided yet
+  } catch (e) {
+    return null
+  } // never decided yet
 }
 
 export async function saveRemoteFile(data) {
   try {
     const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
-    await Filesystem.writeFile({ path: REMOTE_FILE, directory: Directory.Data, data: JSON.stringify(data), encoding: Encoding.UTF8 })
-  } catch (e) { /* worst case: onboarding asks again next launch */ }
+    await Filesystem.writeFile({
+      path: REMOTE_FILE,
+      directory: Directory.Data,
+      data: JSON.stringify(data),
+      encoding: Encoding.UTF8
+    })
+  } catch (e) {
+    /* worst case: onboarding asks again next launch */
+  }
 }
 
 // Keep enough dates queued to cover normal app use between foregrounds without creating an
@@ -86,7 +112,7 @@ export function buildReminderNotifications(S, now = new Date()) {
       id: REMINDER_ID_BASE + offset,
       title: t('Workout day'),
       body: t('{0} is on the plan today — let’s go!', routine.name),
-      schedule: { at, allowWhileIdle: true },
+      schedule: { at, allowWhileIdle: true }
     })
   }
   return notifications
@@ -99,19 +125,24 @@ export function buildReminderNotifications(S, now = new Date()) {
 export async function syncReminder(S, interactive = false) {
   try {
     const { LocalNotifications } = await import('@capacitor/local-notifications')
-    await LocalNotifications.cancel({ notifications: [
-      ...LEGACY_REMINDER_IDS,
-      ...Array.from({ length: REMINDER_WINDOW_DAYS }, (_, d) => ({ id: REMINDER_ID_BASE + d })),
-    ] }).catch(() => {})
+    await LocalNotifications.cancel({
+      notifications: [
+        ...LEGACY_REMINDER_IDS,
+        ...Array.from({ length: REMINDER_WINDOW_DAYS }, (_, d) => ({ id: REMINDER_ID_BASE + d }))
+      ]
+    }).catch(() => {})
     const r = S.reminder
     if (!r?.on) return true
     let perm = await LocalNotifications.checkPermissions()
-    if (perm.display !== 'granted' && interactive) perm = await LocalNotifications.requestPermissions()
+    if (perm.display !== 'granted' && interactive)
+      perm = await LocalNotifications.requestPermissions()
     if (perm.display !== 'granted') return false
     const notifications = buildReminderNotifications(S)
     if (notifications.length) await LocalNotifications.schedule({ notifications })
     return true
-  } catch (e) { return false }
+  } catch (e) {
+    return false
+  }
 }
 
 // Capacitor emits appStateChange when the native shell returns to the foreground. The visibility
@@ -125,9 +156,13 @@ export function initReminderSync(getState) {
     syncReminder(getState()).catch(() => {})
   }
   document.addEventListener('visibilitychange', resync)
-  import('@capacitor/app').then(({ App }) => {
-    App.addListener('appStateChange', ({ isActive }) => { if (isActive) resync() })
-  }).catch(() => {})
+  import('@capacitor/app')
+    .then(({ App }) => {
+      App.addListener('appStateChange', ({ isActive }) => {
+        if (isActive) resync()
+      })
+    })
+    .catch(() => {})
 }
 
 // WKWebView can't do blob-URL downloads, so the backup goes out through the OS share sheet
@@ -135,7 +170,12 @@ export function initReminderSync(getState) {
 export async function shareExport(json, filename) {
   const { Filesystem, Directory, Encoding } = await import('@capacitor/filesystem')
   const { Share } = await import('@capacitor/share')
-  const w = await Filesystem.writeFile({ path: filename, directory: Directory.Cache, data: json, encoding: Encoding.UTF8 })
+  const w = await Filesystem.writeFile({
+    path: filename,
+    directory: Directory.Cache,
+    data: json,
+    encoding: Encoding.UTF8
+  })
   await Share.share({ title: filename, url: w.uri })
 }
 
@@ -151,7 +191,9 @@ export async function writeAutoBackup(state) {
       directory: Directory.Documents,
       data: JSON.stringify(state),
       encoding: Encoding.UTF8,
-      recursive: true,
+      recursive: true
     })
-  } catch (e) { /* best effort — the private mirror in Directory.Data still has the data */ }
+  } catch (e) {
+    /* best effort — the private mirror in Directory.Data still has the data */
+  }
 }

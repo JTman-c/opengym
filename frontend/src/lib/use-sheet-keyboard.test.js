@@ -19,7 +19,7 @@ describe('tappable', () => {
     const space = keyEvent(' ', el)
     p.onKeyDown(space)
     expect(onClick).toHaveBeenCalledTimes(2)
-    expect(space.preventDefault).toHaveBeenCalled()   // Space must not scroll the page
+    expect(space.preventDefault).toHaveBeenCalled() // Space must not scroll the page
   })
 
   it('ignores other keys and keys from nested controls', () => {

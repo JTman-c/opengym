@@ -40,8 +40,10 @@ export const POLICY_NAME = {
 export const POLICY_DESC = {
   off: 'Targets stay where you set them.',
   linear: 'Hit every rep in every set and the weight goes up. Repeated misses trigger a deload.',
-  greyskull: 'Two straight sets plus a final set taken to failure. Beat the target on that set and the weight goes up — double if you double the reps. One failure resets 10 %.',
-  double: 'Work up through a rep range at the same weight. Reach the top of the range in every set and the weight goes up, reps back to the bottom.',
+  greyskull:
+    'Two straight sets plus a final set taken to failure. Beat the target on that set and the weight goes up — double if you double the reps. One failure resets 10 %.',
+  double:
+    'Work up through a rep range at the same weight. Reach the top of the range in every set and the weight goes up, reps back to the bottom.',
   time: 'Hold every set for the full duration and the target goes up.'
 }
 
@@ -111,22 +113,26 @@ export function readSession(entry, fallback) {
 
   if (mode === 'time') {
     const goal = target.sec || 0
-    const held = sets.map(s => (s.done ? (s.sec || 0) : 0))
+    const held = sets.map(s => (s.done ? s.sec || 0 : 0))
     return {
-      mode, goal, held,
+      mode,
+      goal,
+      held,
       weight: Math.max(0, ...sets.filter(s => s.done).map(s => s.w || 0)),
       best: Math.max(0, ...held),
       ok: goal > 0 && enough && held.length > 0 && held.every(h => h >= goal)
     }
   }
   const goal = target.reps || 0
-  const reps = sets.map(s => (s.done ? (s.r || 0) : 0))
+  const reps = sets.map(s => (s.done ? s.r || 0 : 0))
   return {
-    mode, goal, reps,
+    mode,
+    goal,
+    reps,
     weight: Math.max(0, ...sets.filter(s => s.done).map(s => s.w || 0)),
-    count: reps.length,                                   // the dimension bodyweight work grows (#33)
+    count: reps.length, // the dimension bodyweight work grows (#33)
     low: reps.length ? Math.min(...reps) : 0,
-    amrap: reps.length ? reps[reps.length - 1] : 0,       // Greyskull's final set
+    amrap: reps.length ? reps[reps.length - 1] : 0, // Greyskull's final set
     ok: goal > 0 && enough && reps.length > 0 && reps.every(r => r >= goal)
   }
 }
@@ -140,7 +146,8 @@ export function sessionsFor(S, exId, fallback) {
     // active session, then onto this completed workout, so later routine edits do not rewrite it.
     if (w.excludeFromProgression === true) return
     const entry = w.entries.find(e => e.id === exId)
-    if (entry && entry.sets.some(s => s.done && !isWarmupRow(s))) out.push({ d: w.d, ...readSession(entry, fallback) })
+    if (entry && entry.sets.some(s => s.done && !isWarmupRow(s)))
+      out.push({ d: w.d, ...readSession(entry, fallback) })
   })
   return out
 }
@@ -167,12 +174,14 @@ export function nextPrescription(S, cfg, routine) {
   const mode = modeOf(cfg)
   const policy = policyFor(cfg, routine, mode)
   const unit = S.unit || 'kg'
-  const inc = cfg.inc > 0 ? cfg.inc : (mode === 'time' ? DEFAULT_SEC_INCREMENT : defaultIncrement(cfg.id, unit))
+  const inc =
+    cfg.inc > 0 ? cfg.inc : mode === 'time' ? DEFAULT_SEC_INCREMENT : defaultIncrement(cfg.id, unit)
   if (policy === 'off') return { policy, kind: 'off' }
 
   const sessions = sessionsFor(S, cfg.id, cfg).filter(s => s.mode === mode)
   const last = sessions[sessions.length - 1]
-  if (!last) return { policy, kind: 'first', why: ['Nothing logged yet — this session sets the baseline.'] }
+  if (!last)
+    return { policy, kind: 'first', why: ['Nothing logged yet — this session sets the baseline.'] }
 
   const stalls = stallCount(sessions)
   const deloadAt = DELOAD_AFTER[policy] || 3
@@ -180,13 +189,28 @@ export function nextPrescription(S, cfg, routine) {
   if (mode === 'time') {
     if (last.ok) {
       const sec = (last.goal || cfg.sec || 0) + inc
-      return { policy, kind: 'up', sec, why: ['Held every set for the full time — target up by {0}s.', inc] }
+      return {
+        policy,
+        kind: 'up',
+        sec,
+        why: ['Held every set for the full time — target up by {0}s.', inc]
+      }
     }
     if (stalls >= deloadAt) {
       const sec = deloadTo(last.goal || cfg.sec || 0, 5)
-      return { policy, kind: 'deload', sec, why: ['Short {0} sessions in a row — back off to {1}s and build up again.', stalls, sec] }
+      return {
+        policy,
+        kind: 'deload',
+        sec,
+        why: ['Short {0} sessions in a row — back off to {1}s and build up again.', stalls, sec]
+      }
     }
-    return { policy, kind: 'hold', sec: last.goal || cfg.sec, why: ['Last time came up short — same target again.'] }
+    return {
+      policy,
+      kind: 'hold',
+      sec: last.goal || cfg.sec,
+      why: ['Last time came up short — same target again.']
+    }
   }
 
   const w = last.weight
@@ -197,7 +221,14 @@ export function nextPrescription(S, cfg, routine) {
   // belongs on the normal policies, and a barbell lift logged at 0 has nothing to add to.
   if (w <= 0) {
     const goal = last.goal || cfg.reps || 0
-    if (!last.ok || goal <= 0) return { policy, kind: 'hold', weight: 0, reps: goal || undefined, why: ['Bodyweight — same target again until every set is clean.'] }
+    if (!last.ok || goal <= 0)
+      return {
+        policy,
+        kind: 'hold',
+        weight: 0,
+        reps: goal || undefined,
+        why: ['Bodyweight — same target again until every set is clean.']
+      }
     // A ceiling turns "+1 rep forever" into a plan (issue #33). Past the top of the range the
     // reps go back to the bottom and a set is added instead, which is how bodyweight work
     // actually progresses once a set of 30 push-ups stops being a strength stimulus.
@@ -205,26 +236,70 @@ export function nextPrescription(S, cfg, routine) {
     if (top > 0 && goal >= top) {
       const sets = Math.max(1, cfg.sets || last.count || 1) + 1
       const bottom = Math.max(1, Math.min(cfg.reps || top, top))
-      if (sets <= MAX_BW_SETS) return { policy, kind: 'up', weight: 0, reps: bottom, sets, why: ['{0} reps in every set — add a set and go back to {1}.', goal, bottom] }
+      if (sets <= MAX_BW_SETS)
+        return {
+          policy,
+          kind: 'up',
+          weight: 0,
+          reps: bottom,
+          sets,
+          why: ['{0} reps in every set — add a set and go back to {1}.', goal, bottom]
+        }
       // Out of sets worth adding: more volume is no longer the answer, load or a harder
       // variation is — and that is a decision for a person, not a policy.
-      return { policy, kind: 'hold', weight: 0, reps: goal, why: ['{0} sets of {1} — time to add weight or move to a harder variation.', sets - 1, goal] }
+      return {
+        policy,
+        kind: 'hold',
+        weight: 0,
+        reps: goal,
+        why: ['{0} sets of {1} — time to add weight or move to a harder variation.', sets - 1, goal]
+      }
     }
     // Unilateral work steps by two, so the total stays even and both sides get the rep.
     const next = goal + repStep(cfg)
-    return { policy, kind: 'up', weight: 0, reps: next, why: ['Bodyweight — every rep last time, so go for {0} this time.', next] }
+    return {
+      policy,
+      kind: 'up',
+      weight: 0,
+      reps: next,
+      why: ['Bodyweight — every rep last time, so go for {0} this time.', next]
+    }
   }
   if (policy === 'double') {
     const range = normalizeRepRange(cfg.reps || last.goal || 10, cfg.repsMin, repStep(cfg))
     const top = range.reps
     const bottom = range.repsMin
-    if (last.ok) return { policy, kind: 'up', weight: snap(w + inc, inc), reps: bottom, why: ['Top of the rep range in every set — {0} {1} more, back to {2} reps.', inc, unit, bottom] }
+    if (last.ok)
+      return {
+        policy,
+        kind: 'up',
+        weight: snap(w + inc, inc),
+        reps: bottom,
+        why: [
+          'Top of the rep range in every set — {0} {1} more, back to {2} reps.',
+          inc,
+          unit,
+          bottom
+        ]
+      }
     if (stalls >= deloadAt) {
       const dw = deloadTo(w, inc)
-      return { policy, kind: 'deload', weight: dw, reps: bottom, why: ['Stalled {0} sessions — deload to {1} {2}.', stalls, dw, unit] }
+      return {
+        policy,
+        kind: 'deload',
+        weight: dw,
+        reps: bottom,
+        why: ['Stalled {0} sessions — deload to {1} {2}.', stalls, dw, unit]
+      }
     }
     const aim = Math.min(top, Math.max(bottom, last.low + repStep(cfg)))
-    return { policy, kind: 'hold', weight: w, reps: aim, why: ['Same weight — aim for {0} reps this time.', aim] }
+    return {
+      policy,
+      kind: 'hold',
+      weight: w,
+      reps: aim,
+      why: ['Same weight — aim for {0} reps this time.', aim]
+    }
   }
 
   // linear + greyskull
@@ -234,22 +309,46 @@ export function nextPrescription(S, cfg, routine) {
     const dbl = policy === 'greyskull' && last.goal > 0 && last.amrap >= last.goal * 2
     const step = dbl ? inc * 2 : inc
     return {
-      policy, kind: 'up', weight: snap(w + step, inc),
+      policy,
+      kind: 'up',
+      weight: snap(w + step, inc),
       why: dbl
-        ? ['Last set hit {0} reps — twice the target, so take a double jump of {1} {2}.', last.amrap, step, unit]
+        ? [
+            'Last set hit {0} reps — twice the target, so take a double jump of {1} {2}.',
+            last.amrap,
+            step,
+            unit
+          ]
         : ['Every rep last time — {0} {1} more.', step, unit]
     }
   }
   if (stalls >= deloadAt) {
     const dw = deloadTo(w, inc)
     return {
-      policy, kind: 'deload', weight: dw,
-      why: stalls > 1
-        ? ['Missed reps {0} sessions running — reset to {1} {2} and work back up.', stalls, dw, unit]
-        : ['Missed reps — reset to {0} {1} and work back up.', dw, unit]
+      policy,
+      kind: 'deload',
+      weight: dw,
+      why:
+        stalls > 1
+          ? [
+              'Missed reps {0} sessions running — reset to {1} {2} and work back up.',
+              stalls,
+              dw,
+              unit
+            ]
+          : ['Missed reps — reset to {0} {1} and work back up.', dw, unit]
     }
   }
-  return { policy, kind: 'hold', weight: w, why: ['Missed reps last time — same weight again ({0} of {1} to go).', deloadAt - stalls, deloadAt] }
+  return {
+    policy,
+    kind: 'hold',
+    weight: w,
+    why: [
+      'Missed reps last time — same weight again ({0} of {1} to go).',
+      deloadAt - stalls,
+      deloadAt
+    ]
+  }
 }
 
 /**

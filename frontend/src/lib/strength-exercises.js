@@ -7,7 +7,12 @@
 // catalogue-first (EXIDX), exactly like the fatigue/strength maps, falling back to the
 // logged snapshot (muscleWeights) for exercises no longer in the catalogue.
 import { best1RM } from './onerm.js'
-import { STRENGTH_FULL_MS, STRENGTH_HALF_LIFE_MS, STRENGTH_FLOOR, halfLifeDecay } from './recovery.js'
+import {
+  STRENGTH_FULL_MS,
+  STRENGTH_HALF_LIFE_MS,
+  STRENGTH_FLOOR,
+  halfLifeDecay
+} from './recovery.js'
 import { musclesOf } from './muscles.js'
 import { EXIDX } from './exercises.js'
 import { isWarmupRow } from './workout-model.js'
@@ -42,10 +47,16 @@ function snapshotWeights(entry) {
     const weights = musclesOf(catalogue)
     if (Object.keys(weights).length) return weights
   }
-  const direct = entry && typeof entry === 'object'
-    ? (entry.muscleWeights || entry.muscleSnapshot?.muscleWeights)
-    : null
-  if (direct && typeof direct === 'object' && !Array.isArray(direct) && Object.keys(direct).length) {
+  const direct =
+    entry && typeof entry === 'object'
+      ? entry.muscleWeights || entry.muscleSnapshot?.muscleWeights
+      : null
+  if (
+    direct &&
+    typeof direct === 'object' &&
+    !Array.isArray(direct) &&
+    Object.keys(direct).length
+  ) {
     return direct
   }
   return musclesOf(entry)
@@ -103,7 +114,7 @@ export function strengthExerciseRows(S, now) {
       estDate: best.d,
       primary: primaryMuscleOf(entry) ? primaryMuscleOf(entry).slug : null,
       decay,
-      current: round1(best.est * decay),
+      current: round1(best.est * decay)
     })
   }
   return rows.sort((a, b) => b.current - a.current || String(a.name).localeCompare(String(b.name)))
@@ -136,9 +147,11 @@ export function strengthExerciseRowsForMuscle(S, now, slug) {
         est: best.est,
         estDate: best.d,
         decay,
-        current: round1(best.est * decay),
+        current: round1(best.est * decay)
       })
     }
   }
-  return [...seen.values()].sort((a, b) => b.current - a.current || String(a.name).localeCompare(String(b.name)))
+  return [...seen.values()].sort(
+    (a, b) => b.current - a.current || String(a.name).localeCompare(String(b.name))
+  )
 }

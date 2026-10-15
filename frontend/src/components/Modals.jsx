@@ -8,7 +8,15 @@ function Sheet({ sheet }) {
   // startY null = no gesture. axis stays null until the finger has travelled far enough to
   // tell a vertical pull from a sideways scroll; 'x' hands the gesture to whatever scrolls
   // horizontally under it (chip strips, heatmap) and the sheet stays put.
-  const idle = () => ({ startX: null, startY: null, axis: null, delta: 0, vy: 0, lastY: 0, lastT: 0 })
+  const idle = () => ({
+    startX: null,
+    startY: null,
+    axis: null,
+    delta: 0,
+    vy: 0,
+    lastY: 0,
+    lastT: 0
+  })
   const drag = useRef(idle())
 
   // a gesture that begins on a slider (or opted-out control) belongs to that control, not to
@@ -17,15 +25,23 @@ function Sheet({ sheet }) {
   const NODRAG = 'input[type=range], [data-nodrag], .chips, .hm-wrap'
   const begin = (target, x, y) => {
     const el = ref.current
-    if (target.closest && target.closest(NODRAG)) { drag.current = idle(); return }
-    if (el.scrollTop > 0) { drag.current = idle(); return }
+    if (target.closest && target.closest(NODRAG)) {
+      drag.current = idle()
+      return
+    }
+    if (el.scrollTop > 0) {
+      drag.current = idle()
+      return
+    }
     drag.current = { ...idle(), startX: x, startY: y, lastY: y, lastT: performance.now() }
   }
   const move = (e, x, y) => {
-    const el = ref.current, d = drag.current
+    const el = ref.current,
+      d = drag.current
     if (d.startY === null) return
     // synthetic events (tests) may carry no x at all: treat that as straight down
-    const dx = Number.isFinite(x) ? x - d.startX : 0, dy = y - d.startY
+    const dx = Number.isFinite(x) ? x - d.startX : 0,
+      dy = y - d.startY
     if (d.axis === null) {
       // axis lock after ~8px: clearly-more-vertical wins the sheet, anything else is a scroll
       if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return
@@ -35,7 +51,11 @@ function Sheet({ sheet }) {
     if (d.axis === 'x') return
     const now = performance.now()
     // velocity from the last move, so a fast short flick can still be told from a slow drag
-    if (now > d.lastT) { d.vy = (y - d.lastY) / (now - d.lastT); d.lastY = y; d.lastT = now }
+    if (now > d.lastT) {
+      d.vy = (y - d.lastY) / (now - d.lastT)
+      d.lastY = y
+      d.lastT = now
+    }
     if (dy > 0 && el.scrollTop <= 0) {
       e.preventDefault()
       d.delta = dy
@@ -52,17 +72,22 @@ function Sheet({ sheet }) {
   const onTouchStart = e => begin(e.target, e.touches[0].clientX, e.touches[0].clientY)
   const onTouchMove = e => move(e, e.touches[0].clientX, e.touches[0].clientY)
   const onTouchEnd = () => {
-    const el = ref.current, d = drag.current
+    const el = ref.current,
+      d = drag.current
     if (d.startY === null) return
     el.style.transition = 'transform .2s'
     // a long pull, or a short but fast flick, dismisses
     const flick = d.delta > 30 && d.vy > 0.6
-    if ((d.delta > 90 || flick) && !sheet.locked) { el.style.transform = 'translateY(110%)'; setTimeout(() => closeSheet(sheet.id), 180) }
-    else el.style.transform = ''
+    if ((d.delta > 90 || flick) && !sheet.locked) {
+      el.style.transform = 'translateY(110%)'
+      setTimeout(() => closeSheet(sheet.id), 180)
+    } else el.style.transform = ''
     drag.current = idle()
   }
   // Mouse drag (desktop testing / trackpads): same swipe-to-dismiss behaviour.
-  const onMouseDown = e => { if (e.button === 0) begin(e.target, e.clientX, e.clientY) }
+  const onMouseDown = e => {
+    if (e.button === 0) begin(e.target, e.clientX, e.clientY)
+  }
   const onMouseMove = e => move(e, e.clientX, e.clientY)
   const onMouseUp = () => onTouchEnd()
 
@@ -82,16 +107,33 @@ function Sheet({ sheet }) {
   if (sheet.kind === 'center') {
     return (
       <div>
-        <div className="mback" onClick={() => { if (!sheet.locked) close() }} />
+        <div
+          className="mback"
+          onClick={() => {
+            if (!sheet.locked) close()
+          }}
+        />
         <div className="center">{sheet.render(close)}</div>
       </div>
     )
   }
   return (
     <div>
-      <div className="mback" onClick={() => { if (!sheet.locked) close() }} />
-      <div className="sheet" ref={ref} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}
-        onMouseDown={onMouseDown} onMouseMove={onMouseMove} onMouseUp={onMouseUp} onMouseLeave={onMouseUp}>
+      <div
+        className="mback"
+        onClick={() => {
+          if (!sheet.locked) close()
+        }}
+      />
+      <div
+        className="sheet"
+        ref={ref}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+        onMouseLeave={onMouseUp}>
         <div className="grab" />
         {sheet.render(close)}
       </div>
@@ -122,8 +164,10 @@ export default function Modals() {
       }
     } else if (sheets.length < prev) {
       const closedEntries = sheetEntries.current.splice(sheets.length, prev - sheets.length)
-      const rewind = closedEntries.filter(entry =>
-        entry.live && !(typeof entry.openedAt === 'string' && location.href !== entry.openedAt)).length
+      const rewind = closedEntries.filter(
+        entry =>
+          entry.live && !(typeof entry.openedAt === 'string' && location.href !== entry.openedAt)
+      ).length
       if (rewind > 0) {
         pushedEntries.current = Math.max(0, pushedEntries.current - rewind)
         suppressPop.current = true
@@ -136,7 +180,10 @@ export default function Modals() {
 
   useEffect(() => {
     const onPop = () => {
-      if (suppressPop.current) { suppressPop.current = false; return }
+      if (suppressPop.current) {
+        suppressPop.current = false
+        return
+      }
       if (pushedEntries.current <= 0) return
       pushedEntries.current--
       // The browser has already spent one pushed entry. Mark the latest live active
@@ -158,7 +205,12 @@ export default function Modals() {
   // lock the page behind any open sheet (iOS-safe)
   useEffect(() => {
     if (!sheets.length) return
-    const onKey = e => { if (e.key === 'Escape') { const top = useUI.getState().sheets[useUI.getState().sheets.length - 1]; if (top && !top.locked) useUI.getState().closeSheet(top.id) } }
+    const onKey = e => {
+      if (e.key === 'Escape') {
+        const top = useUI.getState().sheets[useUI.getState().sheets.length - 1]
+        if (top && !top.locked) useUI.getState().closeSheet(top.id)
+      }
+    }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [sheets.length])
@@ -166,7 +218,11 @@ export default function Modals() {
     if (!sheets.length) return
     const y = window.scrollY || 0
     const b = document.body.style
-    b.position = 'fixed'; b.top = -y + 'px'; b.left = '0'; b.right = '0'; b.width = '100%'
+    b.position = 'fixed'
+    b.top = -y + 'px'
+    b.left = '0'
+    b.right = '0'
+    b.width = '100%'
     return () => {
       b.position = b.top = b.left = b.right = b.width = ''
       window.scrollTo(0, y)
@@ -176,7 +232,9 @@ export default function Modals() {
   if (!sheets.length) return null
   return (
     <div id="modal-root" className="open">
-      {sheets.map(s => <Sheet key={s.id} sheet={s} />)}
+      {sheets.map(s => (
+        <Sheet key={s.id} sheet={s} />
+      ))}
     </div>
   )
 }

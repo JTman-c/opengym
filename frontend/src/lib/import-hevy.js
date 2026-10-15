@@ -40,7 +40,9 @@ async function hevyGet(path, apiKey, params = {}) {
     }
     if (res.status === 429 && attempt < 2) {
       const after = Number(res.headers?.get?.('retry-after'))
-      await new Promise(r => setTimeout(r, (after > 0 && after <= 30 ? after : 2 * (attempt + 1)) * 1000))
+      await new Promise(r =>
+        setTimeout(r, (after > 0 && after <= 30 ? after : 2 * (attempt + 1)) * 1000)
+      )
       continue
     }
     if (res.status === 429) throw new HevyApiError(res.status, 'rate-limit')
@@ -50,11 +52,7 @@ async function hevyGet(path, apiKey, params = {}) {
 }
 
 /** Page through a Hevy list endpoint. `pageSize` caps differ per resource. */
-export async function fetchHevyPages(path, apiKey, {
-  resultKey,
-  pageSize = 10,
-  onProgress,
-} = {}) {
+export async function fetchHevyPages(path, apiKey, { resultKey, pageSize = 10, onProgress } = {}) {
   const items = []
   let page = 1
   let pageCount = 1
@@ -75,22 +73,26 @@ export async function fetchHevyAccount(apiKey, { onProgress } = {}) {
   if (!key) throw new HevyApiError(0, 'empty')
 
   const templates = await fetchHevyPages('/v1/exercise_templates', key, {
-    resultKey: 'exercise_templates', pageSize: 100,
-    onProgress: p => onProgress && onProgress({ stage: 'templates', ...p }),
+    resultKey: 'exercise_templates',
+    pageSize: 100,
+    onProgress: p => onProgress && onProgress({ stage: 'templates', ...p })
   })
   const workouts = await fetchHevyPages('/v1/workouts', key, {
-    resultKey: 'workouts', pageSize: 10,
-    onProgress: p => onProgress && onProgress({ stage: 'workouts', ...p }),
+    resultKey: 'workouts',
+    pageSize: 10,
+    onProgress: p => onProgress && onProgress({ stage: 'workouts', ...p })
   })
   const routines = await fetchHevyPages('/v1/routines', key, {
-    resultKey: 'routines', pageSize: 10,
-    onProgress: p => onProgress && onProgress({ stage: 'routines', ...p }),
+    resultKey: 'routines',
+    pageSize: 10,
+    onProgress: p => onProgress && onProgress({ stage: 'routines', ...p })
   })
   let bodyMeasurements = []
   try {
     bodyMeasurements = await fetchHevyPages('/v1/body_measurements', key, {
-      resultKey: 'body_measurements', pageSize: 10,
-      onProgress: p => onProgress && onProgress({ stage: 'body', ...p }),
+      resultKey: 'body_measurements',
+      pageSize: 10,
+      onProgress: p => onProgress && onProgress({ stage: 'body', ...p })
     })
   } catch (e) {
     // Older keys / accounts may lack measurements — workouts still import.
@@ -103,13 +105,28 @@ export async function fetchHevyAccount(apiKey, { onProgress } = {}) {
 
 // Hevy primary_muscle_group → openGym body-part for exercises we invent.
 const HEVY_BP = {
-  biceps: 'upper arms', triceps: 'upper arms', forearms: 'lower arms',
-  chest: 'chest', lats: 'back', upper_back: 'back', lower_back: 'back',
-  traps: 'back', shoulders: 'shoulders',
-  abdominals: 'waist', abs: 'waist', obliques: 'waist',
-  quadriceps: 'upper legs', hamstrings: 'upper legs', glutes: 'upper legs',
-  abductors: 'upper legs', adductors: 'upper legs', calves: 'lower legs',
-  cardio: 'cardio', full_body: 'upper legs', other: 'upper legs', neck: 'neck',
+  biceps: 'upper arms',
+  triceps: 'upper arms',
+  forearms: 'lower arms',
+  chest: 'chest',
+  lats: 'back',
+  upper_back: 'back',
+  lower_back: 'back',
+  traps: 'back',
+  shoulders: 'shoulders',
+  abdominals: 'waist',
+  abs: 'waist',
+  obliques: 'waist',
+  quadriceps: 'upper legs',
+  hamstrings: 'upper legs',
+  glutes: 'upper legs',
+  abductors: 'upper legs',
+  adductors: 'upper legs',
+  calves: 'lower legs',
+  cardio: 'cardio',
+  full_body: 'upper legs',
+  other: 'upper legs',
+  neck: 'neck'
 }
 
 /**
@@ -172,9 +189,16 @@ function makeResolver(templates) {
       const t = templateId ? byId.get(templateId) : null
       const name = (t?.title || fallbackTitle || 'exercise').toLowerCase()
       c = {
-        id: 'im' + uid(), n: name, custom: true, eq: 'custom', tg: '', desc: '',
-        bp: bpOfTemplate(t) || (t?.type === 'distance_duration' || t?.type === 'duration' ? 'cardio' : null)
-          || 'upper legs',
+        id: 'im' + uid(),
+        n: name,
+        custom: true,
+        eq: 'custom',
+        tg: '',
+        desc: '',
+        bp:
+          bpOfTemplate(t) ||
+          (t?.type === 'distance_duration' || t?.type === 'duration' ? 'cardio' : null) ||
+          'upper legs'
       }
       created.set(key, c)
       unmatched.add(t?.title || fallbackTitle || name)
@@ -188,13 +212,13 @@ function makeResolver(templates) {
     customEx: () => [...created.values()],
     unmatchedNames: () => [...unmatched].sort(),
     matchedCount: () => matchedIds.size,
-    createdCount: () => created.size,
+    createdCount: () => created.size
   }
 }
 
 const toProfileWeight = (wKg, unit) => {
   if (wKg == null || !isFinite(wKg)) return 0
-  if (unit === 'lb') return Math.round(wKg / LB_TO_KG * 10) / 10
+  if (unit === 'lb') return Math.round((wKg / LB_TO_KG) * 10) / 10
   return Math.round(wKg * 10) / 10
 }
 
@@ -206,12 +230,19 @@ const toProfileWeight = (wKg, unit) => {
 export function parseHevyWorkouts(workouts, templates, { unit = 'kg' } = {}) {
   const R = makeResolver(templates)
   const byDate = new Map()
-  let sets = 0, skipped = 0, matched = 0, warmups = 0, rpeSets = 0
+  let sets = 0,
+    skipped = 0,
+    matched = 0,
+    warmups = 0,
+    rpeSets = 0
 
   for (const w of workouts || []) {
     const start = localWhen(w.start_time)
     const end = localWhen(w.end_time)
-    if (!start) { skipped++; continue }
+    if (!start) {
+      skipped++
+      continue
+    }
 
     let day = byDate.get(start.d)
     if (!day) {
@@ -222,7 +253,10 @@ export function parseHevyWorkouts(workouts, templates, { unit = 'kg' } = {}) {
 
     for (const ex of w.exercises || []) {
       const id = R.resolve(ex.exercise_template_id, ex.title)
-      if (!id) { skipped++; continue }
+      if (!id) {
+        skipped++
+        continue
+      }
       if (EXIDX[id] && !String(id).startsWith('im')) matched++
 
       if (!day.ex.has(id)) day.ex.set(id, [])
@@ -235,12 +269,20 @@ export function parseHevyWorkouts(workouts, templates, { unit = 'kg' } = {}) {
         const wgt = toProfileWeight(s.weight_kg, unit)
         const secs = s.duration_seconds != null ? Number(s.duration_seconds) : 0
         const km = s.distance_meters != null ? Number(s.distance_meters) / 1000 : 0
-        if (!wgt && !reps && !secs && !km) { skipped++; continue }
+        if (!wgt && !reps && !secs && !km) {
+          skipped++
+          continue
+        }
 
         const isCardio = (km > 0 || secs > 0) && !reps
-        const mins = secs > 0 ? Math.round(secs / 60 * 10) / 10 : 0
+        const mins = secs > 0 ? Math.round((secs / 60) * 10) / 10 : 0
         const set = isCardio
-          ? { min: mins, speed: mins > 0 ? Math.round(km / (mins / 60) * 10) / 10 : 0, done: true, ...(warmup ? { phase: 'warmup' } : {}) }
+          ? {
+              min: mins,
+              speed: mins > 0 ? Math.round((km / (mins / 60)) * 10) / 10 : 0,
+              done: true,
+              ...(warmup ? { phase: 'warmup' } : {})
+            }
           : { w: wgt, r: reps || 0, done: true, ...(warmup ? { phase: 'warmup' } : {}) }
 
         if (!isCardio && s.rpe != null && isFinite(Number(s.rpe)) && Number(s.rpe) > 0) {
@@ -264,10 +306,19 @@ export function parseHevyWorkouts(workouts, templates, { unit = 'kg' } = {}) {
     const startMs = base + (day.start ?? 18 * 3600000)
     const endMs = day.end != null ? base + day.end : startMs
     const workout = {
-      id: 'iw' + uid(), d, start: startMs, end: endMs > startMs ? endMs : startMs,
-      routineId: null, name: day.name || 'Imported', entries, prs: [],
+      id: 'iw' + uid(),
+      d,
+      start: startMs,
+      end: endMs > startMs ? endMs : startMs,
+      routineId: null,
+      name: day.name || 'Imported',
+      entries,
+      prs: []
     }
-    workout.vol = entries.reduce((a, e) => a + e.sets.reduce((b, s) => b + (s.w || 0) * (s.r || 0), 0), 0)
+    workout.vol = entries.reduce(
+      (a, e) => a + e.sets.reduce((b, s) => b + (s.w || 0) * (s.r || 0), 0),
+      0
+    )
     return workout
   })
 
@@ -280,13 +331,16 @@ export function parseHevyWorkouts(workouts, templates, { unit = 'kg' } = {}) {
     matchedSets: matched,
     created: R.createdCount(),
     unmatchedNames: R.unmatchedNames(),
-    sets, skipped, warmups,
+    sets,
+    skipped,
+    warmups,
     fileUnit: 'kg',
     mixedUnits: false,
     converted: unit === 'lb',
-    rpeSets, rirSets: 0,
+    rpeSets,
+    rirSets: 0,
     from: dates[0] || null,
-    to: dates[dates.length - 1] || null,
+    to: dates[dates.length - 1] || null
   }
 }
 
@@ -321,10 +375,12 @@ export function parseHevyRoutines(routines, templates, { unit = 'kg' } = {}) {
 
       let cfg
       if (km > 0 && !reps) {
-        const mins = secs > 0 ? Math.round(secs / 60 * 10) / 10 : 20
+        const mins = secs > 0 ? Math.round((secs / 60) * 10) / 10 : 20
         cfg = {
-          id, sets: nWork, min: mins || 20,
-          speed: mins > 0 ? Math.round(km / (mins / 60) * 10) / 10 : 0,
+          id,
+          sets: nWork,
+          min: mins || 20,
+          speed: mins > 0 ? Math.round((km / (mins / 60)) * 10) / 10 : 0
         }
       } else if (secs > 0 && !reps && !wgt) {
         cfg = { id, sets: nWork, sec: Math.round(secs), weight: 0, mode: 'time' }
@@ -353,7 +409,7 @@ export function parseHevyRoutines(routines, templates, { unit = 'kg' } = {}) {
       name: (r.title || 'Imported').trim() || 'Imported',
       emoji: 'figureStrength',
       hevyId: r.id || null,
-      ex,
+      ex
     })
   }
 
@@ -366,7 +422,7 @@ export function parseHevyRoutines(routines, templates, { unit = 'kg' } = {}) {
     created: R.createdCount(),
     unmatchedNames: R.unmatchedNames(),
     exerciseCount: out.reduce((n, r) => n + r.ex.length, 0),
-    converted: unit === 'lb',
+    converted: unit === 'lb'
   }
 }
 
@@ -376,14 +432,20 @@ export function mergeHevyRoutines(S, parsed) {
   S.routines = S.routines || []
   const exIdMap = {}
   ;(parsed.customEx || []).forEach(c => {
-    const same = S.customEx.find(x => (x.n || '').toLowerCase() === (c.n || '').toLowerCase() && x.bp === c.bp)
-    if (same) { exIdMap[c.id] = same.id; return }
+    const same = S.customEx.find(
+      x => (x.n || '').toLowerCase() === (c.n || '').toLowerCase() && x.bp === c.bp
+    )
+    if (same) {
+      exIdMap[c.id] = same.id
+      return
+    }
     // Keep the pre-assigned id from parse so routine configs already point at it.
     if (!S.customEx.some(x => x.id === c.id)) S.customEx.push(c)
   })
   // A second import must not double every plan: a routine that already carries the same Hevy
   // id is replaced in place (its exercises re-read from Hevy), everything else is appended.
-  let added = 0, updated = 0
+  let added = 0,
+    updated = 0
   for (const r of parsed.routines || []) {
     const ex = (r.ex || []).map(e => ({ ...e, id: exIdMap[e.id] || e.id }))
     const existing = r.hevyId ? S.routines.find(x => x.hevyId === r.hevyId) : null
@@ -398,7 +460,7 @@ export function mergeHevyRoutines(S, parsed) {
       name: r.name,
       emoji: r.emoji || 'figureStrength',
       ...(r.hevyId ? { hevyId: r.hevyId } : {}),
-      ex,
+      ex
     })
     added++
   }
@@ -413,7 +475,7 @@ export function parseHevyBodyweight(measurements, { unit = 'kg' } = {}) {
     if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) continue
     let w = Number(m.weight_kg)
     if (!isFinite(w) || w <= 0) continue
-    if (unit === 'lb') w = Math.round(w / LB_TO_KG * 10) / 10
+    if (unit === 'lb') w = Math.round((w / LB_TO_KG) * 10) / 10
     else w = Math.round(w * 10) / 10
     const t = m.created_at ? new Date(m.created_at).getTime() : new Date(d + 'T12:00:00').getTime()
     out.set(d, { d, w, t: isFinite(t) ? t : new Date(d + 'T12:00:00').getTime() })
@@ -426,7 +488,7 @@ export function parseHevyBodyweight(measurements, { unit = 'kg' } = {}) {
     fileUnit: 'kg',
     converted: unit === 'lb',
     from: dates[0] || null,
-    to: dates[dates.length - 1] || null,
+    to: dates[dates.length - 1] || null
   }
 }
 
@@ -435,13 +497,15 @@ export function parseHevyBodyweight(measurements, { unit = 'kg' } = {}) {
  * or throws `HevyApiError`. The apiKey is only read here — never written.
  */
 export async function importHevyData(apiKey, { unit = 'kg', onProgress } = {}) {
-  const { templates, workouts, routines, bodyMeasurements } = await fetchHevyAccount(apiKey, { onProgress })
+  const { templates, workouts, routines, bodyMeasurements } = await fetchHevyAccount(apiKey, {
+    onProgress
+  })
   onProgress && onProgress({ stage: 'parse' })
   return {
     workouts: parseHevyWorkouts(workouts, templates, { unit }),
     routines: parseHevyRoutines(routines, templates, { unit }),
     bodyweight: parseHevyBodyweight(bodyMeasurements, { unit }),
-    templateCount: templates.length,
+    templateCount: templates.length
   }
 }
 

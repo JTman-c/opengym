@@ -7,8 +7,14 @@ import { useStore } from './useStore.js'
 // "Off" has to hold at the timer itself, not at the four places that start one — the same
 // reason the rest-after-a-set rule is a shared condition rather than four copies.
 describe('rest timer set to Off', () => {
-  beforeEach(() => { vi.useFakeTimers(); useUI.setState({ timer: null }) })
-  afterEach(() => { useUI.getState().stopRest(); vi.useRealTimers() })
+  beforeEach(() => {
+    vi.useFakeTimers()
+    useUI.setState({ timer: null })
+  })
+  afterEach(() => {
+    useUI.getState().stopRest()
+    vi.useRealTimers()
+  })
 
   it('starts nothing', () => {
     useUI.getState().startRest(0)

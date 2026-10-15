@@ -4,23 +4,60 @@
 // loads, the React subscription hook) live in i18n.js and re-export from here.
 
 export const LANGS = {
-  en: 'English', de: 'Deutsch', es: 'Español', fr: 'Français', it: 'Italiano',
-  pt: 'Português (Portugal)', 'pt-BR': 'Português (Brasil)', pl: 'Polski',
-  tr: 'Türkçe', ru: 'Русский', zh: '中文',
-  ko: '한국어', hi: 'हिन्दी', th: 'ไทย', hu: 'Magyar'
+  en: 'English',
+  de: 'Deutsch',
+  es: 'Español',
+  fr: 'Français',
+  it: 'Italiano',
+  pt: 'Português (Portugal)',
+  'pt-BR': 'Português (Brasil)',
+  pl: 'Polski',
+  tr: 'Türkçe',
+  ru: 'Русский',
+  zh: '中文',
+  ko: '한국어',
+  hi: 'हिन्दी',
+  th: 'ไทย',
+  hu: 'Magyar'
 }
-export const INSTR_LANGS = ['en', 'es', 'fr', 'it', 'tr', 'ru', 'zh', 'hi', 'pl', 'ko', 'pt-BR', 'hu']
+export const INSTR_LANGS = [
+  'en',
+  'es',
+  'fr',
+  'it',
+  'tr',
+  'ru',
+  'zh',
+  'hi',
+  'pl',
+  'ko',
+  'pt-BR',
+  'hu'
+]
 export const EXERCISE_NAME_LANGS = ['pt-BR', 'hu']
 export const DATE_LOCALES = {
-  en: 'en-GB', de: 'de-DE', es: 'es-ES', fr: 'fr-FR', it: 'it-IT', pt: 'pt-PT', 'pt-BR': 'pt-BR',
-  pl: 'pl-PL', tr: 'tr-TR', ru: 'ru-RU', zh: 'zh-CN', ko: 'ko-KR', hi: 'hi-IN', th: 'th-TH', hu: 'hu-HU'
+  en: 'en-GB',
+  de: 'de-DE',
+  es: 'es-ES',
+  fr: 'fr-FR',
+  it: 'it-IT',
+  pt: 'pt-PT',
+  'pt-BR': 'pt-BR',
+  pl: 'pl-PL',
+  tr: 'tr-TR',
+  ru: 'ru-RU',
+  zh: 'zh-CN',
+  ko: 'ko-KR',
+  hi: 'hi-IN',
+  th: 'th-TH',
+  hu: 'hu-HU'
 }
 
-let lang = 'en'                 // set only by _setLangState, called from i18n.js setLang
-let dict = {}                   // current locale pack (empty = English fallback)
-let instr = null                // { exId: [steps] } for the current language, null = English
-let exerciseNames = null        // { exId: translated name }, null = original catalogue name
-let version = 0                 // bumped on every setLang; drives the React subscription selector
+let lang = 'en' // set only by _setLangState, called from i18n.js setLang
+let dict = {} // current locale pack (empty = English fallback)
+let instr = null // { exId: [steps] } for the current language, null = English
+let exerciseNames = null // { exId: translated name }, null = original catalogue name
+let version = 0 // bumped on every setLang; drives the React subscription selector
 
 export const getLang = () => lang
 export const dateLocale = () => DATE_LOCALES[lang] || 'en-GB'
@@ -54,7 +91,7 @@ export const exerciseNameFor = ex => {
 // Search both the localized and canonical English title without changing persisted data.
 export const exerciseNameSearchText = ex => {
   const translated = exerciseNames && ex && exerciseNames[ex.id]
-  return translated ? `${translated} ${ex.n}` : (ex?.n || '')
+  return translated ? `${translated} ${ex.n}` : ex?.n || ''
 }
 
 // Called by i18n.js's setLang once the locale pack has been loaded — kept here rather than
@@ -62,9 +99,10 @@ export const exerciseNameSearchText = ex => {
 // `dict`, `instr` and `exerciseNames` may be null to reset to their English fallbacks.
 export function _setLangState(newLang, newDict, newInstr, newExerciseNames) {
   lang = LANGS[newLang] ? newLang : 'en'
-  dict = lang === 'en' ? {} : (newDict || {})
-  instr = lang === 'en' || !INSTR_LANGS.includes(lang) ? null : (newInstr || null)
-  exerciseNames = lang === 'en' || !EXERCISE_NAME_LANGS.includes(lang) ? null : (newExerciseNames || null)
+  dict = lang === 'en' ? {} : newDict || {}
+  instr = lang === 'en' || !INSTR_LANGS.includes(lang) ? null : newInstr || null
+  exerciseNames =
+    lang === 'en' || !EXERCISE_NAME_LANGS.includes(lang) ? null : newExerciseNames || null
   version++
   return version
 }

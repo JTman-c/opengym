@@ -1,5 +1,13 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
-import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation, useNavigationType } from 'react-router-dom'
+import {
+  HashRouter,
+  Routes,
+  Route,
+  Navigate,
+  useNavigate,
+  useLocation,
+  useNavigationType
+} from 'react-router-dom'
 import { useStore } from './store/useStore.js'
 import { useUI } from './store/useUI.js'
 import { bindUI } from './components/ui.jsx'
@@ -31,12 +39,15 @@ import Admin from './views/Admin.jsx'
 // last known scrollY per route, so back-navigation can put the page where it was
 const scrollPositions = new Map()
 
-bindUI(useUI)   // lets the shared controls open sheets without importing the store at module scope
+bindUI(useUI) // lets the shared controls open sheets without importing the store at module scope
 
 // theme === 'system' follows the OS/browser preference instead of a fixed choice.
-const resolveTheme = theme => theme === 'light' || theme === 'dark'
-  ? theme
-  : (window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+const resolveTheme = theme =>
+  theme === 'light' || theme === 'dark'
+    ? theme
+    : window.matchMedia?.('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
 
 function applyPrefs(theme, accent) {
   const de = document.documentElement
@@ -53,9 +64,13 @@ function Shell() {
   const { S, user, ready } = useStore()
   const isGuest = useStore(s => s.isGuest())
   const needsMobileOnboarding = useStore(s => s.needsMobileOnboarding)
-  const langV = useLang()   // re-renders the whole shell when the language (pack) changes
-  useEffect(() => { setNav(navigate) }, [navigate])
-  useEffect(() => { applyPrefs(S.theme, S.accent) }, [S.theme, S.accent])
+  const langV = useLang() // re-renders the whole shell when the language (pack) changes
+  useEffect(() => {
+    setNav(navigate)
+  }, [navigate])
+  useEffect(() => {
+    applyPrefs(S.theme, S.accent)
+  }, [S.theme, S.accent])
   // 'system' needs to react live if the OS theme flips while the app is open, not just on
   // the next mount — a fixed 'dark'/'light' choice never re-fires this since matchMedia
   // isn't consulted for those.
@@ -66,8 +81,12 @@ function Shell() {
     mql.addEventListener('change', onChange)
     return () => mql.removeEventListener('change', onChange)
   }, [S.theme, S.accent])
-  useEffect(() => { setLang(S.lang || 'en') }, [S.lang])
-  useEffect(() => { document.documentElement.lang = S.lang || 'en' }, [langV, S.lang])
+  useEffect(() => {
+    setLang(S.lang || 'en')
+  }, [S.lang])
+  useEffect(() => {
+    document.documentElement.lang = S.lang || 'en'
+  }, [langV, S.lang])
   // Forward navigation starts at the top; going back lands where you left off.
   // The position is recorded from scroll events rather than read at route
   // change, because by then a shorter page may already have clamped it.
@@ -83,7 +102,10 @@ function Shell() {
   }, [])
   useLayoutEffect(() => {
     pathRef.current = loc.pathname
-    if (navType !== 'POP') { window.scrollTo(0, 0); return }
+    if (navType !== 'POP') {
+      window.scrollTo(0, 0)
+      return
+    }
     const y = scrollPositions.get(loc.pathname) || 0
     // the restored view needs a layout pass before it is tall enough to scroll to y
     const frame = window.requestAnimationFrame(() => window.scrollTo(0, y))
@@ -93,13 +115,21 @@ function Shell() {
   useWakeLock(!!S.active && S.keepAwake !== false)
 
   const authed = user || isGuest
-  if (!ready && !authed) return (
-    <div id="app">
-      <div style={{ paddingTop: '44vh', display: 'flex', justifyContent: 'center', fontSize: 34, color: 'var(--label-3)' }}>
-        <Icon name="dumbbell" />
+  if (!ready && !authed)
+    return (
+      <div id="app">
+        <div
+          style={{
+            paddingTop: '44vh',
+            display: 'flex',
+            justifyContent: 'center',
+            fontSize: 34,
+            color: 'var(--label-3)'
+          }}>
+          <Icon name="dumbbell" />
+        </div>
       </div>
-    </div>
-  )
+    )
 
   return (
     <>
@@ -107,7 +137,11 @@ function Shell() {
           re-mounts the boundary, so the tab bar is always a way out */}
       <div id="app" className="vfade" key={loc.pathname}>
         <ErrorBoundary>
-          {!authed ? <Login /> : needsMobileOnboarding ? <MobileOnboarding /> : (
+          {!authed ? (
+            <Login />
+          ) : needsMobileOnboarding ? (
+            <MobileOnboarding />
+          ) : (
             <Routes>
               <Route path="/home" element={<Home />} />
               <Route path="/plan" element={<Plan />} />
@@ -117,7 +151,10 @@ function Shell() {
               <Route path="/history" element={<History />} />
               <Route path="/library" element={<Library />} />
               <Route path="/settings" element={<Settings />} />
-              <Route path="/admin" element={user?.admin ? <Admin /> : <Navigate to="/home" replace />} />
+              <Route
+                path="/admin"
+                element={user?.admin ? <Admin /> : <Navigate to="/home" replace />}
+              />
               <Route path="*" element={<Navigate to="/home" replace />} />
             </Routes>
           )}
@@ -134,12 +171,25 @@ function Shell() {
 
 export default function App() {
   const boot = useStore(s => s.boot)
-  useEffect(() => { boot() }, [boot])
+  useEffect(() => {
+    boot()
+  }, [boot])
   // Android system back — sheet, then page, then press-again-to-exit (see lib/back.js)
   useEffect(() => {
-    let stop = null, gone = false
-    initBackButton().then(fn => { if (gone) fn(); else stop = fn })
-    return () => { gone = true; stop?.() }
+    let stop = null,
+      gone = false
+    initBackButton().then(fn => {
+      if (gone) fn()
+      else stop = fn
+    })
+    return () => {
+      gone = true
+      stop?.()
+    }
   }, [])
-  return <HashRouter><Shell /></HashRouter>
+  return (
+    <HashRouter>
+      <Shell />
+    </HashRouter>
+  )
 }

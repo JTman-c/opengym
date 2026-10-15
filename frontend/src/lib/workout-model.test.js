@@ -1,9 +1,24 @@
 import { describe, it, expect } from 'vitest'
 import {
-  phaseForSet, isWarmupRow, modeForSet, modeForEntry,
-  setType, isDropSet, isRestPauseSet, dropsOf, clustersOf, extraVolumeOf,
-  addDrop, addCluster, removeDropAt, removeClusterAt, setDropAt, setClusterAt,
-  nextDropWeight, nextBurstReps, splitBurstReps,
+  phaseForSet,
+  isWarmupRow,
+  modeForSet,
+  modeForEntry,
+  setType,
+  isDropSet,
+  isRestPauseSet,
+  dropsOf,
+  clustersOf,
+  extraVolumeOf,
+  addDrop,
+  addCluster,
+  removeDropAt,
+  removeClusterAt,
+  setDropAt,
+  setClusterAt,
+  nextDropWeight,
+  nextBurstReps,
+  splitBurstReps
 } from './workout-model.js'
 
 describe('phaseForSet / isWarmupRow', () => {
@@ -55,13 +70,32 @@ describe('dropsOf / clustersOf', () => {
 })
 
 describe('extraVolumeOf', () => {
-  it('sums weight x reps across a drop-set\'s own drops', () => {
-    const set = { type: 'dropset', w: 100, r: 5, drops: [{ w: 80, r: 5 }, { w: 60, r: 6 }] }
+  it("sums weight x reps across a drop-set's own drops", () => {
+    const set = {
+      type: 'dropset',
+      w: 100,
+      r: 5,
+      drops: [
+        { w: 80, r: 5 },
+        { w: 60, r: 6 }
+      ]
+    }
     expect(extraVolumeOf(set)).toBe(80 * 5 + 60 * 6)
   })
 
   it('is zero for rest-pause — its own r is already the total across every burst, so clusters are a breakdown, not extra volume', () => {
-    const set = { type: 'restpause', w: 60, r: 20, clusters: [{ r: 10, restSec: 15 }, { r: 5, restSec: 15 }, { r: 3, restSec: 15 }, { r: 1, restSec: 15 }, { r: 1, restSec: 15 } ] }
+    const set = {
+      type: 'restpause',
+      w: 60,
+      r: 20,
+      clusters: [
+        { r: 10, restSec: 15 },
+        { r: 5, restSec: 15 },
+        { r: 3, restSec: 15 },
+        { r: 1, restSec: 15 },
+        { r: 1, restSec: 15 }
+      ]
+    }
     expect(extraVolumeOf(set)).toBe(0)
   })
 
@@ -78,7 +112,10 @@ describe('addDrop / addCluster', () => {
     expect(next.type).toBe('dropset')
     expect(next.drops).toEqual([{ w: 80, r: 5 }])
     expect(set.drops).toBeUndefined() // pure — the original row is untouched
-    expect(addDrop(next, { w: 60, r: 4 }).drops).toEqual([{ w: 80, r: 5 }, { w: 60, r: 4 }])
+    expect(addDrop(next, { w: 60, r: 4 }).drops).toEqual([
+      { w: 80, r: 5 },
+      { w: 60, r: 4 }
+    ])
   })
 
   it('appends a burst and stamps the row as a rest-pause set', () => {
@@ -91,12 +128,28 @@ describe('addDrop / addCluster', () => {
 
 describe('removeDropAt / removeClusterAt', () => {
   it('removes one entry by index, leaving the rest in place', () => {
-    const set = { type: 'dropset', w: 100, r: 5, drops: [{ w: 80, r: 5 }, { w: 60, r: 5 }] }
+    const set = {
+      type: 'dropset',
+      w: 100,
+      r: 5,
+      drops: [
+        { w: 80, r: 5 },
+        { w: 60, r: 5 }
+      ]
+    }
     expect(removeDropAt(set, 0).drops).toEqual([{ w: 60, r: 5 }])
   })
 
   it('removes one burst by index', () => {
-    const set = { type: 'restpause', w: 60, r: 8, clusters: [{ r: 4, restSec: 15 }, { r: 3, restSec: 15 }] }
+    const set = {
+      type: 'restpause',
+      w: 60,
+      r: 8,
+      clusters: [
+        { r: 4, restSec: 15 },
+        { r: 3, restSec: 15 }
+      ]
+    }
     expect(removeClusterAt(set, 1).clusters).toEqual([{ r: 4, restSec: 15 }])
   })
 
@@ -112,13 +165,27 @@ describe('removeDropAt / removeClusterAt', () => {
 })
 
 describe('setDropAt / setClusterAt', () => {
-  it('patches one drop\'s fields, leaving the others untouched', () => {
-    const set = { type: 'dropset', w: 100, r: 5, drops: [{ w: 80, r: 5 }, { w: 60, r: 5 }] }
-    expect(setDropAt(set, 0, { w: 82.5 }).drops).toEqual([{ w: 82.5, r: 5 }, { w: 60, r: 5 }])
-    expect(setDropAt(set, 1, { r: 6 }).drops).toEqual([{ w: 80, r: 5 }, { w: 60, r: 6 }])
+  it("patches one drop's fields, leaving the others untouched", () => {
+    const set = {
+      type: 'dropset',
+      w: 100,
+      r: 5,
+      drops: [
+        { w: 80, r: 5 },
+        { w: 60, r: 5 }
+      ]
+    }
+    expect(setDropAt(set, 0, { w: 82.5 }).drops).toEqual([
+      { w: 82.5, r: 5 },
+      { w: 60, r: 5 }
+    ])
+    expect(setDropAt(set, 1, { r: 6 }).drops).toEqual([
+      { w: 80, r: 5 },
+      { w: 60, r: 6 }
+    ])
   })
 
-  it('patches one burst\'s reps', () => {
+  it("patches one burst's reps", () => {
     const set = { type: 'restpause', w: 60, r: 8, clusters: [{ r: 4, restSec: 15 }] }
     expect(setClusterAt(set, 0, { r: 5 }).clusters).toEqual([{ r: 5, restSec: 15 }])
   })
@@ -169,13 +236,18 @@ describe('splitBurstReps', () => {
 })
 
 describe('modeForSet / modeForEntry stay reps-mode for drop-sets and rest-pause sets', () => {
-  it('infers reps mode from the row\'s own r field regardless of type', () => {
+  it("infers reps mode from the row's own r field regardless of type", () => {
     expect(modeForSet({ type: 'dropset', w: 100, r: 5 })).toBe('reps')
     expect(modeForSet({ type: 'restpause', w: 60, r: 8 })).toBe('reps')
   })
 
   it('an entry mixing straight and drop-set rows still reads as one reps-mode entry', () => {
-    const entry = { sets: [{ w: 100, r: 5 }, { type: 'dropset', w: 100, r: 5, drops: [{ w: 80, r: 5 }] }] }
+    const entry = {
+      sets: [
+        { w: 100, r: 5 },
+        { type: 'dropset', w: 100, r: 5, drops: [{ w: 80, r: 5 }] }
+      ]
+    }
     expect(modeForEntry(entry)).toBe('reps')
   })
 })

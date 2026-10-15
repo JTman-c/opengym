@@ -14,12 +14,30 @@
 import { EXIDX } from './exercises.js'
 
 /** Equipment values (e.eq) that put a bar in your hands. */
-export const BAR_EQ = new Set(['barbell', 'olympic barbell', 'ez barbell', 'smith machine', 'trap bar'])
+export const BAR_EQ = new Set([
+  'barbell',
+  'olympic barbell',
+  'ez barbell',
+  'smith machine',
+  'trap bar'
+])
 
 /** Typical bar weights per equipment type, for a kg profile. */
-export const DEFAULT_BAR_KG = { barbell: 20, 'olympic barbell': 20, 'ez barbell': 10, 'smith machine': 9, 'trap bar': 25 }
+export const DEFAULT_BAR_KG = {
+  barbell: 20,
+  'olympic barbell': 20,
+  'ez barbell': 10,
+  'smith machine': 9,
+  'trap bar': 25
+}
 /** The same bars as a lb profile knows them — real markings, not converted kg. */
-export const DEFAULT_BAR_LB = { barbell: 45, 'olympic barbell': 45, 'ez barbell': 25, 'smith machine': 20, 'trap bar': 55 }
+export const DEFAULT_BAR_LB = {
+  barbell: 45,
+  'olympic barbell': 45,
+  'ez barbell': 25,
+  'smith machine': 20,
+  'trap bar': 55
+}
 
 const exOf = exOrId => (typeof exOrId === 'string' ? EXIDX[exOrId] : exOrId)
 

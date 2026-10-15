@@ -9,7 +9,14 @@ import { useStore } from '../store/useStore.js'
 import { useUI } from '../store/useUI.js'
 import { exerciseNoteSheet } from '../sheets.jsx'
 
-const activeWith = entry => ({ id: 'w1', d: '2026-08-25', start: 1, routineId: 'r1', name: 'Push', entries: [entry] })
+const activeWith = entry => ({
+  id: 'w1',
+  d: '2026-08-25',
+  start: 1,
+  routineId: 'r1',
+  name: 'Push',
+  entries: [entry]
+})
 
 // Roots have to be torn down between tests: the sheet subscribes to the store, so a root left
 // mounted reacts to the next test's setState — outside act(), which React rightly complains about.
@@ -40,13 +47,15 @@ describe('exercise note sheet', () => {
     globalThis.IS_REACT_ACT_ENVIRONMENT = true
     useUI.setState({ sheets: [] })
     useStore.setState(s => ({
-      S: { ...s.S, exNotes: {}, active: activeWith({ id: 'bench', sets: [] }) },
+      S: { ...s.S, exNotes: {}, active: activeWith({ id: 'bench', sets: [] }) }
     }))
     document.body.innerHTML = ''
   })
 
   afterEach(() => {
-    act(() => { mounted.splice(0).forEach(r => r.unmount()) })
+    act(() => {
+      mounted.splice(0).forEach(r => r.unmount())
+    })
   })
 
   it('renders the session note, the pin and the standing note', () => {
@@ -60,10 +69,17 @@ describe('exercise note sheet', () => {
   it('saves the session note with its pin and the standing note separately', () => {
     const host = renderSheet()
     const [today, always] = host.querySelectorAll('textarea')
-    act(() => { type(today, 'shoulder twinged'); type(always, 'seat at 4') })
-    act(() => { host.querySelector('[role="switch"]').click() })
+    act(() => {
+      type(today, 'shoulder twinged')
+      type(always, 'seat at 4')
+    })
+    act(() => {
+      host.querySelector('[role="switch"]').click()
+    })
     const save = [...host.querySelectorAll('button')].find(b => /save/i.test(b.textContent))
-    act(() => { save.click() })
+    act(() => {
+      save.click()
+    })
 
     const S = useStore.getState().S
     expect(S.active.entries[0].note).toBe('shoulder twinged')
@@ -75,13 +91,17 @@ describe('exercise note sheet', () => {
 
   it('clearing the session note drops the pin with it', () => {
     useStore.setState(s => ({
-      S: { ...s.S, active: activeWith({ id: 'bench', sets: [], note: 'old', notePin: true }) },
+      S: { ...s.S, active: activeWith({ id: 'bench', sets: [], note: 'old', notePin: true }) }
     }))
     const host = renderSheet()
     const [today] = host.querySelectorAll('textarea')
-    act(() => { type(today, '') })
+    act(() => {
+      type(today, '')
+    })
     const save = [...host.querySelectorAll('button')].find(b => /save/i.test(b.textContent))
-    act(() => { save.click() })
+    act(() => {
+      save.click()
+    })
     const e = useStore.getState().S.active.entries[0]
     expect(e.note).toBeUndefined()
     expect(e.notePin).toBeUndefined()

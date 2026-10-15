@@ -31,12 +31,15 @@ describe('Brazilian Portuguese locale', () => {
     expect(inherited).toHaveLength(463)
     // If this fails, review the changed keys and wording before accepting a new hash. From
     // frontend/: node scripts/pt-br-inheritance-fingerprint.mjs --list
-    expect(fingerprint, 'pt-PT inheritance changed; review the inherited pt-BR wording').toBe('cafd0b6fde9f8261563b5040aa6e1278f5b469dc2d6b9c81d7d5554bb6825a05')
+    expect(fingerprint, 'pt-PT inheritance changed; review the inherited pt-BR wording').toBe(
+      'cafd0b6fde9f8261563b5040aa6e1278f5b469dc2d6b9c81d7d5554bb6825a05'
+    )
   })
 
   test('does not leak European Portuguese UI terms', () => {
     const text = Object.values(ptBR).join('\n')
-    const europeanPortuguese = /(?:^|[^\p{L}])(?:ficheiro\p{L}*|telemóvel\p{L}*|ecrã\p{L}*|regist(?:o|am|ado|ada|ados|adas)|eliminad\p{L}*|definições|cronómetro|detetad\p{L}*|gémeos|abdómen|anca|coifa dos rotadores|escadora|completaste|acabaste|aguentas|definires|completares|aguenta|aguentaste|ficaste|viajares)(?=$|[^\p{L}])/iu
+    const europeanPortuguese =
+      /(?:^|[^\p{L}])(?:ficheiro\p{L}*|telemóvel\p{L}*|ecrã\p{L}*|regist(?:o|am|ado|ada|ados|adas)|eliminad\p{L}*|definições|cronómetro|detetad\p{L}*|gémeos|abdómen|anca|coifa dos rotadores|escadora|completaste|acabaste|aguentas|definires|completares|aguenta|aguentaste|ficaste|viajares)(?=$|[^\p{L}])/iu
     expect(text).not.toMatch(europeanPortuguese)
     expect(text).not.toMatch(/[«»]/u)
     expect(ptBR.Save).toBe('Salvar')
@@ -49,6 +52,8 @@ describe('Brazilian Portuguese locale', () => {
     expect(ptBR['resistance band']).toBe('faixa elástica')
     expect(ptBR.soleus).toBe('sóleo')
     expect(ptBR.Unpair).toBe('Desvincular')
-    expect(ptBR['Starter plan loaded — Mon Push · Wed Pull · Fri Legs']).toContain('Seg Push · Qua Pull')
+    expect(ptBR['Starter plan loaded — Mon Push · Wed Pull · Fri Legs']).toContain(
+      'Seg Push · Qua Pull'
+    )
   })
 })

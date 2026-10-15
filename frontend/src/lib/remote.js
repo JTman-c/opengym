@@ -20,7 +20,9 @@ export function normalizeServerUrl(raw) {
     const u = new URL(withScheme)
     if (!u.hostname) return null
     return u.origin
-  } catch (e) { return null }
+  } catch (e) {
+    return null
+  }
 }
 
 export async function loadRemote() {

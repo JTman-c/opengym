@@ -1,16 +1,34 @@
 import { describe, it, expect } from 'vitest'
 import {
-  rirOf, toScale, displayScale, avgRir, effortSummary, hasEffort, effortWeeks,
-  effortHistogram, isHardSet, HARD_RIR, MIN_RATED
+  rirOf,
+  toScale,
+  displayScale,
+  avgRir,
+  effortSummary,
+  hasEffort,
+  effortWeeks,
+  effortHistogram,
+  isHardSet,
+  HARD_RIR,
+  MIN_RATED
 } from './effort.js'
 import { isoOf } from './format.js'
 
-const daysAgo = n => { const d = new Date(); d.setDate(d.getDate() - n); return d }
+const daysAgo = n => {
+  const d = new Date()
+  d.setDate(d.getDate() - n)
+  return d
+}
 // One workout on a day, with the sets given. Everything here is a finished set unless a set
 // says otherwise, because that is what the stats read.
 const W = (n, sets) => {
   const d = daysAgo(n)
-  return { id: 'w' + n, d: isoOf(d), start: +d, entries: [{ id: '0025', sets: sets.map(s => ({ w: 60, r: 8, done: true, ...s })) }] }
+  return {
+    id: 'w' + n,
+    d: isoOf(d),
+    start: +d,
+    entries: [{ id: '0025', sets: sets.map(s => ({ w: 60, r: 8, done: true, ...s })) }]
+  }
 }
 const S = (...workouts) => ({ workouts })
 
@@ -22,7 +40,7 @@ describe('rirOf', () => {
   })
 
   it('keeps a rated 0 and rejects everything that only looks like one', () => {
-    expect(rirOf({ rir: 0 })).toBe(0)        // taken to failure — a rating, not "empty"
+    expect(rirOf({ rir: 0 })).toBe(0) // taken to failure — a rating, not "empty"
     expect(rirOf({ rpe: 10 })).toBe(0)
     expect(rirOf({})).toBe(null)
     expect(rirOf({ rir: null })).toBe(null)
@@ -65,7 +83,7 @@ describe('displayScale', () => {
 describe('avgRir', () => {
   it('averages the rated sets and ignores the rest', () => {
     expect(avgRir([{ rir: 1 }, { rir: 3 }])).toBe(2)
-    expect(avgRir([{ rir: 1 }, {}, { rpe: 7 }])).toBe(2)   // RPE 7 = RIR 3
+    expect(avgRir([{ rir: 1 }, {}, { rpe: 7 }])).toBe(2) // RPE 7 = RIR 3
   })
 
   it('is null rather than 0 when nothing was rated', () => {
@@ -78,7 +96,7 @@ describe('avgRir', () => {
 describe('effortSummary', () => {
   const st = S(
     W(2, [{ rir: 1 }, { rir: 3 }, { rir: 2 }]),
-    W(4, [{ rir: 0 }, { rpe: 6 }, {}]),          // RPE 6 = RIR 4, one set unrated
+    W(4, [{ rir: 0 }, { rpe: 6 }, {}]), // RPE 6 = RIR 4, one set unrated
     W(40, [{ rir: 5 }, { rir: 5 }])
   )
 
@@ -91,7 +109,7 @@ describe('effortSummary', () => {
   it('leaves unrated sets out of the average instead of reading them as failure', () => {
     const r = effortSummary(S(W(2, [{ rir: 4 }, {}, {}, {}, {}, {}])), 0)
     expect(r.rated).toBe(1)
-    expect(r.avg).toBe(null)        // one rating is not an average
+    expect(r.avg).toBe(null) // one rating is not an average
   })
 
   it('waits for a real sample before reporting a number', () => {
@@ -103,26 +121,40 @@ describe('effortSummary', () => {
 
   it('counts the sets taken close to failure', () => {
     const r = effortSummary(st, 0)
-    expect(r.hard).toBe(4)                       // 1, 3, 2, 0 — the 4 and the two 5s are not
+    expect(r.hard).toBe(4) // 1, 3, 2, 0 — the 4 and the two 5s are not
     expect(r.hardPct).toBeCloseTo(4 / 7)
   })
 
   it('honours the window', () => {
     const r = effortSummary(st, 7)
-    expect(r.rated).toBe(5)                      // the 40-day-old session is out
+    expect(r.rated).toBe(5) // the 40-day-old session is out
     expect(effortSummary(st, 3).rated).toBe(3)
   })
 
   it('survives a profile with no training at all', () => {
-    expect(effortSummary({ workouts: [] }, 30)).toEqual({ done: 0, rated: 0, hard: 0, avg: null, hardPct: null })
+    expect(effortSummary({ workouts: [] }, 30)).toEqual({
+      done: 0,
+      rated: 0,
+      hard: 0,
+      avg: null,
+      hardPct: null
+    })
   })
 
   it('uses phase as authoritative while retaining legacy boolean warm-up fallback', () => {
-    const summary = effortSummary(S(W(1, [
-      { rir: 0, phase: 'warmup' },
-      { rir: 1, phase: 'work', warmup: true },
-      { rir: 2 }, { rir: 2 }, { rir: 2 }, { rir: 2 },
-    ])), 0)
+    const summary = effortSummary(
+      S(
+        W(1, [
+          { rir: 0, phase: 'warmup' },
+          { rir: 1, phase: 'work', warmup: true },
+          { rir: 2 },
+          { rir: 2 },
+          { rir: 2 },
+          { rir: 2 }
+        ])
+      ),
+      0
+    )
     expect(summary.done).toBe(5)
     expect(summary.rated).toBe(5)
     expect(summary.hard).toBe(5)
@@ -147,8 +179,8 @@ describe('effortWeeks', () => {
     const pts = effortWeeks(S(W(1, [{ rir: 1 }, { rir: 3 }, {}])), 0)
     expect(pts).toHaveLength(1)
     expect(pts[0].rir).toBe(2)
-    expect(pts[0].n).toBe(2)        // rated
-    expect(pts[0].sets).toBe(3)     // trained
+    expect(pts[0].n).toBe(2) // rated
+    expect(pts[0].sets).toBe(3) // trained
   })
 
   it('drops a week that rests on a single tap', () => {
@@ -181,6 +213,6 @@ describe('isHardSet', () => {
     expect(isHardSet({ rir: HARD_RIR })).toBe(true)
     expect(isHardSet({ rir: HARD_RIR + 0.5 })).toBe(false)
     expect(isHardSet({ rpe: 10 })).toBe(true)
-    expect(isHardSet({})).toBe(false)          // unrated is not hard, and not easy either
+    expect(isHardSet({})).toBe(false) // unrated is not hard, and not easy either
   })
 })

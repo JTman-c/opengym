@@ -7,7 +7,7 @@ const entry = (id, extra = {}) => ({
   id,
   target: { sets: 1, reps: 5 },
   sets: [{ w: 0, r: 5, done: false }],
-  ...extra,
+  ...extra
 })
 
 describe('active workout whole-unit order', () => {
@@ -16,12 +16,16 @@ describe('active workout whole-unit order', () => {
     const selected = entry('duplicate', {
       occurrenceId: 'duplicate#2',
       target: { sets: 2, reps: 7, weight: 82.5, notes: 'Keep this target' },
-      sets: [{ w: 77.5, r: 6, done: true, rir: 2 }],
+      sets: [{ w: 77.5, r: 6, done: true, rir: 2 }]
     })
     const active = { cur: 2, entries: [duplicateA, entry('middle'), selected] }
 
     expect(moveActiveWorkoutUnit(active, active.cur, -1)?.indices).toEqual([0, 2, 1])
-    expect(active.entries.map(item => item.occurrenceId || item.id)).toEqual(['duplicate#1', 'duplicate#2', 'middle'])
+    expect(active.entries.map(item => item.occurrenceId || item.id)).toEqual([
+      'duplicate#1',
+      'duplicate#2',
+      'middle'
+    ])
     expect(active.entries[0]).toBe(duplicateA)
     expect(active.entries[1]).toBe(selected)
     expect(active.entries[1].target).toBe(selected.target)
@@ -33,7 +37,11 @@ describe('active workout whole-unit order', () => {
     const first = entry('group-a', { sg: 'pair', occurrenceId: 'group-a#1' })
     const selected = entry('group-b', { sg: 'pair', occurrenceId: 'group-b#1' })
     const groupMeta = { pair: { kind: 'complex', label: 'Carry pair', cues: 'Stay braced.' } }
-    const active = { cur: 2, entries: [entry('before'), first, selected, entry('after')], groupMeta }
+    const active = {
+      cur: 2,
+      entries: [entry('before'), first, selected, entry('after')],
+      groupMeta
+    }
 
     expect(moveActiveWorkoutUnit(active, active.cur, -1)?.indices).toEqual([1, 2, 0, 3])
     expect(active.entries.map(item => item.id)).toEqual(['group-a', 'group-b', 'before', 'after'])

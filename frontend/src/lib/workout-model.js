@@ -2,7 +2,7 @@
 // Legacy records have no explicit phase or mode, so the defaults preserve main's work/reps shape.
 
 const MODES = ['reps', 'time', 'cardio']
-const objectOf = value => value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+const objectOf = value => (value && typeof value === 'object' && !Array.isArray(value) ? value : {})
 
 function normalizedPhase(value, fallback = 'work') {
   const token = typeof value === 'string' ? value.trim().toLowerCase() : ''
@@ -63,13 +63,21 @@ export function extraVolumeOf(set) {
 /** Append a weight drop to a row, marking it a drop-set. */
 export function addDrop(set, drop) {
   const prev = Array.isArray(objectOf(set).drops) ? objectOf(set).drops : []
-  return { ...objectOf(set), type: 'dropset', drops: [...prev, { w: Number(drop?.w) || 0, r: Number(drop?.r) || 0 }] }
+  return {
+    ...objectOf(set),
+    type: 'dropset',
+    drops: [...prev, { w: Number(drop?.w) || 0, r: Number(drop?.r) || 0 }]
+  }
 }
 
 /** Append a short-rest burst to a row, marking it a rest-pause set. */
 export function addCluster(set, cluster) {
   const prev = Array.isArray(objectOf(set).clusters) ? objectOf(set).clusters : []
-  return { ...objectOf(set), type: 'restpause', clusters: [...prev, { r: Number(cluster?.r) || 0, restSec: Number(cluster?.restSec) || 0 }] }
+  return {
+    ...objectOf(set),
+    type: 'restpause',
+    clusters: [...prev, { r: Number(cluster?.r) || 0, restSec: Number(cluster?.restSec) || 0 }]
+  }
 }
 
 /** Remove one drop by index. Clearing the last one reverts the row to a straight set. */
@@ -81,7 +89,9 @@ export function removeDropAt(set, i) {
 /** Remove one burst by index. Clearing the last one reverts the row to a straight set. */
 export function removeClusterAt(set, i) {
   const clusters = (objectOf(set).clusters || []).filter((_, idx) => idx !== i)
-  return clusters.length ? { ...objectOf(set), clusters } : { ...objectOf(set), type: 'straight', clusters }
+  return clusters.length
+    ? { ...objectOf(set), clusters }
+    : { ...objectOf(set), type: 'straight', clusters }
 }
 
 /** Patch one drop's fields in place (weight/reps steppers edit an existing drop). */
@@ -152,7 +162,12 @@ function inferredMode(source) {
   const value = objectOf(source)
   const explicit = explicitMode(value)
   if (explicit) return explicit
-  if (String(value.mode || '').trim().toLowerCase() === 'amrap') return 'reps'
+  if (
+    String(value.mode || '')
+      .trim()
+      .toLowerCase() === 'amrap'
+  )
+    return 'reps'
   if (value.min != null || value.speed != null) return 'cardio'
   if (value.sec != null || value.seconds != null || value.durationSec != null) return 'time'
   if (value.r != null || value.reps != null || value.actualReps != null) return 'reps'

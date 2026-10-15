@@ -14,8 +14,8 @@ import { uid, todayISO, DAYN, weekOrder, weekStartOf, fmtNum, exCount } from './
 import { t, exerciseNameFor } from './i18n-core.js'
 
 const PLAN_FMT = 1
-const WEEK_DAYS = [1, 2, 3, 4, 5, 6, 0]   // every getDay() index; only the reader's own
-                                          // screen puts them in an order (see weekOrder)
+const WEEK_DAYS = [1, 2, 3, 4, 5, 6, 0] // every getDay() index; only the reader's own
+// screen puts them in an order (see weekOrder)
 
 // Keep only the meaningful config fields, so the file stays small and readable.
 function cleanEx(e) {
@@ -80,10 +80,18 @@ function cleanRestSec(v) {
 function cleanIntensifier(x) {
   const type = x && x.type
   if (type === 'dropset') {
-    return { type, count: Math.max(1, Math.round(Number(x.count)) || 1), pct: Math.max(5, Math.round(Number(x.pct)) || 20) }
+    return {
+      type,
+      count: Math.max(1, Math.round(Number(x.count)) || 1),
+      pct: Math.max(5, Math.round(Number(x.pct)) || 20)
+    }
   }
   if (type === 'restpause') {
-    return { type, totalReps: Math.max(1, Math.round(Number(x.totalReps)) || 1), restSec: Math.max(5, Math.round(Number(x.restSec)) || 15) }
+    return {
+      type,
+      totalReps: Math.max(1, Math.round(Number(x.totalReps)) || 1),
+      restSec: Math.max(5, Math.round(Number(x.restSec)) || 15)
+    }
   }
   return null
 }
@@ -91,7 +99,9 @@ function cleanIntensifier(x) {
 /** Build the shareable bundle: every routine, the week schedule, referenced customs. */
 export function buildPlanBundle(S, name) {
   const routines = (S.routines || []).map(r => ({
-    id: r.id, name: r.name, emoji: r.emoji,
+    id: r.id,
+    name: r.name,
+    emoji: r.emoji,
     ...(r.prog ? { prog: r.prog } : {}),
     ...(r.excludeFromProgression === true ? { excludeFromProgression: true } : {}),
     ex: (r.ex || []).map(cleanEx)
@@ -101,8 +111,17 @@ export function buildPlanBundle(S, name) {
     .filter(c => usedIds.has(c.id))
     .map(c => ({ id: c.id, n: c.n, bp: c.bp, ...(c.desc ? { desc: c.desc } : {}) }))
   const week = {}
-  WEEK_DAYS.forEach(d => { if (S.week?.[d]) week[d] = S.week[d] })
-  return { opengym_plan: PLAN_FMT, exported: todayISO(), name: name || '', week, routines, customEx }
+  WEEK_DAYS.forEach(d => {
+    if (S.week?.[d]) week[d] = S.week[d]
+  })
+  return {
+    opengym_plan: PLAN_FMT,
+    exported: todayISO(),
+    name: name || '',
+    week,
+    routines,
+    customEx
+  }
 }
 
 /**
@@ -122,22 +141,31 @@ export function parsePlan(raw) {
   const customEx = (Array.isArray(data.customEx) ? data.customEx : []).filter(c => c && c.id)
   const known = new Set(customEx.map(c => c.id))
   let dropped = 0
-  const routines = data.routines.filter(r => r && Array.isArray(r.ex)).map(r => ({
-    ...r,
-    ex: r.ex.filter(e => {
-      const ok = !!e && (known.has(e.id) || !!EXIDX[e.id])
-      if (!ok) dropped++
-      return ok
-    }).map(e => {
-      // The exercises pass through as written, so the fields that carry numbers into the
-      // planner get the same clamps on the way in that they get on the way out.
-      const warm = cleanWarmupSets(e.warmupSets)
-      const intens = cleanIntensifier(e.intensifier)
-      const rest = cleanRestSec(e.restSec)
-      const { warmupSets, intensifier, restSec, ...passthrough } = e
-      return { ...passthrough, ...(warm ? { warmupSets: warm } : {}), ...(intens ? { intensifier: intens } : {}), ...(rest ? { restSec: rest } : {}) }
-    })
-  }))
+  const routines = data.routines
+    .filter(r => r && Array.isArray(r.ex))
+    .map(r => ({
+      ...r,
+      ex: r.ex
+        .filter(e => {
+          const ok = !!e && (known.has(e.id) || !!EXIDX[e.id])
+          if (!ok) dropped++
+          return ok
+        })
+        .map(e => {
+          // The exercises pass through as written, so the fields that carry numbers into the
+          // planner get the same clamps on the way in that they get on the way out.
+          const warm = cleanWarmupSets(e.warmupSets)
+          const intens = cleanIntensifier(e.intensifier)
+          const rest = cleanRestSec(e.restSec)
+          const { warmupSets, intensifier, restSec, ...passthrough } = e
+          return {
+            ...passthrough,
+            ...(warm ? { warmupSets: warm } : {}),
+            ...(intens ? { intensifier: intens } : {}),
+            ...(rest ? { restSec: rest } : {})
+          }
+        })
+    }))
   return {
     name: (data.name || '').trim(),
     routines,
@@ -161,8 +189,13 @@ export function mergePlan(s, bundle, { schedule } = {}) {
   s.customEx = s.customEx || []
   const exIdMap = {}
   bundle.customEx.forEach(c => {
-    const same = s.customEx.find(x => (x.n || '').toLowerCase() === (c.n || '').toLowerCase() && x.bp === c.bp)
-    if (same) { exIdMap[c.id] = same.id; return }
+    const same = s.customEx.find(
+      x => (x.n || '').toLowerCase() === (c.n || '').toLowerCase() && x.bp === c.bp
+    )
+    if (same) {
+      exIdMap[c.id] = same.id
+      return
+    }
     const nid = uid()
     exIdMap[c.id] = nid
     s.customEx.push({ id: nid, n: c.n, bp: c.bp, ...(c.desc ? { desc: c.desc } : {}) })
@@ -181,7 +214,9 @@ export function mergePlan(s, bundle, { schedule } = {}) {
     })
   })
   if (schedule) {
-    WEEK_DAYS.forEach(d => { delete s.week[d] })
+    WEEK_DAYS.forEach(d => {
+      delete s.week[d]
+    })
     Object.entries(bundle.week || {}).forEach(([d, oldId]) => {
       if (ridMap[oldId]) s.week[d] = ridMap[oldId]
     })
@@ -191,8 +226,12 @@ export function mergePlan(s, bundle, { schedule } = {}) {
 
 /* ------------------------------- printable PDF ------------------------------- */
 
-const esc = str => String(str == null ? '' : str)
-  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+const esc = str =>
+  String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 
 // One exercise's scheme, e.g. "3 × 10 · 60 kg", "3 × 0:45" or "2 × 20 min @ 8 km/h".
 function scheme(e, unit) {
@@ -221,18 +260,23 @@ function units(ex) {
 }
 
 function routineHTML(r, unit) {
-  const rows = units(r.ex).map(u => {
-    const items = u.map(e => {
-      const ex = EXIDX[e.id]
-      const name = ex ? exerciseNameFor(ex) : t('Unknown exercise')
-      const part = ex && ex.bp && ex.bp !== 'cardio' ? `<span class="part">${esc(ex.bp)}</span>` : ''
-      const note = e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''
-      return `<div class="ex"><div class="ex-row"><div class="ex-n">${esc(name)}${part}</div><div class="ex-s">${esc(scheme(e, unit))}</div></div>${note}</div>`
-    }).join('')
-    return u.length > 1
-      ? `<div class="ss"><div class="ss-tag">${esc(t('Superset'))}</div><div class="ss-items">${items}</div></div>`
-      : items
-  }).join('')
+  const rows = units(r.ex)
+    .map(u => {
+      const items = u
+        .map(e => {
+          const ex = EXIDX[e.id]
+          const name = ex ? exerciseNameFor(ex) : t('Unknown exercise')
+          const part =
+            ex && ex.bp && ex.bp !== 'cardio' ? `<span class="part">${esc(ex.bp)}</span>` : ''
+          const note = e.note ? `<div class="ex-note">${esc(e.note)}</div>` : ''
+          return `<div class="ex"><div class="ex-row"><div class="ex-n">${esc(name)}${part}</div><div class="ex-s">${esc(scheme(e, unit))}</div></div>${note}</div>`
+        })
+        .join('')
+      return u.length > 1
+        ? `<div class="ss"><div class="ss-tag">${esc(t('Superset'))}</div><div class="ss-items">${items}</div></div>`
+        : items
+    })
+    .join('')
   const count = exCount(r.ex.length)
   return `<section class="routine">
     <div class="r-head"><h2>${esc(r.name)}</h2><span class="r-count">${esc(count)}</span></div>
@@ -242,11 +286,13 @@ function routineHTML(r, unit) {
 
 function weekHTML(S) {
   // The printout is read by whoever exported it, so the week runs in their order.
-  const rows = weekOrder(weekStartOf(S)).map(d => {
-    const r = S.routines.find(x => x.id === S.week?.[d])
-    const val = r ? esc(r.name) : `<span class="rest">${esc(t('Rest'))}</span>`
-    return `<div class="w-row"><div class="w-day">${esc(t(DAYN[d]))}</div><div class="w-r">${val}</div></div>`
-  }).join('')
+  const rows = weekOrder(weekStartOf(S))
+    .map(d => {
+      const r = S.routines.find(x => x.id === S.week?.[d])
+      const val = r ? esc(r.name) : `<span class="rest">${esc(t('Rest'))}</span>`
+      return `<div class="w-row"><div class="w-day">${esc(t(DAYN[d]))}</div><div class="w-r">${val}</div></div>`
+    })
+    .join('')
   return `<div class="week">${rows}</div>`
 }
 
@@ -328,17 +374,32 @@ export function printPlan(S, owner) {
   ifr.setAttribute('aria-hidden', 'true')
   ifr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;opacity:0;'
   document.body.appendChild(ifr)
-  const cleanup = () => { try { ifr.remove() } catch (e) { /* */ } }
+  const cleanup = () => {
+    try {
+      ifr.remove()
+    } catch (e) {
+      /* */
+    }
+  }
   const run = () => {
     const w = ifr.contentWindow
-    if (!w) { cleanup(); return }
+    if (!w) {
+      cleanup()
+      return
+    }
     w.onafterprint = cleanup
-    setTimeout(cleanup, 60000)   // safety net if afterprint never fires
+    setTimeout(cleanup, 60000) // safety net if afterprint never fires
     w.focus()
-    try { w.print() } catch (e) { cleanup() }
+    try {
+      w.print()
+    } catch (e) {
+      cleanup()
+    }
   }
   const doc = ifr.contentWindow.document
-  doc.open(); doc.write(planPrintHTML(S, owner)); doc.close()
+  doc.open()
+  doc.write(planPrintHTML(S, owner))
+  doc.close()
   // Give the iframe a tick to lay out before printing.
   if (doc.readyState === 'complete') setTimeout(run, 120)
   else ifr.onload = () => setTimeout(run, 120)

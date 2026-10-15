@@ -2,19 +2,57 @@
 import { dateLocale, t } from './i18n-core.js'
 export const todayISO = () => {
   const d = new Date()
-  return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')
+  return (
+    d.getFullYear() +
+    '-' +
+    String(d.getMonth() + 1).padStart(2, '0') +
+    '-' +
+    String(d.getDate()).padStart(2, '0')
+  )
 }
 export const isoOf = d =>
-  d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0')
+  d.getFullYear() +
+  '-' +
+  String(d.getMonth() + 1).padStart(2, '0') +
+  '-' +
+  String(d.getDate()).padStart(2, '0')
 
 export const DAYN = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 export const DAYS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa']
-export const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-export const MONTHS_LONG = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+export const MONTHS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec'
+]
+export const MONTHS_LONG = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December'
+]
 
 export function fmtDate(iso, long, withYear = false) {
   const d = new Date(iso + 'T12:00:00')
-  const options = long ? { weekday: 'short', day: 'numeric', month: 'short' } : { day: 'numeric', month: 'short' }
+  const options = long
+    ? { weekday: 'short', day: 'numeric', month: 'short' }
+    : { day: 'numeric', month: 'short' }
   if (withYear) options.year = 'numeric'
   return d.toLocaleDateString(dateLocale(), options)
 }
@@ -69,7 +107,22 @@ export function startOfWeek(iso, ws = MONDAY) {
  */
 export const weekKey = (iso, ws = MONDAY) => isoOf(startOfWeek(iso, ws))
 
-export const localTZ = () => { try { return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC' } catch { return 'UTC' } }
+export const localTZ = () => {
+  try {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC'
+  } catch {
+    return 'UTC'
+  }
+}
 
 export const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7)
-export const ACCENTS = { lime: '#30d158', sky: '#0a84ff', orange: '#ff9f0a', violet: '#bf5af2', pink: '#ff375f', red: '#ff453a', teal: '#40c8e0', gold: '#ffd60a' }
+export const ACCENTS = {
+  lime: '#30d158',
+  sky: '#0a84ff',
+  orange: '#ff9f0a',
+  violet: '#bf5af2',
+  pink: '#ff375f',
+  red: '#ff453a',
+  teal: '#40c8e0',
+  gold: '#ffd60a'
+}

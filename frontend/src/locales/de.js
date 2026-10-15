@@ -39,19 +39,51 @@ export default {
   'Move up': 'Nach oben',
   'Move down': 'Nach unten',
   // --- days & months ---
-  'Sunday': 'Sonntag', 'Monday': 'Montag', 'Tuesday': 'Dienstag', 'Wednesday': 'Mittwoch',
-  'Thursday': 'Donnerstag', 'Friday': 'Freitag', 'Saturday': 'Samstag',
-  'Su': 'So', 'Mo': 'Mo', 'Tu': 'Di', 'We': 'Mi', 'Th': 'Do', 'Fr': 'Fr', 'Sa': 'Sa',
-  'Mon': 'Mo', 'Wed': 'Mi', 'Fri': 'Fr',
-  'Jan': 'Jan', 'Feb': 'Feb', 'Mar': 'Mär', 'Apr': 'Apr', 'May': 'Mai', 'Jun': 'Jun',
-  'Jul': 'Jul', 'Aug': 'Aug', 'Sep': 'Sep', 'Oct': 'Okt', 'Nov': 'Nov', 'Dec': 'Dez',
-  'January': 'Januar', 'February': 'Februar', 'March': 'März', 'April': 'April',
-  'June': 'Juni', 'July': 'Juli', 'August': 'August', 'September': 'September',
-  'October': 'Oktober', 'November': 'November', 'December': 'Dezember',
+  'Sunday': 'Sonntag',
+  'Monday': 'Montag',
+  'Tuesday': 'Dienstag',
+  'Wednesday': 'Mittwoch',
+  'Thursday': 'Donnerstag',
+  'Friday': 'Freitag',
+  'Saturday': 'Samstag',
+  'Su': 'So',
+  'Mo': 'Mo',
+  'Tu': 'Di',
+  'We': 'Mi',
+  'Th': 'Do',
+  'Fr': 'Fr',
+  'Sa': 'Sa',
+  'Mon': 'Mo',
+  'Wed': 'Mi',
+  'Fri': 'Fr',
+  'Jan': 'Jan',
+  'Feb': 'Feb',
+  'Mar': 'Mär',
+  'Apr': 'Apr',
+  'May': 'Mai',
+  'Jun': 'Jun',
+  'Jul': 'Jul',
+  'Aug': 'Aug',
+  'Sep': 'Sep',
+  'Oct': 'Okt',
+  'Nov': 'Nov',
+  'Dec': 'Dez',
+  'January': 'Januar',
+  'February': 'Februar',
+  'March': 'März',
+  'April': 'April',
+  'June': 'Juni',
+  'July': 'Juli',
+  'August': 'August',
+  'September': 'September',
+  'October': 'Oktober',
+  'November': 'November',
+  'December': 'Dezember',
   // --- body weight & goal ---
   'Quick check-in': 'Kurzer Check-in',
   'Log body weight': 'Körpergewicht eintragen',
-  'Slide or tap to set your weight — tracked before every workout so your curve stays honest.': 'Schieben oder tippen, um dein Gewicht zu setzen — vor jedem Training erfasst, damit deine Kurve ehrlich bleibt.',
+  'Slide or tap to set your weight — tracked before every workout so your curve stays honest.':
+    'Schieben oder tippen, um dein Gewicht zu setzen — vor jedem Training erfasst, damit deine Kurve ehrlich bleibt.',
   'Save & start workout': 'Speichern & Training starten',
   'Start without weighing in': 'Ohne Wiegen starten',
   'Choose a different workout': 'Anderes Training wählen',
@@ -59,7 +91,8 @@ export default {
   'Enter a valid weight': 'Gib ein gültiges Gewicht ein',
   'Weight saved': 'Gewicht gespeichert',
   'Target weight': 'Zielgewicht',
-  'Your goal is drawn as a line through the weight charts, and gains/losses are colored by whether they move toward it.': 'Dein Ziel wird als Linie in den Gewichts-Charts angezeigt, und Zu-/Abnahmen werden danach eingefärbt, ob sie darauf zusteuern.',
+  'Your goal is drawn as a line through the weight charts, and gains/losses are colored by whether they move toward it.':
+    'Dein Ziel wird als Linie in den Gewichts-Charts angezeigt, und Zu-/Abnahmen werden danach eingefärbt, ob sie darauf zusteuern.',
   'Save goal': 'Ziel speichern',
   'Goal set: {0}': 'Ziel gesetzt: {0}',
   '{0} to go': 'noch {0}',
@@ -69,7 +102,8 @@ export default {
   'reached!': 'erreicht!',
   '{0} to gain': 'noch {0} zunehmen',
   '{0} to lose': 'noch {0} abnehmen',
-  "No entries yet — log your weight to start the curve. It's also asked before every workout.": 'Noch keine Einträge — trag dein Gewicht ein, um die Kurve zu starten. Es wird auch vor jedem Training abgefragt.',
+  "No entries yet — log your weight to start the curve. It's also asked before every workout.":
+    'Noch keine Einträge — trag dein Gewicht ein, um die Kurve zu starten. Es wird auch vor jedem Training abgefragt.',
   // --- exercise detail / picker / config ---
   'Best:': 'Bestwert:',
   'Add to my plan': 'Zu meinem Plan',
@@ -78,7 +112,8 @@ export default {
   'New routine': 'Neue Routine',
   'Add “{0}”': '„{0}“ hinzufügen',
   '“{0}” added to {1}': '„{0}“ zu {1} hinzugefügt',
-  'Pick a routine — sets, reps & weight come next.': 'Wähle eine Routine — Sätze, Wiederholungen & Gewicht kommen gleich.',
+  'Pick a routine — sets, reps & weight come next.':
+    'Wähle eine Routine — Sätze, Wiederholungen & Gewicht kommen gleich.',
   '{0} exercises': '{0} Übungen',
   '{0} exercise': '{0} Übung',
   'already in': 'schon drin',
@@ -86,7 +121,8 @@ export default {
   'Add exercise': 'Übung hinzufügen',
   'Search {0} exercises…': '{0} Übungen durchsuchen…',
   'Chosen': 'Gewählt',
-  'Nothing chosen yet — add exercises and they’ll show up here.': 'Noch nichts gewählt — füge Übungen hinzu, dann erscheinen sie hier.',
+  'Nothing chosen yet — add exercises and they’ll show up here.':
+    'Noch nichts gewählt — füge Übungen hinzu, dann erscheinen sie hier.',
   'No match': 'Kein Treffer',
   'Show more': 'Mehr anzeigen',
   'Intervals': 'Intervalle',
@@ -99,15 +135,20 @@ export default {
   'Remove exercise': 'Übung entfernen',
   'Swap exercise': 'Übung wechseln',
   'Swap exercise?': 'Übung tauschen?',
-  'Logged sets stay with the original exercise. Choose where the replacement belongs.': 'Aufgezeichnete Sätze bleiben bei der ursprünglichen Übung. Wähle, wo die Ersatzübung hingehört.',
+  'Logged sets stay with the original exercise. Choose where the replacement belongs.':
+    'Aufgezeichnete Sätze bleiben bei der ursprünglichen Übung. Wähle, wo die Ersatzübung hingehört.',
   'Keep replacement in this group': 'Ersatzübung in dieser Gruppe behalten',
   'Insert after this group': 'Nach dieser Gruppe einfügen',
-  'Logged sets stay with the original exercise. The replacement will be inserted afterward.': 'Aufgezeichnete Sätze bleiben bei der ursprünglichen Übung. Die Ersatzübung wird danach eingefügt.',
+  'Logged sets stay with the original exercise. The replacement will be inserted afterward.':
+    'Aufgezeichnete Sätze bleiben bei der ursprünglichen Übung. Die Ersatzübung wird danach eingefügt.',
   'Remove {0}?': '{0} entfernen?',
-  'The sets you logged for this exercise in this session will be lost.': 'Die in dieser Einheit für diese Übung protokollierten Sätze gehen verloren.',
-  'This removes the exercise from your current session.': 'Dadurch wird die Übung aus deiner aktuellen Einheit entfernt.',
+  'The sets you logged for this exercise in this session will be lost.':
+    'Die in dieser Einheit für diese Übung protokollierten Sätze gehen verloren.',
+  'This removes the exercise from your current session.':
+    'Dadurch wird die Übung aus deiner aktuellen Einheit entfernt.',
   'Remove': 'Entfernen',
-  'Which exercise in this superset do you want to remove?': 'Welche Übung in diesem Supersatz möchtest du entfernen?',
+  'Which exercise in this superset do you want to remove?':
+    'Welche Übung in diesem Supersatz möchtest du entfernen?',
   'Pick an icon': 'Symbol auswählen',
   // --- day planning / calendar ---
   'Back to weekly plan': 'Zurück zum Wochenplan',
@@ -115,7 +156,8 @@ export default {
   '{0} planned for {1}': '{0} für {1} geplant',
   'Weekly plan:': 'Wochenplan:',
   'changed for this day': 'für diesen Tag geändert',
-  'Sick, missed a day or want a different session? Pick what to train instead.': 'Krank, Tag verpasst oder Lust auf was anderes? Wähle, was du stattdessen trainierst.',
+  'Sick, missed a day or want a different session? Pick what to train instead.':
+    'Krank, Tag verpasst oder Lust auf was anderes? Wähle, was du stattdessen trainierst.',
   'Rest / skip this day': 'Pause / Tag überspringen',
   'Rest day': 'Pausentag',
   'Next session: {0}, {1}': 'Nächste Einheit: {0}, {1}',
@@ -125,7 +167,8 @@ export default {
   'Trained': 'Trainiert',
   'Planned': 'Geplant',
   'Rescheduled': 'Verschoben',
-  'Tap a trained day for details · tap any other day to plan a session': 'Tippe auf einen trainierten Tag für Details · tippe auf jeden anderen Tag, um zu planen',
+  'Tap a trained day for details · tap any other day to plan a session':
+    'Tippe auf einen trainierten Tag für Details · tippe auf jeden anderen Tag, um zu planen',
   // --- workout lifecycle ---
   '{0} sets': '{0} Sätze',
   'no sets': 'keine Sätze',
@@ -134,7 +177,8 @@ export default {
   'Workout deleted': 'Training gelöscht',
   'Delete workout': 'Training löschen',
   '{0} done': '{0} geschafft',
-  'Confirm the weight you worked with — your highest becomes the default next time.': 'Bestätige das Gewicht, mit dem du trainiert hast — dein höchstes wird beim nächsten Mal vorausgefüllt.',
+  'Confirm the weight you worked with — your highest becomes the default next time.':
+    'Bestätige das Gewicht, mit dem du trainiert hast — dein höchstes wird beim nächsten Mal vorausgefüllt.',
   'Then finish the superset partner.': 'Dann den Supersatz-Partner abschliessen.',
   'Previous best:': 'Bisheriger Bestwert:',
   'new record!': 'neuer Rekord!',
@@ -144,7 +188,8 @@ export default {
   'Save weight': 'Gewicht speichern',
   'Tracked — next time starts at {0}': 'Gespeichert — nächstes Mal startest du bei {0}',
   "That's the whole workout!": 'Das war das ganze Training!',
-  'Every exercise done — great work. Finish up, or keep going and add another exercise.': 'Alle Übungen geschafft — stark! Schliesse ab oder mach weiter und füge eine Übung hinzu.',
+  'Every exercise done — great work. Finish up, or keep going and add another exercise.':
+    'Alle Übungen geschafft — stark! Schliesse ab oder mach weiter und füge eine Übung hinzu.',
   'Finish workout': 'Training beenden',
   'Continue workout': 'Weitertrainieren',
   'Keep going — tap “+ Add exercise” below': 'Weiter so — tippe unten auf „+ Übung hinzufügen“',
@@ -155,11 +200,14 @@ export default {
   'New PR:': 'Neuer Rekord:',
   'Nice!': 'Stark!',
   'Nothing logged yet': 'Noch nichts eingetragen',
-  'You haven’t checked off any sets. Finish the workout anyway?': 'Du hast noch keine Sätze abgehakt. Training trotzdem beenden?',
+  'You haven’t checked off any sets. Finish the workout anyway?':
+    'Du hast noch keine Sätze abgehakt. Training trotzdem beenden?',
   'Finish anyway': 'Trotzdem beenden',
   'Finish early?': 'Früher beenden?',
-  '{0} set still unchecked. Finish the workout now?': '{0} Satz noch offen. Training jetzt beenden?',
-  '{0} sets still unchecked. Finish the workout now?': '{0} Sätze noch offen. Training jetzt beenden?',
+  '{0} set still unchecked. Finish the workout now?':
+    '{0} Satz noch offen. Training jetzt beenden?',
+  '{0} sets still unchecked. Finish the workout now?':
+    '{0} Sätze noch offen. Training jetzt beenden?',
   'Finish workout': 'Training beenden',
   // --- workout view ---
   'Start workout': 'Training starten',
@@ -186,7 +234,8 @@ export default {
   'Remove drop': 'Dropsatz entfernen',
   'Remove burst': 'Burst entfernen',
   'Rest (s)': 'Pause (s)',
-  'Rest after each set of this exercise. Leave at 0 to use your default rest timer.': 'Pause nach jedem Satz dieser Übung. Auf 0 lassen, um den Standard-Pausen-Timer zu nutzen.',
+  'Rest after each set of this exercise. Leave at 0 to use your default rest timer.':
+    'Pause nach jedem Satz dieser Übung. Auf 0 lassen, um den Standard-Pausen-Timer zu nutzen.',
   'Drop-set / rest-pause': 'Dropsatz / Rest-Pause',
   'Intensifier': 'Intensivierungstechnik',
   'None': 'Keine',
@@ -196,14 +245,18 @@ export default {
   'Weight drop (%)': 'Gewichtsreduktion (%)',
   'Rest-pause reps': 'Rest-Pause-Wiederholungen',
   'Rest-pause rest': 'Rest-Pause-Pause',
-  'Every set becomes a drop-set: after the main set, {0} drop(s) with no rest, each about {1}% lighter.': 'Jeder Satz wird zum Dropsatz: nach dem Hauptsatz {0} weitere Stufe(n) ohne Pause, jede etwa {1}% leichter.',
-  'Every set becomes rest-pause: {0} reps to start, then {1} more split into short bursts, {2}s rest before each, roughly halving each time.': 'Jeder Satz wird zu Rest-Pause: {0} Wiederholungen zu Beginn, dann {1} weitere in kurzen Bursts, mit {2}s Pause davor, dabei jedes Mal etwa halbiert.',
+  'Every set becomes a drop-set: after the main set, {0} drop(s) with no rest, each about {1}% lighter.':
+    'Jeder Satz wird zum Dropsatz: nach dem Hauptsatz {0} weitere Stufe(n) ohne Pause, jede etwa {1}% leichter.',
+  'Every set becomes rest-pause: {0} reps to start, then {1} more split into short bursts, {2}s rest before each, roughly halving each time.':
+    'Jeder Satz wird zu Rest-Pause: {0} Wiederholungen zu Beginn, dann {1} weitere in kurzen Bursts, mit {2}s Pause davor, dabei jedes Mal etwa halbiert.',
   'Cardio logged': 'Cardio eingetragen',
   'Discard workout?': 'Training verwerfen?',
-  'The sets you logged in this session will be lost.': 'Die in dieser Einheit eingetragenen Sätze gehen verloren.',
+  'The sets you logged in this session will be lost.':
+    'Die in dieser Einheit eingetragenen Sätze gehen verloren.',
   'Superset {0} / {1}': 'Supersatz {0} / {1}',
   'Exercise {0} / {1}': 'Übung {0} / {1}',
-  'Superset · do these back-to-back, rest when done': 'Supersatz · direkt nacheinander, Pause erst danach',
+  'Superset · do these back-to-back, rest when done':
+    'Supersatz · direkt nacheinander, Pause erst danach',
   'Freestyle workout — add your first exercise.': 'Freies Training — füge deine erste Übung hinzu.',
   'Finish workout early · {0} exercises': 'Training vorzeitig beenden · {0} Übungen',
   'Rest over — next set!': 'Pause vorbei — nächster Satz!',
@@ -213,7 +266,8 @@ export default {
   '{0} — in progress': '{0} — läuft',
   'Resume ▶': 'Weiter ▶',
   'Welcome!': 'Willkommen!',
-  'Set up your weekly routine to get going — or load a ready-made Push / Pull / Legs plan.': 'Richte deinen Wochenplan ein — oder lade einen fertigen Push-/Pull-/Beine-Plan.',
+  'Set up your weekly routine to get going — or load a ready-made Push / Pull / Legs plan.':
+    'Richte deinen Wochenplan ein — oder lade einen fertigen Push-/Pull-/Beine-Plan.',
   'Load starter plan (PPL)': 'Starterplan laden (PPL)',
   'Build my own plan': 'Eigenen Plan erstellen',
   '{0} week streak': '{0} Wochen in Folge',
@@ -231,7 +285,8 @@ export default {
   'Exercise progress': 'Übungs-Fortschritt',
   'Top speed per workout': 'Top-Tempo pro Training',
   'Best set weight per workout': 'Bestes Satzgewicht pro Training',
-  'Finish your first workout to see progress curves here.': 'Schliess dein erstes Training ab, um hier Fortschrittskurven zu sehen.',
+  'Finish your first workout to see progress curves here.':
+    'Schliess dein erstes Training ab, um hier Fortschrittskurven zu sehen.',
   'Recent workouts': 'Letzte Trainings',
   'Less time': 'Weniger',
   'More time': 'Mehr',
@@ -245,9 +300,11 @@ export default {
   'Load starter plan (Push / Pull / Legs)': 'Starterplan laden (Push / Pull / Beine)',
   // --- routine edit ---
   'Superset with exercise above': 'Supersatz mit der Übung darüber',
-  'Note (optional) — loading cues, "bar only then +1 plate/side each set", anything worth remembering here': 'Notiz (optional) — Hinweise zur Belastung, z. B. „nur die Stange, dann pro Satz +1 Scheibe pro Seite“, was immer du dir merken willst',
+  'Note (optional) — loading cues, "bar only then +1 plate/side each set", anything worth remembering here':
+    'Notiz (optional) — Hinweise zur Belastung, z. B. „nur die Stange, dann pro Satz +1 Scheibe pro Seite“, was immer du dir merken willst',
   'No exercises yet — add your first one.': 'Noch keine Übungen — füge deine erste hinzu.',
-  'Tap the link button on an exercise to superset it with the one above — you’ll do them back-to-back.': 'Tippe bei einer Übung auf die Verknüpfen-Taste, um sie mit der darüber zum Supersatz zu verbinden — du machst sie direkt nacheinander.',
+  'Tap the link button on an exercise to superset it with the one above — you’ll do them back-to-back.':
+    'Tippe bei einer Übung auf die Verknüpfen-Taste, um sie mit der darüber zum Supersatz zu verbinden — du machst sie direkt nacheinander.',
   'Delete routine?': 'Routine löschen?',
   '“{0}” and its exercises will be removed.': '„{0}“ und ihre Übungen werden entfernt.',
   'Delete routine': 'Routine löschen',
@@ -255,47 +312,61 @@ export default {
   '{0} exercises with animations': '{0} Übungen mit Animationen',
   'Search…': 'Suchen…',
   'No workouts yet.': 'Noch keine Trainings.',
-  'Starter plan loaded — Mon Push · Wed Pull · Fri Legs': 'Starterplan geladen — Mo Push · Mi Pull · Fr Beine',
+  'Starter plan loaded — Mon Push · Wed Pull · Fri Legs':
+    'Starterplan geladen — Mo Push · Mi Pull · Fr Beine',
   // --- login / account ---
   'Enter a name': 'Gib einen Namen ein',
-  'Profile created — data from this device moved into it': 'Profil erstellt — Daten von diesem Gerät wurden übernommen',
+  'Profile created — data from this device moved into it':
+    'Profil erstellt — Daten von diesem Gerät wurden übernommen',
   'Profile created — data moved into it': 'Profil erstellt — Daten übernommen',
   'Welcome, {0}': 'Willkommen, {0}',
   'Welcome back, {0}': 'Willkommen zurück, {0}',
   'Registration failed': 'Registrierung fehlgeschlagen',
   'Sign-in failed': 'Anmeldung fehlgeschlagen',
   'Create your profile': 'Erstelle dein Profil',
-  'Pick a name, then confirm with {0}. The passkey is saved in your device — no password needed.': 'Wähle einen Namen und bestätige mit {0}. Der Passkey wird auf deinem Gerät gespeichert — kein Passwort nötig.',
-  'Pick a name, then confirm with your device.': 'Wähle einen Namen und bestätige mit deinem Gerät.',
+  'Pick a name, then confirm with {0}. The passkey is saved in your device — no password needed.':
+    'Wähle einen Namen und bestätige mit {0}. Der Passkey wird auf deinem Gerät gespeichert — kein Passwort nötig.',
+  'Pick a name, then confirm with your device.':
+    'Wähle einen Namen und bestätige mit deinem Gerät.',
   'Your name': 'Dein Name',
   'Create passkey': 'Passkey erstellen',
   'Your workouts. Your weights. Your profile.': 'Deine Trainings. Deine Gewichte. Dein Profil.',
   'Sign in with passkey': 'Mit Passkey anmelden',
   'Create new profile': 'Neues Profil erstellen',
-  "This browser doesn't support passkeys — you can still use openGym locally on this device.": 'Dieser Browser unterstützt keine Passkeys — du kannst openGym trotzdem lokal auf diesem Gerät nutzen.',
-  "This browser doesn't support passkeys, and this instance requires an account. Try a browser or device with passkey support.": 'Dieser Browser unterstützt keine Passkeys, und dieser Server verlangt ein Konto. Probier einen Browser oder ein Gerät mit Passkey-Unterstützung.',
+  "This browser doesn't support passkeys — you can still use openGym locally on this device.":
+    'Dieser Browser unterstützt keine Passkeys — du kannst openGym trotzdem lokal auf diesem Gerät nutzen.',
+  "This browser doesn't support passkeys, and this instance requires an account. Try a browser or device with passkey support.":
+    'Dieser Browser unterstützt keine Passkeys, und dieser Server verlangt ein Konto. Probier einen Browser oder ein Gerät mit Passkey-Unterstützung.',
   'Continue without account': 'Ohne Konto fortfahren',
   'Passkeys use {0} — no passwords.': 'Passkeys nutzen {0} — keine Passwörter.',
-  'Each profile keeps its own plan, workouts & body weight.': 'Jedes Profil hat seinen eigenen Plan, Trainings & Körpergewicht.',
+  'Each profile keeps its own plan, workouts & body weight.':
+    'Jedes Profil hat seinen eigenen Plan, Trainings & Körpergewicht.',
   // --- settings ---
   'Account': 'Konto',
-  'Signed in with passkey — data syncs to this profile.': 'Mit Passkey angemeldet — Daten werden mit diesem Profil synchronisiert.',
+  'Signed in with passkey — data syncs to this profile.':
+    'Mit Passkey angemeldet — Daten werden mit diesem Profil synchronisiert.',
   'Sign out?': 'Abmelden?',
-  'Your data is synced to your profile first, then cleared from this device.': 'Deine Daten werden erst mit dem Profil synchronisiert, dann von diesem Gerät entfernt.',
+  'Your data is synced to your profile first, then cleared from this device.':
+    'Deine Daten werden erst mit dem Profil synchronisiert, dann von diesem Gerät entfernt.',
   'Sign out': 'Abmelden',
   'Sign out everywhere?': 'Überall abmelden?',
-  'Signs this profile out on every device, including this one. Your passkeys keep working — sign in with them again anytime.': 'Meldet dieses Profil auf allen Geräten ab, auch auf diesem. Deine Passkeys bleiben gültig — du kannst dich damit jederzeit wieder anmelden.',
+  'Signs this profile out on every device, including this one. Your passkeys keep working — sign in with them again anytime.':
+    'Meldet dieses Profil auf allen Geräten ab, auch auf diesem. Deine Passkeys bleiben gültig — du kannst dich damit jederzeit wieder anmelden.',
   'Sign out everywhere': 'Überall abmelden',
-  'Ends this profile’s sessions on all your devices.': 'Beendet die Sitzungen dieses Profils auf all deinen Geräten.',
+  'Ends this profile’s sessions on all your devices.':
+    'Beendet die Sitzungen dieses Profils auf all deinen Geräten.',
   'Signed out on all devices': 'Auf allen Geräten abgemeldet',
-  'Could not sign out everywhere — you are still signed in.': 'Abmelden auf allen Geräten fehlgeschlagen — du bist weiterhin angemeldet.',
-  'Guest mode — data lives only in this browser. Create a passkey profile to keep it safe and separate per person.': 'Gastmodus — Daten liegen nur in diesem Browser. Erstelle ein Passkey-Profil, um sie zu sichern und pro Person zu trennen.',
+  'Could not sign out everywhere — you are still signed in.':
+    'Abmelden auf allen Geräten fehlgeschlagen — du bist weiterhin angemeldet.',
+  'Guest mode — data lives only in this browser. Create a passkey profile to keep it safe and separate per person.':
+    'Gastmodus — Daten liegen nur in diesem Browser. Erstelle ein Passkey-Profil, um sie zu sichern und pro Person zu trennen.',
   'Create passkey profile': 'Passkey-Profil erstellen',
   'Passkeys not supported in this browser.': 'Passkeys werden in diesem Browser nicht unterstützt.',
   'Appearance': 'Aussehen',
   'synced with your profile': 'mit deinem Profil synchronisiert',
   'Language': 'Sprache',
-  "Exercise instructions aren't available in this language yet — they stay in English.": 'Übungsanleitungen gibt es in dieser Sprache noch nicht — sie bleiben auf Englisch.',
+  "Exercise instructions aren't available in this language yet — they stay in English.":
+    'Übungsanleitungen gibt es in dieser Sprache noch nicht — sie bleiben auf Englisch.',
   'Theme': 'Design',
   'Dark': 'Dunkel',
   'Light': 'Hell',
@@ -304,96 +375,168 @@ export default {
   'General': 'Allgemein',
   'During a workout': 'Während des Trainings',
   'Keep screen awake': 'Bildschirm anlassen',
-  'The screen stays on while a workout is running, so you don’t have to unlock your phone between sets.': 'Der Bildschirm bleibt an, solange ein Workout läuft — so musst du zwischen den Sätzen nicht entsperren.',
+  'The screen stays on while a workout is running, so you don’t have to unlock your phone between sets.':
+    'Der Bildschirm bleibt an, solange ein Workout läuft — so musst du zwischen den Sätzen nicht entsperren.',
   'Weight unit': 'Gewichtseinheit',
   'Week starts on': 'Woche beginnt am',
   'Rest timer': 'Pausen-Timer',
   'Sounds': 'Töne',
   'Flash screen when timer ends': 'Bildschirm bei Timer-Ende blinken lassen',
-  'Note: switching units only changes the label — logged numbers are not converted.': 'Hinweis: Der Einheitenwechsel ändert nur die Beschriftung — eingetragene Zahlen werden nicht umgerechnet.',
+  'Note: switching units only changes the label — logged numbers are not converted.':
+    'Hinweis: Der Einheitenwechsel ändert nur die Beschriftung — eingetragene Zahlen werden nicht umgerechnet.',
   'Data': 'Daten',
   'Export backup (JSON)': 'Backup exportieren (JSON)',
   'Import backup': 'Backup importieren',
   'Auto-backup on changes': 'Automatische Sicherung bei Änderungen',
-  'Saves a dated copy to the Documents folder after finishing a workout or editing a routine — point a sync app at it, or copy it out by hand.': 'Speichert nach jedem beendeten Training oder jeder bearbeiteten Routine eine datierte Kopie im Ordner „Dokumente" — richte eine Sync-App darauf aus oder kopiere die Datei von Hand.',
+  'Saves a dated copy to the Documents folder after finishing a workout or editing a routine — point a sync app at it, or copy it out by hand.':
+    'Speichert nach jedem beendeten Training oder jeder bearbeiteten Routine eine datierte Kopie im Ordner „Dokumente" — richte eine Sync-App darauf aus oder kopiere die Datei von Hand.',
   'Reset everything?': 'Alles zurücksetzen?',
   'Reset everything': 'Alles zurücksetzen',
-  'Deletes your plan, workouts and body weight on this device. This cannot be undone.': 'Löscht Plan, Trainings und Körpergewicht auf diesem Gerät. Das kann nicht rückgängig gemacht werden.',
+  'Deletes your plan, workouts and body weight on this device. This cannot be undone.':
+    'Löscht Plan, Trainings und Körpergewicht auf diesem Gerät. Das kann nicht rückgängig gemacht werden.',
   'Delete everything': 'Alles löschen',
   'All data reset': 'Alle Daten zurückgesetzt',
   'Backup exported': 'Backup exportiert',
   'Import backup?': 'Backup importieren?',
-  'This replaces all current data with the backup file.': 'Das ersetzt alle aktuellen Daten durch die Backup-Datei.',
+  'This replaces all current data with the backup file.':
+    'Das ersetzt alle aktuellen Daten durch die Backup-Datei.',
   'Backup imported': 'Backup importiert',
   'Import failed: {0}': 'Import fehlgeschlagen: {0}',
   'Tip': 'Tipp',
   'In Chrome: ⋮ menu → Add to Home screen': 'In Chrome: ⋮-Menü → Zum Startbildschirm hinzufügen',
   'In Safari: Share → Add to Home Screen': 'In Safari: Teilen → Zum Home-Bildschirm',
   'to install openGym as a full-screen app.': 'um openGym als Vollbild-App zu installieren.',
-  'Your data syncs with your profile — sign in anywhere to see it.': 'Deine Daten synchronisieren mit deinem Profil — melde dich überall an, um sie zu sehen.',
-  'Guest data stays on this device — export a backup now and then!': 'Gastdaten bleiben auf diesem Gerät — exportiere ab und zu ein Backup!',
+  'Your data syncs with your profile — sign in anywhere to see it.':
+    'Deine Daten synchronisieren mit deinem Profil — melde dich überall an, um sie zu sehen.',
+  'Guest data stays on this device — export a backup now and then!':
+    'Gastdaten bleiben auf diesem Gerät — exportiere ab und zu ein Backup!',
   'free & open source (AGPL v3)': 'kostenlos & Open Source (AGPL v3)',
   'Notifications': 'Benachrichtigungen',
   'Not supported in this browser.': 'In diesem Browser nicht unterstützt.',
   'Push notifications': 'Push-Benachrichtigungen',
-  'Rest-timer alerts, even if openGym is closed.': 'Pausen-Timer-Alarm, auch wenn openGym geschlossen ist.',
+  'Rest-timer alerts, even if openGym is closed.':
+    'Pausen-Timer-Alarm, auch wenn openGym geschlossen ist.',
   'Workout day reminder': 'Trainingstag-Erinnerung',
   'Reminder time': 'Erinnerungszeit',
-  "Only sent on days you have a routine planned and haven't logged a workout yet.": 'Wird nur an Tagen gesendet, an denen ein Training geplant und noch keins eingetragen ist.',
-  'Timezone: {0} (auto-detected, updates if you travel).': 'Zeitzone: {0} (automatisch erkannt, aktualisiert sich beim Reisen).',
+  "Only sent on days you have a routine planned and haven't logged a workout yet.":
+    'Wird nur an Tagen gesendet, an denen ein Training geplant und noch keins eingetragen ist.',
+  'Timezone: {0} (auto-detected, updates if you travel).':
+    'Zeitzone: {0} (automatisch erkannt, aktualisiert sich beim Reisen).',
   'Send test notification': 'Test-Benachrichtigung senden',
   'Test sent — should arrive any second': 'Test gesendet — sollte jeden Moment ankommen',
   'Test failed': 'Test fehlgeschlagen',
   'Notifications off': 'Benachrichtigungen aus',
   'Notifications on': 'Benachrichtigungen an',
-  'Could not change notification settings': 'Benachrichtigungs-Einstellungen konnten nicht geändert werden',
+  'Could not change notification settings':
+    'Benachrichtigungs-Einstellungen konnten nicht geändert werden',
   // --- media ---
   'tap to pause': 'Tippen zum Pausieren',
   'tap to play': 'Tippen zum Abspielen',
   // --- data terms: body parts ---
-  'back': 'Rücken', 'cardio': 'Cardio', 'chest': 'Brust', 'lower arms': 'Unterarme',
-  'lower legs': 'Unterschenkel', 'neck': 'Nacken', 'shoulders': 'Schultern',
-  'upper arms': 'Oberarme', 'upper legs': 'Oberschenkel', 'waist': 'Rumpf',
+  'back': 'Rücken',
+  'cardio': 'Cardio',
+  'chest': 'Brust',
+  'lower arms': 'Unterarme',
+  'lower legs': 'Unterschenkel',
+  'neck': 'Nacken',
+  'shoulders': 'Schultern',
+  'upper arms': 'Oberarme',
+  'upper legs': 'Oberschenkel',
+  'waist': 'Rumpf',
   // --- data terms: equipment ---
   'Details': 'Details',
   'Finish': 'Beenden',
   'Start {0}': '{0} starten',
-  'Guest mode — data lives only in this browser.': 'Gastmodus — die Daten liegen nur in diesem Browser.',
-  'Keeps your data safe and separate per person.': 'Hält deine Daten sicher und pro Person getrennt.',
+  'Guest mode — data lives only in this browser.':
+    'Gastmodus — die Daten liegen nur in diesem Browser.',
+  'Keeps your data safe and separate per person.':
+    'Hält deine Daten sicher und pro Person getrennt.',
   'Strength': 'Kraft',
   'Equipment': 'Geräte',
   'Recovery': 'Erholung',
   'Any equipment': 'Alle Geräte',
-  'assisted': 'assistiert', 'band': 'Band', 'barbell': 'Langhantel', 'body weight': 'Körpergewicht',
-  'bosu ball': 'Bosu-Ball', 'cable': 'Kabelzug', 'dumbbell': 'Kurzhantel',
-  'elliptical machine': 'Crosstrainer', 'ez barbell': 'SZ-Stange', 'hammer': 'Hammer',
-  'kettlebell': 'Kettlebell', 'leverage machine': 'Hebelmaschine', 'medicine ball': 'Medizinball',
-  'olympic barbell': 'Olympia-Langhantel', 'resistance band': 'Widerstandsband', 'roller': 'Rolle',
-  'rope': 'Seil', 'skierg machine': 'SkiErg', 'sled machine': 'Schlitten',
-  'smith machine': 'Multipresse', 'stability ball': 'Gymnastikball', 'stationary bike': 'Ergometer',
-  'stepmill machine': 'Treppenmaschine', 'tire': 'Reifen', 'trap bar': 'Trap-Stange',
-  'upper body ergometer': 'Oberkörper-Ergometer', 'weighted': 'mit Zusatzgewicht', 'wheel roller': 'Bauchroller',
+  'assisted': 'assistiert',
+  'band': 'Band',
+  'barbell': 'Langhantel',
+  'body weight': 'Körpergewicht',
+  'bosu ball': 'Bosu-Ball',
+  'cable': 'Kabelzug',
+  'dumbbell': 'Kurzhantel',
+  'elliptical machine': 'Crosstrainer',
+  'ez barbell': 'SZ-Stange',
+  'hammer': 'Hammer',
+  'kettlebell': 'Kettlebell',
+  'leverage machine': 'Hebelmaschine',
+  'medicine ball': 'Medizinball',
+  'olympic barbell': 'Olympia-Langhantel',
+  'resistance band': 'Widerstandsband',
+  'roller': 'Rolle',
+  'rope': 'Seil',
+  'skierg machine': 'SkiErg',
+  'sled machine': 'Schlitten',
+  'smith machine': 'Multipresse',
+  'stability ball': 'Gymnastikball',
+  'stationary bike': 'Ergometer',
+  'stepmill machine': 'Treppenmaschine',
+  'tire': 'Reifen',
+  'trap bar': 'Trap-Stange',
+  'upper body ergometer': 'Oberkörper-Ergometer',
+  'weighted': 'mit Zusatzgewicht',
+  'wheel roller': 'Bauchroller',
   // --- data terms: targets & muscles ---
-  'abductors': 'Abduktoren', 'abs': 'Bauch', 'adductors': 'Adduktoren', 'biceps': 'Bizeps',
-  'calves': 'Waden', 'cardiovascular system': 'Herz-Kreislauf', 'delts': 'Schultern',
-  'forearms': 'Unterarme', 'glutes': 'Gesäss', 'hamstrings': 'Beinbeuger', 'lats': 'Latissimus',
-  'levator scapulae': 'Schulterblattheber', 'pectorals': 'Brustmuskeln', 'quads': 'Beinstrecker',
-  'serratus anterior': 'Sägemuskel', 'spine': 'Wirbelsäule', 'traps': 'Trapezmuskel',
-  'triceps': 'Trizeps', 'upper back': 'oberer Rücken',
-  'abdominals': 'Bauchmuskeln', 'ankle stabilizers': 'Sprunggelenk-Stabilisatoren', 'ankles': 'Sprunggelenke',
-  'brachialis': 'Armbeuger', 'core': 'Rumpf', 'deltoids': 'Deltamuskeln', 'feet': 'Füsse',
-  'grip muscles': 'Griffkraft', 'groin': 'Leiste', 'hands': 'Hände', 'hip flexors': 'Hüftbeuger',
-  'inner thighs': 'Innenschenkel', 'latissimus dorsi': 'Latissimus', 'lower abs': 'unterer Bauch',
-  'lower back': 'unterer Rücken', 'obliques': 'seitliche Bauchmuskeln', 'quadriceps': 'Beinstrecker',
-  'rear deltoids': 'hintere Schulter', 'rhomboids': 'Rhomboiden', 'rotator cuff': 'Rotatorenmanschette',
-  'shins': 'Schienbeine', 'soleus': 'Schollenmuskel', 'sternocleidomastoid': 'Kopfwender',
-  'trapezius': 'Trapezmuskel', 'upper chest': 'obere Brust', 'wrist extensors': 'Handstrecker',
-  'wrist flexors': 'Handbeuger', 'wrists': 'Handgelenke',
+  'abductors': 'Abduktoren',
+  'abs': 'Bauch',
+  'adductors': 'Adduktoren',
+  'biceps': 'Bizeps',
+  'calves': 'Waden',
+  'cardiovascular system': 'Herz-Kreislauf',
+  'delts': 'Schultern',
+  'forearms': 'Unterarme',
+  'glutes': 'Gesäss',
+  'hamstrings': 'Beinbeuger',
+  'lats': 'Latissimus',
+  'levator scapulae': 'Schulterblattheber',
+  'pectorals': 'Brustmuskeln',
+  'quads': 'Beinstrecker',
+  'serratus anterior': 'Sägemuskel',
+  'spine': 'Wirbelsäule',
+  'traps': 'Trapezmuskel',
+  'triceps': 'Trizeps',
+  'upper back': 'oberer Rücken',
+  'abdominals': 'Bauchmuskeln',
+  'ankle stabilizers': 'Sprunggelenk-Stabilisatoren',
+  'ankles': 'Sprunggelenke',
+  'brachialis': 'Armbeuger',
+  'core': 'Rumpf',
+  'deltoids': 'Deltamuskeln',
+  'feet': 'Füsse',
+  'grip muscles': 'Griffkraft',
+  'groin': 'Leiste',
+  'hands': 'Hände',
+  'hip flexors': 'Hüftbeuger',
+  'inner thighs': 'Innenschenkel',
+  'latissimus dorsi': 'Latissimus',
+  'lower abs': 'unterer Bauch',
+  'lower back': 'unterer Rücken',
+  'obliques': 'seitliche Bauchmuskeln',
+  'quadriceps': 'Beinstrecker',
+  'rear deltoids': 'hintere Schulter',
+  'rhomboids': 'Rhomboiden',
+  'rotator cuff': 'Rotatorenmanschette',
+  'shins': 'Schienbeine',
+  'soleus': 'Schollenmuskel',
+  'sternocleidomastoid': 'Kopfwender',
+  'trapezius': 'Trapezmuskel',
+  'upper chest': 'obere Brust',
+  'wrist extensors': 'Handstrecker',
+  'wrist flexors': 'Handbeuger',
+  'wrists': 'Handgelenke',
 
   // --- custom exercises (#11) ---
   'Create your own exercise': 'Eigene Übung erstellen',
   'Edit custom exercise': 'Eigene Übung bearbeiten',
-  'Name it and pick a body part — it behaves like any other exercise, just without an animation.': 'Name und Körperpartie festlegen — die Übung verhält sich wie jede andere, nur ohne Animation.',
+  'Name it and pick a body part — it behaves like any other exercise, just without an animation.':
+    'Name und Körperpartie festlegen — die Übung verhält sich wie jede andere, nur ohne Animation.',
   'Exercise name': 'Übungsname',
   'name + body part, no animation': 'Name + Körperpartie, ohne Animation',
   'Create exercise': 'Übung erstellen',
@@ -401,15 +544,18 @@ export default {
   'Pick a body part': 'Wähle eine Körperpartie',
   '“{0}” already exists': '„{0}“ existiert bereits',
   '“{0}” created': '„{0}“ erstellt',
-  'Cardio exercises log time + speed instead of weight × reps.': 'Cardio-Übungen erfassen Zeit + Tempo statt Gewicht × Wdh.',
+  'Cardio exercises log time + speed instead of weight × reps.':
+    'Cardio-Übungen erfassen Zeit + Tempo statt Gewicht × Wdh.',
   'custom': 'eigene',
   'Edit': 'Bearbeiten',
   'Saved': 'Gespeichert',
   'Delete “{0}”?': '„{0}“ löschen?',
-  'It will be removed from your routines. Already-logged workouts keep their sets.': 'Sie wird aus deinen Routinen entfernt. Bereits geloggte Workouts behalten ihre Sätze.',
+  'It will be removed from your routines. Already-logged workouts keep their sets.':
+    'Sie wird aus deinen Routinen entfernt. Bereits geloggte Workouts behalten ihre Sätze.',
   'Exercise deleted': 'Übung gelöscht',
   'Finish your current workout first': 'Beende zuerst dein laufendes Workout',
-  'Description (optional) — setup, cues, anything you want to remember': 'Beschreibung (optional) — Aufbau, Hinweise, was du dir merken willst',
+  'Description (optional) — setup, cues, anything you want to remember':
+    'Beschreibung (optional) — Aufbau, Hinweise, was du dir merken willst',
   'Delete exercise': 'Übung löschen',
   'Edit or delete this exercise': 'Übung bearbeiten oder löschen',
   'Remove from routine': 'Aus Routine entfernen',
@@ -420,7 +566,8 @@ export default {
   'Small': 'Klein',
   'Hidden': 'Versteckt',
   'Invite code': 'Einladungscode',
-  'This app is invite-only — enter the code you were given.': 'Diese App ist nur mit Einladung — gib den Code ein, den du erhalten hast.',
+  'This app is invite-only — enter the code you were given.':
+    'Diese App ist nur mit Einladung — gib den Code ein, den du erhalten hast.',
   'An invite code is required': 'Ein Einladungscode ist erforderlich',
   'Admin dashboard': 'Admin-Dashboard',
   // --- muscle map ---
@@ -429,8 +576,10 @@ export default {
   'Ready': 'Bereit',
   'Recovering': 'In Erholung',
   'Fatigued': 'Ermüdet',
-  'Fatigue shows how recently each muscle was trained. High means rest.': 'Die Ermüdung zeigt, wie lange das Training jedes Muskels zurückliegt. Ein hoher Wert bedeutet: Pause.',
-  'Strength shows retained muscle strength. Train again to reset it.': 'Die Kraft zeigt, wie viel Muskelkraft erhalten ist. Trainiere erneut, um sie zurückzusetzen.',
+  'Fatigue shows how recently each muscle was trained. High means rest.':
+    'Die Ermüdung zeigt, wie lange das Training jedes Muskels zurückliegt. Ein hoher Wert bedeutet: Pause.',
+  'Strength shows retained muscle strength. Train again to reset it.':
+    'Die Kraft zeigt, wie viel Muskelkraft erhalten ist. Trainiere erneut, um sie zurückzusetzen.',
   'full': 'voll',
   'floor': 'Minimum',
   'Weeks since training: {0}': 'Zuletzt vor {0} Wo. trainiert',
@@ -438,7 +587,8 @@ export default {
   'Week': 'Woche',
   'not trained': 'nicht trainiert',
   'Not trained in this period': 'In diesem Zeitraum nicht trainiert',
-  'Every muscle group got some work in this period.': 'Jede Muskelgruppe hat in diesem Zeitraum etwas abbekommen.',
+  'Every muscle group got some work in this period.':
+    'Jede Muskelgruppe hat in diesem Zeitraum etwas abbekommen.',
   'No workouts in this period yet.': 'Noch keine Trainings in diesem Zeitraum.',
   'What this session hits': 'Was dieses Training trifft',
   'What you just trained': 'Was du gerade trainiert hast',
@@ -467,28 +617,36 @@ export default {
   'Shins': 'Schienbein',
   // --- import from another app ---
   'Import from another app': 'Aus anderer App importieren',
-  'FitNotes, Strong, Hevy — or body weight from Apple Health': 'FitNotes, Strong, Hevy — oder Körpergewicht aus Apple Health',
+  'FitNotes, Strong, Hevy — or body weight from Apple Health':
+    'FitNotes, Strong, Hevy — oder Körpergewicht aus Apple Health',
   'Import from {0}': 'Aus {0} importieren',
   'Import history': 'Verlauf importieren',
   'Weigh-ins': 'Wiegungen',
   'Exercises matched': 'Übungen erkannt',
   'Added as your own': 'Als eigene angelegt',
-  'The file is in {0} and your profile is in {1} — weights will be converted.': 'Die Datei ist in {0}, dein Profil in {1} — die Gewichte werden umgerechnet.',
-  'The file does not say which unit it uses — numbers are imported as they are.': 'Die Datei nennt keine Einheit — die Zahlen werden unverändert übernommen.',
-  'The file mixes kg and lb — each set is converted to {0}.': 'Die Datei mischt kg und lb — jeder Satz wird in {0} umgerechnet.',
-  '{0} days already have data here and will be left alone.': '{0} Tage haben hier schon Daten und bleiben unangetastet.',
-  'Not in the library — added as your own exercises': 'Nicht in der Bibliothek — als eigene Übungen angelegt',
+  'The file is in {0} and your profile is in {1} — weights will be converted.':
+    'Die Datei ist in {0}, dein Profil in {1} — die Gewichte werden umgerechnet.',
+  'The file does not say which unit it uses — numbers are imported as they are.':
+    'Die Datei nennt keine Einheit — die Zahlen werden unverändert übernommen.',
+  'The file mixes kg and lb — each set is converted to {0}.':
+    'Die Datei mischt kg und lb — jeder Satz wird in {0} umgerechnet.',
+  '{0} days already have data here and will be left alone.':
+    '{0} Tage haben hier schon Daten und bleiben unangetastet.',
+  'Not in the library — added as your own exercises':
+    'Nicht in der Bibliothek — als eigene Übungen angelegt',
   'Nothing new to import': 'Nichts Neues zu importieren',
   '{0} workouts imported': '{0} Trainings importiert',
   '{0} weigh-ins imported': '{0} Wiegungen importiert',
   'Could not read that file': 'Datei konnte nicht gelesen werden',
   'That file is empty': 'Diese Datei ist leer',
-  'That file\'s columns aren\'t recognised — see the docs for supported apps.': 'Die Spalten dieser Datei sind unbekannt — unterstützte Apps stehen in der Doku.',
+  "That file's columns aren't recognised — see the docs for supported apps.":
+    'Die Spalten dieser Datei sind unbekannt — unterstützte Apps stehen in der Doku.',
   'Nothing to import from that file': 'Aus dieser Datei gibt es nichts zu importieren',
   // --- import from Hevy API ---
   'Import from Hevy': 'Aus Hevy importieren',
   'Pull your history with a Hevy Pro API key': 'Verlauf mit einem Hevy-Pro-API-Schlüssel holen',
-  'Pull your history with a Hevy Pro API key. The key is only used for this import and is not saved.': 'Verlauf mit einem Hevy-Pro-API-Schlüssel holen. Der Schlüssel gilt nur für diesen Import und wird nicht gespeichert.',
+  'Pull your history with a Hevy Pro API key. The key is only used for this import and is not saved.':
+    'Verlauf mit einem Hevy-Pro-API-Schlüssel holen. Der Schlüssel gilt nur für diesen Import und wird nicht gespeichert.',
   'Hevy API key': 'Hevy-API-Schlüssel',
   'Get your API key': 'API-Schlüssel holen',
   'Hevy → Settings → Developer': 'Hevy → Einstellungen → Developer',
@@ -499,34 +657,43 @@ export default {
   'Fetching workouts… ({0}/{1})': 'Trainings werden geladen… ({0}/{1})',
   'Fetching weigh-ins… ({0}/{1})': 'Wiegungen werden geladen… ({0}/{1})',
   'Matching exercises…': 'Übungen werden zugeordnet…',
-  'Could not reach Hevy — check the key and try again': 'Hevy nicht erreichbar — Schlüssel prüfen und erneut versuchen',
+  'Could not reach Hevy — check the key and try again':
+    'Hevy nicht erreichbar — Schlüssel prüfen und erneut versuchen',
   'That Hevy API key was refused': 'Dieser Hevy-API-Schlüssel wurde abgelehnt',
   'Nothing to import from Hevy': 'Von Hevy gibt es nichts zu importieren',
   'Import workouts': 'Trainings importieren',
   'Import routines': 'Routinen importieren',
   'Import weigh-ins': 'Wiegungen importieren',
   '{0} new · {1} days already here': '{0} neu · {1} Tage schon vorhanden',
-  '{0} routines · {1} exercises — added as new plans': '{0} Routinen · {1} Übungen — als neue Pläne hinzugefügt',
+  '{0} routines · {1} exercises — added as new plans':
+    '{0} Routinen · {1} Übungen — als neue Pläne hinzugefügt',
   '{0} routines imported': '{0} Routinen importiert',
   'Fetching routines… ({0}/{1})': 'Routinen werden geladen… ({0}/{1})',
   'Routines': 'Routinen',
-  'Hevy stores weights in kg — they will be converted to {0}.': 'Hevy speichert Gewichte in kg — sie werden nach {0} umgerechnet.',
+  'Hevy stores weights in kg — they will be converted to {0}.':
+    'Hevy speichert Gewichte in kg — sie werden nach {0} umgerechnet.',
   'Back': 'Zurück',
   // --- mobile build ---
   'Your data': 'Deine Daten',
   'All data stays on this phone': 'Alle Daten bleiben auf diesem Handy',
-  'No account, no cloud — back it up anytime with Export below.': 'Kein Konto, keine Cloud — sichere sie jederzeit über den Export unten.',
-  'Reminds you at this time on days that have a routine planned.': 'Erinnert dich zu dieser Zeit an Tagen, für die eine Routine geplant ist.',
+  'No account, no cloud — back it up anytime with Export below.':
+    'Kein Konto, keine Cloud — sichere sie jederzeit über den Export unten.',
+  'Reminds you at this time on days that have a routine planned.':
+    'Erinnert dich zu dieser Zeit an Tagen, für die eine Routine geplant ist.',
   'Workout day': 'Trainingstag',
   '{0} is on the plan today — let’s go!': '{0} steht heute auf dem Plan — los geht’s!',
   // --- plan sharing ---
   'Share your plan': 'Plan teilen',
-  'Send your routines to a friend, or put your week on paper.': 'Schick deine Routinen an einen Freund oder bring deine Woche zu Papier.',
+  'Send your routines to a friend, or put your week on paper.':
+    'Schick deine Routinen an einen Freund oder bring deine Woche zu Papier.',
   'Export plan file': 'Plandatei exportieren',
-  'A small file a friend imports into their own openGym — routines only, none of your workouts or weigh-ins.': 'Eine kleine Datei, die ein Freund in sein eigenes openGym importiert — nur Routinen, keine Workouts oder Wiegungen.',
+  'A small file a friend imports into their own openGym — routines only, none of your workouts or weigh-ins.':
+    'Eine kleine Datei, die ein Freund in sein eigenes openGym importiert — nur Routinen, keine Workouts oder Wiegungen.',
   'Print / Save as PDF': 'Drucken / Als PDF speichern',
-  'A clean one-page-per-plan printout — no exercise ever splits across a page.': 'Ein sauberer Ausdruck, eine Seite pro Plan — keine Übung wird je über eine Seite getrennt.',
-  'Add an exercise to a routine first — an empty plan has nothing to share.': 'Füge zuerst eine Übung zu einer Routine hinzu — ein leerer Plan hat nichts zu teilen.',
+  'A clean one-page-per-plan printout — no exercise ever splits across a page.':
+    'Ein sauberer Ausdruck, eine Seite pro Plan — keine Übung wird je über eine Seite getrennt.',
+  'Add an exercise to a routine first — an empty plan has nothing to share.':
+    'Füge zuerst eine Übung zu einer Routine hinzu — ein leerer Plan hat nichts zu teilen.',
   'Got a plan from a friend?': 'Plan von einem Freund bekommen?',
   'Import a plan file': 'Plandatei importieren',
   'Plan file saved — send it to a friend': 'Plandatei gespeichert — schick sie einem Freund',
@@ -537,9 +704,12 @@ export default {
   '{0} routines': '{0} Routinen',
   'scheduled on {0} days': 'an {0} Tagen eingeplant',
   'scheduled on {0} day': 'an {0} Tag eingeplant',
-  'These are added as new routines — nothing you already have is changed.': 'Diese werden als neue Routinen hinzugefügt — nichts, was du schon hast, wird geändert.',
-  '{0} exercise in the file isn’t in your library and was left out.': '{0} Übung aus der Datei ist nicht in deiner Bibliothek und wurde weggelassen.',
-  '{0} exercises in the file aren’t in your library and were left out.': '{0} Übungen aus der Datei sind nicht in deiner Bibliothek und wurden weggelassen.',
+  'These are added as new routines — nothing you already have is changed.':
+    'Diese werden als neue Routinen hinzugefügt — nichts, was du schon hast, wird geändert.',
+  '{0} exercise in the file isn’t in your library and was left out.':
+    '{0} Übung aus der Datei ist nicht in deiner Bibliothek und wurde weggelassen.',
+  '{0} exercises in the file aren’t in your library and were left out.':
+    '{0} Übungen aus der Datei sind nicht in deiner Bibliothek und wurden weggelassen.',
   'Use this weekly schedule': 'Diesen Wochenplan verwenden',
   'Replaces your current Mon–Sun assignments.': 'Ersetzt deine aktuelle Mo–So-Belegung.',
   'Added {0} routines to your plan': '{0} Routinen zu deinem Plan hinzugefügt',
@@ -549,7 +719,8 @@ export default {
   'Weekly Training Plan': 'Wochen-Trainingsplan',
   'Made with openGym': 'Erstellt mit openGym',
   'Something went wrong': 'Etwas ist schiefgelaufen',
-  'This screen could not be drawn. Your data is safe on this device.': 'Dieser Bildschirm konnte nicht dargestellt werden. Deine Daten auf diesem Gerät sind sicher.',
+  'This screen could not be drawn. Your data is safe on this device.':
+    'Dieser Bildschirm konnte nicht dargestellt werden. Deine Daten auf diesem Gerät sind sicher.',
   'Reload openGym': 'openGym neu laden',
   'Discard the running workout': 'Laufendes Training verwerfen',
 
@@ -558,16 +729,20 @@ export default {
   'Est. 1RM': 'gesch. 1RM',
   'Estimated 1RM': 'Geschätztes 1RM',
   'Estimated 1RM per workout': 'Geschätztes 1RM pro Training',
-  'Best estimate from {0} on {1} — an estimate, not a tested max.': 'Beste Schätzung aus {0} am {1} — eine Schätzung, kein getesteter Max-Wert.',
+  'Best estimate from {0} on {1} — an estimate, not a tested max.':
+    'Beste Schätzung aus {0} am {1} — eine Schätzung, kein getesteter Max-Wert.',
   'From your log:': 'Aus deinem Log:',
   '{0} × {1} on {2}': '{0} × {1} am {2}',
   'Estimate': 'Schätzung',
-  'Enter a weight and 1–{0} reps — beyond that an estimate is guesswork.': 'Gewicht und 1–{0} Wiederholungen eingeben — darüber hinaus ist eine Schätzung Raterei.',
-  'Epley formula — a calculation from one set, not a tested max.': 'Epley-Formel — berechnet aus einem Satz, kein getesteter Max-Wert.',
+  'Enter a weight and 1–{0} reps — beyond that an estimate is guesswork.':
+    'Gewicht und 1–{0} Wiederholungen eingeben — darüber hinaus ist eine Schätzung Raterei.',
+  'Epley formula — a calculation from one set, not a tested max.':
+    'Epley-Formel — berechnet aus einem Satz, kein getesteter Max-Wert.',
   'Best estimated 1RM:': 'Bestes geschätztes 1RM:',
   'Time': 'Zeit',
   'Seconds': 'Sekunden',
-  'A timer runs while you hold the set. Leave the weight at 0 for bodyweight holds.': 'Während des Satzes läuft ein Timer. Für Halteübungen ohne Zusatzgewicht das Gewicht auf 0 lassen.',
+  'A timer runs while you hold the set. Leave the weight at 0 for bodyweight holds.':
+    'Während des Satzes läuft ein Timer. Für Halteübungen ohne Zusatzgewicht das Gewicht auf 0 lassen.',
   'Done': 'Fertig',
   'Start set': 'Satz starten',
   'Hold logged': 'Haltezeit gespeichert',
@@ -575,55 +750,78 @@ export default {
   'Progression': 'Progression',
   'Rule': 'Regel',
   'Follow the routine ({0})': 'Der Routine folgen ({0})',
-  'Applies to every exercise in this routine that does not set its own rule.': 'Gilt für jede Übung dieser Routine, die keine eigene Regel hat.',
+  'Applies to every exercise in this routine that does not set its own rule.':
+    'Gilt für jede Übung dieser Routine, die keine eigene Regel hat.',
   'Step ({0})': 'Schritt ({0})',
   'Step (seconds)': 'Schritt (Sekunden)',
   'Reps from': 'Wdh. ab',
   'Reps up to': 'Wdh. bis',
   'No automatic progression': 'Keine automatische Progression',
   'Exclude from automatic progression': 'Von der automatischen Progression ausschließen',
-  'Use for planned deloads. Workouts stay in history and statistics.': 'Für geplante Deloads. Workouts bleiben im Verlauf und in den Statistiken.',
-  'The next regular target continues from the last included workout.': 'Das nächste reguläre Ziel setzt beim letzten einbezogenen Workout fort.',
+  'Use for planned deloads. Workouts stay in history and statistics.':
+    'Für geplante Deloads. Workouts bleiben im Verlauf und in den Statistiken.',
+  'The next regular target continues from the last included workout.':
+    'Das nächste reguläre Ziel setzt beim letzten einbezogenen Workout fort.',
   'Linear progression': 'Lineare Progression',
   'Greyskull LP': 'Greyskull LP',
   'Double progression': 'Doppelte Progression',
   'Add time': 'Zeit erhöhen',
   'Targets stay where you set them.': 'Die Vorgaben bleiben so, wie du sie gesetzt hast.',
-  'Hit every rep in every set and the weight goes up. Repeated misses trigger a deload.': 'Schaffst du jede Wiederholung in jedem Satz, steigt das Gewicht. Mehrfaches Verfehlen löst einen Deload aus.',
-  'Two straight sets plus a final set taken to failure. Beat the target on that set and the weight goes up — double if you double the reps. One failure resets 10 %.': 'Zwei normale Sätze plus ein letzter Satz bis zum Muskelversagen. Schlägst du dort die Vorgabe, steigt das Gewicht — doppelt, wenn du die Wiederholungen verdoppelst. Ein Fehlversuch setzt um 10 % zurück.',
-  'Work up through a rep range at the same weight. Reach the top of the range in every set and the weight goes up, reps back to the bottom.': 'Arbeite dich bei gleichem Gewicht durch einen Wiederholungsbereich. Erreichst du in jedem Satz das obere Ende, steigt das Gewicht und die Wiederholungen fallen zurück auf das untere Ende.',
-  'Hold every set for the full duration and the target goes up.': 'Hältst du jeden Satz die volle Zeit, steigt die Vorgabe.',
-  'Nothing logged yet — this session sets the baseline.': 'Noch nichts protokolliert — diese Einheit setzt den Ausgangswert.',
-  'Held every set for the full time — target up by {0}s.': 'Jeden Satz die volle Zeit gehalten — Vorgabe um {0}s höher.',
-  'Short {0} sessions in a row — back off to {1}s and build up again.': '{0} Einheiten in Folge zu kurz — zurück auf {1}s und neu aufbauen.',
-  'Last time came up short — same target again.': 'Letztes Mal nicht geschafft — dieselbe Vorgabe noch einmal.',
-  'Top of the rep range in every set — {0} {1} more, back to {2} reps.': 'Oberes Ende des Wiederholungsbereichs in jedem Satz — {0} {1} mehr, zurück auf {2} Wiederholungen.',
+  'Hit every rep in every set and the weight goes up. Repeated misses trigger a deload.':
+    'Schaffst du jede Wiederholung in jedem Satz, steigt das Gewicht. Mehrfaches Verfehlen löst einen Deload aus.',
+  'Two straight sets plus a final set taken to failure. Beat the target on that set and the weight goes up — double if you double the reps. One failure resets 10 %.':
+    'Zwei normale Sätze plus ein letzter Satz bis zum Muskelversagen. Schlägst du dort die Vorgabe, steigt das Gewicht — doppelt, wenn du die Wiederholungen verdoppelst. Ein Fehlversuch setzt um 10 % zurück.',
+  'Work up through a rep range at the same weight. Reach the top of the range in every set and the weight goes up, reps back to the bottom.':
+    'Arbeite dich bei gleichem Gewicht durch einen Wiederholungsbereich. Erreichst du in jedem Satz das obere Ende, steigt das Gewicht und die Wiederholungen fallen zurück auf das untere Ende.',
+  'Hold every set for the full duration and the target goes up.':
+    'Hältst du jeden Satz die volle Zeit, steigt die Vorgabe.',
+  'Nothing logged yet — this session sets the baseline.':
+    'Noch nichts protokolliert — diese Einheit setzt den Ausgangswert.',
+  'Held every set for the full time — target up by {0}s.':
+    'Jeden Satz die volle Zeit gehalten — Vorgabe um {0}s höher.',
+  'Short {0} sessions in a row — back off to {1}s and build up again.':
+    '{0} Einheiten in Folge zu kurz — zurück auf {1}s und neu aufbauen.',
+  'Last time came up short — same target again.':
+    'Letztes Mal nicht geschafft — dieselbe Vorgabe noch einmal.',
+  'Top of the rep range in every set — {0} {1} more, back to {2} reps.':
+    'Oberes Ende des Wiederholungsbereichs in jedem Satz — {0} {1} mehr, zurück auf {2} Wiederholungen.',
   'Stalled {0} sessions — deload to {1} {2}.': '{0} Einheiten festgefahren — Deload auf {1} {2}.',
-  'Same weight — aim for {0} reps this time.': 'Gleiches Gewicht — diesmal {0} Wiederholungen anpeilen.',
-  'Last set hit {0} reps — twice the target, so take a double jump of {1} {2}.': 'Letzter Satz mit {0} Wiederholungen — doppelte Vorgabe, also ein doppelter Sprung von {1} {2}.',
+  'Same weight — aim for {0} reps this time.':
+    'Gleiches Gewicht — diesmal {0} Wiederholungen anpeilen.',
+  'Last set hit {0} reps — twice the target, so take a double jump of {1} {2}.':
+    'Letzter Satz mit {0} Wiederholungen — doppelte Vorgabe, also ein doppelter Sprung von {1} {2}.',
   'Every rep last time — {0} {1} more.': 'Letztes Mal jede Wiederholung — {0} {1} mehr.',
-  'Missed reps {0} sessions running — reset to {1} {2} and work back up.': '{0} Einheiten in Folge Wiederholungen verfehlt — zurück auf {1} {2} und wieder hocharbeiten.',
-  'Missed reps — reset to {0} {1} and work back up.': 'Wiederholungen verfehlt — zurück auf {0} {1} und wieder hocharbeiten.',
-  'Missed reps last time — same weight again ({0} of {1} to go).': 'Letztes Mal Wiederholungen verfehlt — dasselbe Gewicht noch einmal (noch {0} von {1}).',
-  'Bodyweight — every rep last time, so go for {0} this time.': 'Körpergewicht — letztes Mal jede Wiederholung, also diesmal {0} anpeilen.',
-  'Bodyweight — same target again until every set is clean.': 'Körpergewicht — dieselbe Vorgabe, bis jeder Satz sauber sitzt.',
+  'Missed reps {0} sessions running — reset to {1} {2} and work back up.':
+    '{0} Einheiten in Folge Wiederholungen verfehlt — zurück auf {1} {2} und wieder hocharbeiten.',
+  'Missed reps — reset to {0} {1} and work back up.':
+    'Wiederholungen verfehlt — zurück auf {0} {1} und wieder hocharbeiten.',
+  'Missed reps last time — same weight again ({0} of {1} to go).':
+    'Letztes Mal Wiederholungen verfehlt — dasselbe Gewicht noch einmal (noch {0} von {1}).',
+  'Bodyweight — every rep last time, so go for {0} this time.':
+    'Körpergewicht — letztes Mal jede Wiederholung, also diesmal {0} anpeilen.',
+  'Bodyweight — same target again until every set is clean.':
+    'Körpergewicht — dieselbe Vorgabe, bis jeder Satz sauber sitzt.',
 
   // --- effort per set (RIR / RPE) ---
-  '{0} sets bring an {1} with them — switch on Effort per set in Settings to see it.': '{0} Sätze bringen ein {1} mit — schalte in den Einstellungen „Anstrengung pro Satz“ ein, um es zu sehen.',
+  '{0} sets bring an {1} with them — switch on Effort per set in Settings to see it.':
+    '{0} Sätze bringen ein {1} mit — schalte in den Einstellungen „Anstrengung pro Satz“ ein, um es zu sehen.',
   '{0} sets bring an {1} with them.': '{0} Sätze bringen ein {1} mit.',
   'RIR': 'RIR',
   'RPE': 'RPE',
   'Effort per set': 'Anstrengung pro Satz',
   'What are RIR and RPE?': 'Was sind RIR und RPE?',
-  'How hard a set was, logged next to weight and reps. Two scales for the same judgement, counted from opposite ends.': 'Wie schwer ein Satz war, direkt neben Gewicht und Wiederholungen. Zwei Skalen für dieselbe Einschätzung, von entgegengesetzten Enden gezählt.',
+  'How hard a set was, logged next to weight and reps. Two scales for the same judgement, counted from opposite ends.':
+    'Wie schwer ein Satz war, direkt neben Gewicht und Wiederholungen. Zwei Skalen für dieselbe Einschätzung, von entgegengesetzten Enden gezählt.',
   'How it felt': 'Wie es sich anfühlte',
   'Nothing left — went to failure': 'Nichts mehr übrig — bis zum Muskelversagen',
   'One more rep in the tank': 'Eine Wiederholung wäre noch gegangen',
   'Two more reps': 'Zwei Wiederholungen übrig',
   'Three more reps': 'Drei Wiederholungen übrig',
   'Easy — warm-up territory': 'Locker — Aufwärmbereich',
-  'RIR counts the reps you left; RPE reads the same effort off a 10-point scale — so RPE ≈ 10 − RIR. Pick the one you already think in.': 'RIR zählt die Wiederholungen, die du übrig lässt; RPE liest dieselbe Anstrengung auf einer 10er-Skala ab — also RPE ≈ 10 − RIR. Nimm die Skala, in der du ohnehin denkst.',
-  'The highlighted row is where most working sets land. Sets you have already logged keep their own scale, and nothing else reads the value — progression and estimated 1RM are unaffected.': 'Die hervorgehobene Zeile ist der Bereich, in dem die meisten Arbeitssätze landen. Bereits protokollierte Sätze behalten ihre eigene Skala, und sonst liest den Wert nichts — Progression und geschätztes 1RM bleiben unberührt.',
+  'RIR counts the reps you left; RPE reads the same effort off a 10-point scale — so RPE ≈ 10 − RIR. Pick the one you already think in.':
+    'RIR zählt die Wiederholungen, die du übrig lässt; RPE liest dieselbe Anstrengung auf einer 10er-Skala ab — also RPE ≈ 10 − RIR. Nimm die Skala, in der du ohnehin denkst.',
+  'The highlighted row is where most working sets land. Sets you have already logged keep their own scale, and nothing else reads the value — progression and estimated 1RM are unaffected.':
+    'Die hervorgehobene Zeile ist der Bereich, in dem die meisten Arbeitssätze landen. Bereits protokollierte Sätze behalten ihre eigene Skala, und sonst liest den Wert nichts — Progression und geschätztes 1RM bleiben unberührt.',
   // --- effort in the stats ---
   'Effort': 'Anstrengung',
   'how close to failure': 'wie nah am Muskelversagen',
@@ -631,33 +829,44 @@ export default {
   'Hard': 'Hart',
   'no hard sets': 'keine harten Sätze',
   'No hard sets in this period': 'Keine harten Sätze in diesem Zeitraum',
-  'Every muscle group got at least one hard set in this period.': 'Jede Muskelgruppe hat in diesem Zeitraum mindestens einen harten Satz bekommen.',
+  'Every muscle group got at least one hard set in this period.':
+    'Jede Muskelgruppe hat in diesem Zeitraum mindestens einen harten Satz bekommen.',
   'No rated sets in this period.': 'Keine bewerteten Sätze in diesem Zeitraum.',
   'average effort': 'durchschnittliche Anstrengung',
   'at {0} {1} or harder': 'bei {0} {1} oder härter',
   '{0} of {1} finished sets rated': '{0} von {1} erledigten Sätzen bewertet',
-  'Effort per set is switched off — turn it on in Settings to keep rating.': 'Anstrengung pro Satz ist ausgeschaltet — schalte sie in den Einstellungen ein, um weiter zu bewerten.',
+  'Effort per set is switched off — turn it on in Settings to keep rating.':
+    'Anstrengung pro Satz ist ausgeschaltet — schalte sie in den Einstellungen ein, um weiter zu bewerten.',
   'Week by week': 'Woche für Woche',
   'Where the sets land': 'Wo die Sätze landen',
-  'Most working sets belong close to failure without living there — half at the floor and half at the top average out to a healthy-looking middle.': 'Die meisten Arbeitssätze gehören nah ans Muskelversagen, ohne dort zu wohnen — die Hälfte ganz unten und die Hälfte ganz oben mittelt sich zu einem gesund aussehenden Mittelwert.',
+  'Most working sets belong close to failure without living there — half at the floor and half at the top average out to a healthy-looking middle.':
+    'Die meisten Arbeitssätze gehören nah ans Muskelversagen, ohne dort zu wohnen — die Hälfte ganz unten und die Hälfte ganz oben mittelt sich zu einem gesund aussehenden Mittelwert.',
   'Average effort per workout': 'Durchschnittliche Anstrengung pro Training',
-  'A fuller dot means less left in the tank — the same weight at a lower {0} is progress the line alone does not show.': 'Ein vollerer Punkt heißt: weniger im Tank — dasselbe Gewicht bei niedrigerem {0} ist Fortschritt, den die Linie allein nicht zeigt.',
+  'A fuller dot means less left in the tank — the same weight at a lower {0} is progress the line alone does not show.':
+    'Ein vollerer Punkt heißt: weniger im Tank — dasselbe Gewicht bei niedrigerem {0} ist Fortschritt, den die Linie allein nicht zeigt.',
   // --- bodyweight & per side ---
   'Bodyweight': 'Körpergewicht',
   'No weight to enter — just log the reps.': 'Kein Gewicht einzutragen — nur die Wiederholungen.',
   'Ask for a weight on every set.': 'Bei jedem Satz nach dem Gewicht fragen.',
-  'For dips or pull-ups with a belt. Progression then follows the weight.': 'Für Dips oder Klimmzüge mit Gürtel. Die Progression folgt dann dem Gewicht.',
+  'For dips or pull-ups with a belt. Progression then follows the weight.':
+    'Für Dips oder Klimmzüge mit Gürtel. Die Progression folgt dann dem Gewicht.',
   'Reps per side': 'Wiederholungen pro Seite',
-  'For lunges, single-arm rows and the like.': 'Für Ausfallschritte, einarmiges Rudern und Ähnliches.',
+  'For lunges, single-arm rows and the like.':
+    'Für Ausfallschritte, einarmiges Rudern und Ähnliches.',
   'Top of the range': 'Oberes Ende',
-  'Reps climb by one whenever every set was clean. Set a ceiling to add sets instead of reps forever.': 'Die Wiederholungen steigen um eine, sobald jeder Satz sauber war. Setz ein oberes Ende, damit irgendwann ein Satz dazukommt statt immer mehr Wiederholungen.',
-  'Reps climb to {0}, then a set is added and the reps start over. At {1} sets it asks you to add weight instead.': 'Die Wiederholungen steigen bis {0}, dann kommt ein Satz dazu und die Wiederholungen starten neu. Bei {1} Sätzen wird stattdessen nach Zusatzgewicht gefragt.',
+  'Reps climb by one whenever every set was clean. Set a ceiling to add sets instead of reps forever.':
+    'Die Wiederholungen steigen um eine, sobald jeder Satz sauber war. Setz ein oberes Ende, damit irgendwann ein Satz dazukommt statt immer mehr Wiederholungen.',
+  'Reps climb to {0}, then a set is added and the reps start over. At {1} sets it asks you to add weight instead.':
+    'Die Wiederholungen steigen bis {0}, dann kommt ein Satz dazu und die Wiederholungen starten neu. Bei {1} Sätzen wird stattdessen nach Zusatzgewicht gefragt.',
   'Added ({0})': 'Zusatz ({0})',
   '{0}/side': '{0}/Seite',
-  '{0} reps in every set — add a set and go back to {1}.': '{0} Wiederholungen in jedem Satz — ein Satz kommt dazu, zurück auf {1}.',
-  '{0} sets of {1} — time to add weight or move to a harder variation.': '{0} Sätze mit {1} — Zeit für Zusatzgewicht oder eine schwerere Variante.',
+  '{0} reps in every set — add a set and go back to {1}.':
+    '{0} Wiederholungen in jedem Satz — ein Satz kommt dazu, zurück auf {1}.',
+  '{0} sets of {1} — time to add weight or move to a harder variation.':
+    '{0} Sätze mit {1} — Zeit für Zusatzgewicht oder eine schwerere Variante.',
   '{0} per side': '{0} pro Seite',
-  'You still log the total: {0} is {1} per side.': 'Du trägst weiterhin die Gesamtzahl ein: {0} sind {1} pro Seite.',
+  'You still log the total: {0} is {1} per side.':
+    'Du trägst weiterhin die Gesamtzahl ein: {0} sind {1} pro Seite.',
   '{0} sets · {1} work': '{0} Sätze · {1} Arbeit',
   'Make superset with previous': 'Mit vorheriger Übung kombinieren',
   'Make superset with next': 'Mit nächster Übung kombinieren',
@@ -674,18 +883,23 @@ export default {
   'Filter by "{0}"': 'Nach „{0}“ filtern',
   'Edit profile': 'Profil bearbeiten',
   'New equipment profile': 'Neues Geräteprofil',
-  'Name it after where you train — e.g. "Home" or "Gym" — then check what you have there.': 'Benenne es nach deinem Trainingsort — z. B. „Zuhause“ oder „Gym“ — und hake dann ab, was du dort hast.',
+  'Name it after where you train — e.g. "Home" or "Gym" — then check what you have there.':
+    'Benenne es nach deinem Trainingsort — z. B. „Zuhause“ oder „Gym“ — und hake dann ab, was du dort hast.',
   'Profile name': 'Profilname',
-  'Body-weight exercises are always available, in every profile.': 'Körpergewichtsübungen sind immer verfügbar, in jedem Profil.',
-  '{0} of {1} exercises need equipment outside "{2}"': '{0} von {1} Übungen brauchen Geräte außerhalb von „{2}“',
+  'Body-weight exercises are always available, in every profile.':
+    'Körpergewichtsübungen sind immer verfügbar, in jedem Profil.',
+  '{0} of {1} exercises need equipment outside "{2}"':
+    '{0} von {1} Übungen brauchen Geräte außerhalb von „{2}“',
   'Needs {0} — not in your active profile': 'Braucht {0} — nicht in deinem aktiven Profil',
   'Filter by equipment': 'Nach Geräten filtern',
   'Active profile': 'Aktives Profil',
   '{0} equipment types': '{0} Gerätearten',
   'Add equipment profile': 'Geräteprofil hinzufügen',
   'Delete profile?': 'Profil löschen?',
-  '"{0}" and its equipment list will be removed.': '„{0}“ und die zugehörige Geräteliste werden entfernt.',
-  'Filters the exercise library and picker, and flags routine exercises that need something you don’t have in the active profile.': 'Filtert die Übungsbibliothek und die Auswahl und markiert Übungen in Routinen, die Geräte brauchen, die du im aktiven Profil nicht hast.',
+  '"{0}" and its equipment list will be removed.':
+    '„{0}“ und die zugehörige Geräteliste werden entfernt.',
+  'Filters the exercise library and picker, and flags routine exercises that need something you don’t have in the active profile.':
+    'Filtert die Übungsbibliothek und die Auswahl und markiert Übungen in Routinen, die Geräte brauchen, die du im aktiven Profil nicht hast.',
 
   // --- muscle groups ---
   'Primary muscle groups': 'Primäre Muskelgruppen',
@@ -697,25 +911,31 @@ export default {
   'Synced with your openGym server.': 'Mit deinem openGym-Server synchronisiert.',
   'Disconnect': 'Trennen',
   'Disconnect from your server?': 'Verbindung zum Server trennen?',
-  'Your data is synced to your server first, then this device switches back to local-only.': 'Deine Daten werden zuerst mit deinem Server synchronisiert, dann wechselt dieses Gerät zurück in den lokalen Modus.',
+  'Your data is synced to your server first, then this device switches back to local-only.':
+    'Deine Daten werden zuerst mit deinem Server synchronisiert, dann wechselt dieses Gerät zurück in den lokalen Modus.',
   'Disconnected — back to local-only': 'Verbindung getrennt — zurück im lokalen Modus',
   'Connect to my server': 'Mit meinem Server verbinden',
-  'Sync this device to your own self-hosted openGym instead.': 'Dieses Gerät stattdessen mit deinem eigenen self-hosted openGym synchronisieren.',
+  'Sync this device to your own self-hosted openGym instead.':
+    'Dieses Gerät stattdessen mit deinem eigenen self-hosted openGym synchronisieren.',
   'Pair the mobile app': 'Mobile App koppeln',
-  'Connect the openGym app on your phone to this account.': 'Verbinde die openGym-App auf deinem Handy mit diesem Konto.',
+  'Connect the openGym app on your phone to this account.':
+    'Verbinde die openGym-App auf deinem Handy mit diesem Konto.',
   'Could not generate a code': 'Code konnte nicht erstellt werden',
-  'On the openGym app, choose “Connect to my server”, then enter this address and the code below. It expires in 5 minutes.': 'Wähle in der openGym-App „Mit meinem Server verbinden“, gib dann diese Adresse und den Code unten ein. Er läuft in 5 Minuten ab.',
+  'On the openGym app, choose “Connect to my server”, then enter this address and the code below. It expires in 5 minutes.':
+    'Wähle in der openGym-App „Mit meinem Server verbinden“, gib dann diese Adresse und den Code unten ein. Er läuft in 5 Minuten ab.',
   'Enter your server address and the code': 'Serveradresse und Code eingeben',
   'Connected': 'Verbunden',
   'Could not connect': 'Verbindung fehlgeschlagen',
-  'Open Settings → “Pair the mobile app” on the openGym site you’re already signed into, then enter its address and the code shown there.': 'Öffne auf der openGym-Seite, bei der du bereits angemeldet bist, Einstellungen → „Mobile App koppeln“, und gib dann deren Adresse und den dort angezeigten Code ein.',
+  'Open Settings → “Pair the mobile app” on the openGym site you’re already signed into, then enter its address and the code shown there.':
+    'Öffne auf der openGym-Seite, bei der du bereits angemeldet bist, Einstellungen → „Mobile App koppeln“, und gib dann deren Adresse und den dort angezeigten Code ein.',
   'Server address (e.g. gym.example.com)': 'Serveradresse (z. B. gym.example.com)',
   'Pairing code': 'Kopplungscode',
   'Connecting…': 'Verbinde …',
   'Connect': 'Verbinden',
   'How do you want to use openGym?': 'Wie möchtest du openGym nutzen?',
   'Use on this device': 'Auf diesem Gerät nutzen',
-  'Local keeps everything on this phone. Connecting syncs to your own openGym server instead — you can switch later in Settings.': 'Lokal behält alles auf diesem Handy. Verbinden synchronisiert stattdessen mit deinem eigenen openGym-Server — du kannst das später in den Einstellungen ändern.',
+  'Local keeps everything on this phone. Connecting syncs to your own openGym server instead — you can switch later in Settings.':
+    'Lokal behält alles auf diesem Handy. Verbinden synchronisiert stattdessen mit deinem eigenen openGym-Server — du kannst das später in den Einstellungen ändern.',
 
   // --- workout notes and planned warm-ups ---
   '{0} — done': '{0} — erledigt',
@@ -723,26 +943,34 @@ export default {
   'reps': 'Wdh.',
   'Most reps in a set per workout': 'Meiste Wdh. in einem Satz pro Training',
   'Warm-up sets': 'Aufwärmsätze',
-  'Added before your work sets and left out of volume, records and progression. Each one closes half the gap to the work weight — you can still change any of them mid-session.': 'Kommen vor deine Arbeitssätze und zählen nicht für Volumen, Rekorde und Progression. Jeder halbiert den Abstand zum Arbeitsgewicht — im Training kannst du sie trotzdem jederzeit ändern.',
-  'Ramp-up sets added before the work sets, so you do not have to add them by hand each session.': 'Aufwärmsätze vor den Arbeitssätzen, damit du sie nicht jedes Mal von Hand hinzufügen musst.',
+  'Added before your work sets and left out of volume, records and progression. Each one closes half the gap to the work weight — you can still change any of them mid-session.':
+    'Kommen vor deine Arbeitssätze und zählen nicht für Volumen, Rekorde und Progression. Jeder halbiert den Abstand zum Arbeitsgewicht — im Training kannst du sie trotzdem jederzeit ändern.',
+  'Ramp-up sets added before the work sets, so you do not have to add them by hand each session.':
+    'Aufwärmsätze vor den Arbeitssätzen, damit du sie nicht jedes Mal von Hand hinzufügen musst.',
   'Note': 'Notiz',
   'This session': 'Dieses Training',
-  'How it went, what to change — kept with today’s workout.': 'Wie es lief, was du ändern willst — bleibt beim heutigen Training.',
+  'How it went, what to change — kept with today’s workout.':
+    'Wie es lief, was du ändern willst — bleibt beim heutigen Training.',
   'Show this next time': 'Nächstes Mal anzeigen',
-  'Brings it up again the next time you train this exercise.': 'Erscheint wieder, wenn du diese Übung das nächste Mal trainierst.',
+  'Brings it up again the next time you train this exercise.':
+    'Erscheint wieder, wenn du diese Übung das nächste Mal trainierst.',
   'Always for this exercise': 'Immer bei dieser Übung',
-  'Seat height, pin position, a form cue — shown every session.': 'Sitzhöhe, Pin-Position, ein Hinweis zur Ausführung — bei jedem Training sichtbar.',
+  'Seat height, pin position, a form cue — shown every session.':
+    'Sitzhöhe, Pin-Position, ein Hinweis zur Ausführung — bei jedem Training sichtbar.',
   'From {0}:': 'Vom {0}:',
   'Session note': 'Notiz zum Training',
   'Add session note': 'Notiz zum Training',
   'Edit session note': 'Notiz bearbeiten',
   'How the session went as a whole.': 'Wie das Training insgesamt lief.',
-  'Rest-pause always trains as one warm-up set at this rep count, then one rest-pause work set — "Sets" is not used.': 'Rest-Pause trainiert immer als ein Aufwärmsatz mit dieser Wiederholungszahl und ein Rest-Pause-Arbeitssatz — „Sätze“ wird nicht verwendet.',
+  'Rest-pause always trains as one warm-up set at this rep count, then one rest-pause work set — "Sets" is not used.':
+    'Rest-Pause trainiert immer als ein Aufwärmsatz mit dieser Wiederholungszahl und ein Rest-Pause-Arbeitssatz — „Sätze“ wird nicht verwendet.',
   'Open progression settings': 'Progressions-Einstellungen öffnen',
-  'Hevy is rate-limiting requests — wait a minute and try again': 'Hevy drosselt die Anfragen — eine Minute warten und erneut versuchen',
+  'Hevy is rate-limiting requests — wait a minute and try again':
+    'Hevy drosselt die Anfragen — eine Minute warten und erneut versuchen',
   // --- log a past workout ---
   'Log a past workout': 'Vergangenes Training eintragen',
-  'Logged on the usual workout screen, without timers.': 'Wird auf dem normalen Trainingsbildschirm erfasst, nur ohne Timer.',
+  'Logged on the usual workout screen, without timers.':
+    'Wird auf dem normalen Trainingsbildschirm erfasst, nur ohne Timer.',
   'Date': 'Datum',
   'Start time': 'Startzeit',
   'Continue': 'Weiter',
@@ -757,7 +985,10 @@ export default {
   'Bar ({0})': 'Stange ({0})',
   'Bar {0}': 'Stange {0}',
   'Default for this bar type.': 'Standard für diesen Stangentyp.',
-  'Set to 0 to go back to the default ({0}).': 'Auf 0 stellen, um zum Standard ({0}) zurückzukehren.',
-  'Applies to this exercise everywhere, not just this plan.': 'Gilt überall für diese Übung, nicht nur in diesem Plan.',
-  'You still log the total weight — the bar only feeds the per-side plate math.': 'Eingetragen wird weiterhin das Gesamtgewicht — die Stange zählt nur für die Scheiben-Rechnung pro Seite.',
+  'Set to 0 to go back to the default ({0}).':
+    'Auf 0 stellen, um zum Standard ({0}) zurückzukehren.',
+  'Applies to this exercise everywhere, not just this plan.':
+    'Gilt überall für diese Übung, nicht nur in diesem Plan.',
+  'You still log the total weight — the bar only feeds the per-side plate math.':
+    'Eingetragen wird weiterhin das Gesamtgewicht — die Stange zählt nur für die Scheiben-Rechnung pro Seite.'
 }

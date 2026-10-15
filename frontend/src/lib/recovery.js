@@ -5,13 +5,13 @@ import { isWarmupRow, dropsOf } from './workout-model.js'
 // A "normal" hard session for one muscle, in primary-set equivalents. The saturation curve
 // 1 - exp(-stimulus / REF) maps any session size onto [0,1) so volume raises the starting
 // fatigue level without ever pinning it, and the value can then fade asymptotically.
-export const FATIGUE_REF_VOLUME = 2000  // default reference: kg of intensity-weighted volume per session
-export const FATIGUE_MIN_SESSIONS = 3  // smoothing horizon for the causal per-muscle reference
+export const FATIGUE_REF_VOLUME = 2000 // default reference: kg of intensity-weighted volume per session
+export const FATIGUE_MIN_SESSIONS = 3 // smoothing horizon for the causal per-muscle reference
 // Computational bound for the stimulus scan, not a semantic cliff: after 30 days (20
 // half-lives) a session contributes below 1e-6 to the accumulated value.
 export const FATIGUE_SCAN_MS = 30 * 24 * 60 * 60 * 1000
-export const BODYWEIGHT_REF_LOAD = 75  // kg assumed for bodyweight exercises when no load is logged
-export const CARDIO_TONNAGE_PER_MIN = 50  // duration proxy for cardio/timed work
+export const BODYWEIGHT_REF_LOAD = 75 // kg assumed for bodyweight exercises when no load is logged
+export const CARDIO_TONNAGE_PER_MIN = 50 // duration proxy for cardio/timed work
 
 // Preserve the shipped set-count signal when a completed custom/imported exercise has no load.
 // Two such sets therefore retain the old 1 - exp(-2 / 3) starting-fatigue reading.
@@ -36,7 +36,7 @@ export const STRENGTH_FLOOR = 0.5
 export const FATIGUE_STATES = Object.freeze({
   READY: 'ready',
   RECOVERING: 'recovering',
-  FATIGUED: 'fatigued',
+  FATIGUED: 'fatigued'
 })
 
 /**
@@ -76,7 +76,8 @@ const epley1RM = (load, reps) => load * (1 + Math.min(reps || 1, REP_CAP) / 30)
 export const LB_TO_KG = 0.45359237
 
 function numeric(value) {
-  if (value === null || value === undefined || value === '' || typeof value === 'boolean') return null
+  if (value === null || value === undefined || value === '' || typeof value === 'boolean')
+    return null
   const n = Number(value)
   return Number.isFinite(n) ? n : null
 }
@@ -89,7 +90,8 @@ function unitOf(...records) {
   for (const record of records) {
     if (!record || typeof record !== 'object') continue
     for (const key of ['unit', 'u', 'weightUnit', 'weight_unit', 'loadUnit']) {
-      if (record[key] !== undefined && record[key] !== null && String(record[key]).trim() !== '') return record[key]
+      if (record[key] !== undefined && record[key] !== null && String(record[key]).trim() !== '')
+        return record[key]
     }
   }
   return 'kg'
@@ -108,13 +110,16 @@ function kgOf(value, unit) {
 function bodyweightKgFor(workout, opts = {}, stampedLoadUnit) {
   const stamped = numeric(workout?.bw) ?? numeric(workout?.bodyweight)
   if (stamped !== null) {
-    return kgOf(stamped, unitOf(
-      { unit: workout?.bwUnit },
-      { unit: workout?.bodyweightUnit },
-      workout,
-      stampedLoadUnit && { unit: stampedLoadUnit },
-      opts,
-    ))
+    return kgOf(
+      stamped,
+      unitOf(
+        { unit: workout?.bwUnit },
+        { unit: workout?.bodyweightUnit },
+        workout,
+        stampedLoadUnit && { unit: stampedLoadUnit },
+        opts
+      )
+    )
   }
   const canonical = numeric(opts.bodyweightKg)
   if (canonical !== null) return Math.max(0, canonical)
@@ -125,15 +130,25 @@ function bodyweightKgFor(workout, opts = {}, stampedLoadUnit) {
 
 function bodyweightTarget(entry) {
   const target = entry?.target
-  if (target && Object.prototype.hasOwnProperty.call(target, 'bodyweight')) return !!target.bodyweight
+  if (target && Object.prototype.hasOwnProperty.call(target, 'bodyweight'))
+    return !!target.bodyweight
   if (entry && Object.prototype.hasOwnProperty.call(entry, 'bodyweight')) return !!entry.bodyweight
   return null
 }
 
 function hasUnitStamp(...records) {
-  return records.some(record => record && typeof record === 'object'
-    && ['unit', 'u', 'weightUnit', 'weight_unit', 'loadUnit'].some(key => Object.prototype.hasOwnProperty.call(record, key)
-      && record[key] !== undefined && record[key] !== null && String(record[key]).trim() !== ''))
+  return records.some(
+    record =>
+      record &&
+      typeof record === 'object' &&
+      ['unit', 'u', 'weightUnit', 'weight_unit', 'loadUnit'].some(
+        key =>
+          Object.prototype.hasOwnProperty.call(record, key) &&
+          record[key] !== undefined &&
+          record[key] !== null &&
+          String(record[key]).trim() !== ''
+      )
+  )
 }
 
 function bodyweightConfigured(ex, entry, set, workout, opts = {}) {
@@ -144,11 +159,12 @@ function bodyweightConfigured(ex, entry, set, workout, opts = {}) {
   // context is available; a stamped workout or a profile bodyweight makes the intended total-load
   // semantics unambiguous even for old entries.
   const added = kgOf(set?.w, unitOf(set, entry?.target, entry, workout, opts))
-  const hasBodyweightContext = numeric(workout?.bw) !== null
-    || numeric(workout?.bodyweight) !== null
-    || numeric(opts.bodyweightKg) !== null
-    || numeric(opts.bodyweight) !== null
-    || hasUnitStamp(set, entry?.target, entry, workout)
+  const hasBodyweightContext =
+    numeric(workout?.bw) !== null ||
+    numeric(workout?.bodyweight) !== null ||
+    numeric(opts.bodyweightKg) !== null ||
+    numeric(opts.bodyweight) !== null ||
+    hasUnitStamp(set, entry?.target, entry, workout)
   return ex?.eq === 'body weight' && (added === 0 || hasBodyweightContext)
 }
 
@@ -194,7 +210,10 @@ function extraTonnage(ex, entry, set, workout, oneRm, opts = {}) {
     const raw = load * reps
     return isBwEx || !(oneRm > 0) ? raw : raw * Math.min(1, load / oneRm) ** 1.5
   }
-  return drops.reduce((sum, d) => sum + weigh(loadKgFor(ex, entry, d, workout, opts), Number(d?.r) || 0), 0)
+  return drops.reduce(
+    (sum, d) => sum + weigh(loadKgFor(ex, entry, d, workout, opts), Number(d?.r) || 0),
+    0
+  )
 }
 
 // Intensity-weighted tonnage for one completed set: load x reps x (load / exercise 1RM)^1.5.
@@ -234,7 +253,8 @@ function sessionTonnages(workout, opts = {}) {
       const measured = setTonnage(ex, entry, set, workout, oneRms.get(entry.id), opts)
       const tonnage = Number.isFinite(measured) && measured > 0 ? measured : ZERO_LOAD_SET_STIMULUS
       for (const [slug, weight] of Object.entries(weights)) {
-        if (Object.prototype.hasOwnProperty.call(MUSCLES_BY_SLUG, slug)) sums[slug] += tonnage * weight
+        if (Object.prototype.hasOwnProperty.call(MUSCLES_BY_SLUG, slug))
+          sums[slug] += tonnage * weight
       }
     }
   }
@@ -334,7 +354,10 @@ export function strengthOf(workouts, now, opts = {}) {
     for (const entry of workout.entries || []) {
       if (!(entry.sets || []).some(set => set?.done === true && !isWarmupRow(set))) continue
       for (const slug of Object.keys(musclesOf(exerciseFor(entry)))) {
-        if (Object.prototype.hasOwnProperty.call(MUSCLES_BY_SLUG, slug) && timestamp > latest[slug]) {
+        if (
+          Object.prototype.hasOwnProperty.call(MUSCLES_BY_SLUG, slug) &&
+          timestamp > latest[slug]
+        ) {
           latest[slug] = timestamp
         }
       }
@@ -352,7 +375,7 @@ export function strengthOf(workouts, now, opts = {}) {
     } else {
       result[slug] = Math.max(
         STRENGTH_FLOOR,
-        halfLifeDecay(age - STRENGTH_FULL_MS, STRENGTH_HALF_LIFE_MS),
+        halfLifeDecay(age - STRENGTH_FULL_MS, STRENGTH_HALF_LIFE_MS)
       )
     }
   }

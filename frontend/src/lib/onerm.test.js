@@ -1,5 +1,13 @@
 import { describe, it, expect } from 'vitest'
-import { estimate1RM, bestSetOf, e1rmSeries, best1RM, is1RMRecord, REP_CAP, FORMULAS } from './onerm.js'
+import {
+  estimate1RM,
+  bestSetOf,
+  e1rmSeries,
+  best1RM,
+  is1RMRecord,
+  REP_CAP,
+  FORMULAS
+} from './onerm.js'
 
 describe('estimate1RM', () => {
   it('returns the load unchanged for a single rep', () => {
@@ -8,7 +16,7 @@ describe('estimate1RM', () => {
   })
 
   it('matches Epley by hand across the usual rep ranges', () => {
-    expect(estimate1RM(100, 5)).toBe(116.7)   // 100 · (1 + 5/30)
+    expect(estimate1RM(100, 5)).toBe(116.7) // 100 · (1 + 5/30)
     expect(estimate1RM(100, 10)).toBe(133.3)
     expect(estimate1RM(80, 8)).toBe(101.3)
     expect(estimate1RM(60, 3)).toBe(66)
@@ -48,13 +56,14 @@ describe('estimate1RM', () => {
   })
 
   it('keeps the formulas within a few percent up to 8 reps, and diverges most at the cap', () => {
-    const spread = r => Math.max(...Object.keys(FORMULAS).map(f => estimate1RM(100, r, f)))
-      - Math.min(...Object.keys(FORMULAS).map(f => estimate1RM(100, r, f)))
-    expect(spread(1)).toBe(0)                       // one rep is measured, not estimated
+    const spread = r =>
+      Math.max(...Object.keys(FORMULAS).map(f => estimate1RM(100, r, f))) -
+      Math.min(...Object.keys(FORMULAS).map(f => estimate1RM(100, r, f)))
+    expect(spread(1)).toBe(0) // one rep is measured, not estimated
     for (let r = 2; r <= 8; r++) expect(spread(r)).toBeLessThan(6)
     const upTo = []
     for (let r = 1; r < REP_CAP; r++) upTo.push(spread(r))
-    expect(spread(REP_CAP)).toBeGreaterThan(Math.max(...upTo))   // why REP_CAP exists
+    expect(spread(REP_CAP)).toBeGreaterThan(Math.max(...upTo)) // why REP_CAP exists
   })
 
   it('falls back to the default for an unknown formula name', () => {
@@ -64,16 +73,25 @@ describe('estimate1RM', () => {
 
 describe('bestSetOf', () => {
   it('picks the highest estimate, not the heaviest set', () => {
-    const entry = { id: 'x', sets: [
-      { w: 100, r: 5, done: true },   // 116.7
-      { w: 110, r: 3, done: true },   // 121.0
-      { w: 120, r: 1, done: true }    // 120.0
-    ] }
+    const entry = {
+      id: 'x',
+      sets: [
+        { w: 100, r: 5, done: true }, // 116.7
+        { w: 110, r: 3, done: true }, // 121.0
+        { w: 120, r: 1, done: true } // 120.0
+      ]
+    }
     expect(bestSetOf(entry)).toEqual({ est: 121, w: 110, r: 3 })
   })
 
   it('ignores sets that were never checked off', () => {
-    const entry = { id: 'x', sets: [{ w: 100, r: 5, done: true }, { w: 200, r: 5, done: false }] }
+    const entry = {
+      id: 'x',
+      sets: [
+        { w: 100, r: 5, done: true },
+        { w: 200, r: 5, done: false }
+      ]
+    }
     expect(bestSetOf(entry).w).toBe(100)
   })
 
@@ -98,9 +116,25 @@ const S = {
   workouts: [
     { d: '2026-01-01', start: 1, entries: [{ id: 'bench', sets: [{ w: 80, r: 5, done: true }] }] },
     { d: '2026-01-08', start: 2, entries: [{ id: 'squat', sets: [{ w: 100, r: 5, done: true }] }] },
-    { d: '2026-01-15', start: 3, entries: [{ id: 'bench', sets: [{ w: 90, r: 5, done: true }, { w: 90, r: 3, done: false }] }] },
+    {
+      d: '2026-01-15',
+      start: 3,
+      entries: [
+        {
+          id: 'bench',
+          sets: [
+            { w: 90, r: 5, done: true },
+            { w: 90, r: 3, done: false }
+          ]
+        }
+      ]
+    },
     { d: '2026-01-22', start: 4, entries: [{ id: 'bench', sets: [{ w: 85, r: 5, done: true }] }] },
-    { d: '2026-01-29', start: 5, entries: [{ id: 'run', sets: [{ min: 30, speed: 10, done: true }] }] }
+    {
+      d: '2026-01-29',
+      start: 5,
+      entries: [{ id: 'run', sets: [{ min: 30, speed: 10, done: true }] }]
+    }
   ]
 }
 
@@ -143,23 +177,48 @@ describe('is1RMRecord', () => {
 
   it('says nothing for a timed or unfinished entry', () => {
     expect(is1RMRecord(S, 'plank', { id: 'plank', sets: [{ sec: 90, done: true }] })).toBeNull()
-    expect(is1RMRecord(S, 'bench', { id: 'bench', sets: [{ w: 200, r: 5, done: false }] })).toBeNull()
+    expect(
+      is1RMRecord(S, 'bench', { id: 'bench', sets: [{ w: 200, r: 5, done: false }] })
+    ).toBeNull()
   })
 })
 
-
 describe('drop-sets, rest-pause sets and 1RM', () => {
   it('estimates only from the main/activation weight×reps, ignoring lighter drops', () => {
-    const entry = { id: 'x', sets: [
-      { type: 'dropset', w: 100, r: 5, done: true, drops: [{ w: 80, r: 5 }, { w: 60, r: 5 }] },
-    ] }
+    const entry = {
+      id: 'x',
+      sets: [
+        {
+          type: 'dropset',
+          w: 100,
+          r: 5,
+          done: true,
+          drops: [
+            { w: 80, r: 5 },
+            { w: 60, r: 5 }
+          ]
+        }
+      ]
+    }
     expect(bestSetOf(entry)).toEqual(bestSetOf({ id: 'x', sets: [{ w: 100, r: 5, done: true }] }))
   })
 
-  it('estimates only from the row\'s own w/r, ignoring rest-pause bursts', () => {
-    const entry = { id: 'x', sets: [
-      { type: 'restpause', w: 60, r: 8, done: true, clusters: [{ r: 4, restSec: 15 }, { r: 3, restSec: 15 }] },
-    ] }
+  it("estimates only from the row's own w/r, ignoring rest-pause bursts", () => {
+    const entry = {
+      id: 'x',
+      sets: [
+        {
+          type: 'restpause',
+          w: 60,
+          r: 8,
+          done: true,
+          clusters: [
+            { r: 4, restSec: 15 },
+            { r: 3, restSec: 15 }
+          ]
+        }
+      ]
+    }
     expect(bestSetOf(entry)).toEqual(bestSetOf({ id: 'x', sets: [{ w: 60, r: 8, done: true }] }))
   })
 
@@ -167,24 +226,42 @@ describe('drop-sets, rest-pause sets and 1RM', () => {
     // A planned rest-pause row's own r is the total across every burst (see
     // applyIntensifierPlan/history.js), so it commonly lands above REP_CAP — the row is real
     // work, but "estimate a max from 20 broken-up reps" is exactly the fantasy REP_CAP refuses.
-    const entry = { id: 'x', sets: [
-      { type: 'restpause', w: 60, r: 20, done: true, clusters: [{ r: 10, restSec: 15 }, { r: 5, restSec: 15 }, { r: 3, restSec: 15 }, { r: 1, restSec: 15 }, { r: 1, restSec: 15 }] },
-    ] }
+    const entry = {
+      id: 'x',
+      sets: [
+        {
+          type: 'restpause',
+          w: 60,
+          r: 20,
+          done: true,
+          clusters: [
+            { r: 10, restSec: 15 },
+            { r: 5, restSec: 15 },
+            { r: 3, restSec: 15 },
+            { r: 1, restSec: 15 },
+            { r: 1, restSec: 15 }
+          ]
+        }
+      ]
+    }
     expect(bestSetOf(entry)).toBeNull()
   })
 })
 
 describe('warm-up sets and 1RM', () => {
-  const ENTRY = { id: 'warm-test', sets: [
-    { w: 20, r: 8, done: true, warmup: true },
-    { w: 80, r: 5, done: true },
-  ] }
+  const ENTRY = {
+    id: 'warm-test',
+    sets: [
+      { w: 20, r: 8, done: true, warmup: true },
+      { w: 80, r: 5, done: true }
+    ]
+  }
 
   it('does not let a ticked-off warm-up set set or raise the estimated 1RM', () => {
     const working = { id: 'warm-test', sets: [{ w: 80, r: 5, done: true }] }
     expect(bestSetOf(ENTRY)).toEqual(bestSetOf(working))
     expect(best1RM({ workouts: [{ entries: [ENTRY] }] }, 'warm-test')).toEqual(
-      best1RM({ workouts: [{ entries: [working] }] }, 'warm-test'),
+      best1RM({ workouts: [{ entries: [working] }] }, 'warm-test')
     )
   })
 })

@@ -29,11 +29,11 @@ const point = (year, month, day, y) => ({
 
 const firstPoints = [
   { t: Date.UTC(2026, 0, 1), y: 80, d: '2026-01-01' },
-  { t: Date.UTC(2026, 0, 15), y: 82, d: '2026-01-15' },
+  { t: Date.UTC(2026, 0, 15), y: 82, d: '2026-01-15' }
 ]
 const nextPoints = [
   { t: Date.UTC(2026, 1, 1), y: 78, d: '2026-02-01' },
-  { t: Date.UTC(2026, 1, 15), y: 79, d: '2026-02-15' },
+  { t: Date.UTC(2026, 1, 15), y: 79, d: '2026-02-15' }
 ]
 
 function renderChart(points) {
@@ -42,7 +42,9 @@ function renderChart(points) {
 
 function hoverAt(clientX) {
   act(() => {
-    container.querySelector('.chart-i').dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX }))
+    container
+      .querySelector('.chart-i')
+      .dispatchEvent(new MouseEvent('mousemove', { bubbles: true, clientX }))
   })
   return container.querySelector('.ctip').textContent
 }
@@ -74,7 +76,10 @@ describe('LineChart hover date', () => {
   it('uses timestamp-only points when deciding whether to show the year', () => {
     const first = point(2025, 12, 31, 70)
     const last = point(2026, 1, 1, 71)
-    const timestampOnly = [{ t: first.t, y: first.y }, { t: last.t, y: last.y }]
+    const timestampOnly = [
+      { t: first.t, y: first.y },
+      { t: last.t, y: last.y }
+    ]
     renderChart(timestampOnly)
 
     const lastIso = isoOf(new Date(last.t))

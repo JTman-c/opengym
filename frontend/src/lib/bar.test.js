@@ -1,12 +1,27 @@
 import { describe, expect, test } from 'vitest'
-import { BAR_EQ, DEFAULT_BAR_KG, DEFAULT_BAR_LB, usesBar, defaultBarWeight, barWeightFor, hasBarOverride, plateSplit } from './bar.js'
+import {
+  BAR_EQ,
+  DEFAULT_BAR_KG,
+  DEFAULT_BAR_LB,
+  usesBar,
+  defaultBarWeight,
+  barWeightFor,
+  hasBarOverride,
+  plateSplit
+} from './bar.js'
 import { EXDB } from './exercises-data.js'
 
 const idOf = eq => EXDB.find(e => e.eq === eq).id
 
 describe('bar equipment', () => {
   test('covers the five bar types and the 228 catalogue exercises they carry', () => {
-    expect([...BAR_EQ].sort()).toEqual(['barbell', 'ez barbell', 'olympic barbell', 'smith machine', 'trap bar'])
+    expect([...BAR_EQ].sort()).toEqual([
+      'barbell',
+      'ez barbell',
+      'olympic barbell',
+      'smith machine',
+      'trap bar'
+    ])
     expect(EXDB.filter(e => BAR_EQ.has(e.eq)).length).toBe(228)
   })
 
@@ -51,7 +66,7 @@ describe('barWeightFor', () => {
     const S = { unit: 'kg', barWeights: { [ez]: 7.5 } }
     expect(barWeightFor(S, ez)).toBe(7.5)
     expect(hasBarOverride(S, ez)).toBe(true)
-    expect(barWeightFor(S, barbell)).toBe(20)   // other exercises keep their default
+    expect(barWeightFor(S, barbell)).toBe(20) // other exercises keep their default
     expect(hasBarOverride(S, barbell)).toBe(false)
   })
 
@@ -83,8 +98,8 @@ describe('plateSplit', () => {
   })
 
   test('is null when there is nothing sensible to show', () => {
-    expect(plateSplit(20, 20)).toBe(null)    // bar only
-    expect(plateSplit(15, 20)).toBe(null)    // below the bar
+    expect(plateSplit(20, 20)).toBe(null) // bar only
+    expect(plateSplit(15, 20)).toBe(null) // below the bar
     expect(plateSplit(0, 20)).toBe(null)
     expect(plateSplit(100, 0)).toBe(null)
     expect(plateSplit(null, 20)).toBe(null)

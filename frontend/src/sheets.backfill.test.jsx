@@ -21,16 +21,30 @@ function mountTopSheet() {
   act(() => root.render(sheet.render(() => useUI.getState().closeSheet(sheet.id))))
   return host
 }
-const button = (host, text) => [...host.querySelectorAll('button')].find(b => b.textContent.trim() === text)
+const button = (host, text) =>
+  [...host.querySelectorAll('button')].find(b => b.textContent.trim() === text)
 
 describe('log a past workout', () => {
   beforeEach(() => {
     globalThis.IS_REACT_ACT_ENVIRONMENT = true
     useUI.setState({ sheets: [], toasts: [] })
-    useStore.setState(s => ({ S: { ...s.S, active: null, routines: [], workouts: [{ id: 'old', d: todayISO(), start: 1, end: 2, name: 'Old', entries: [], prs: [] }] } }))
+    useStore.setState(s => ({
+      S: {
+        ...s.S,
+        active: null,
+        routines: [],
+        workouts: [
+          { id: 'old', d: todayISO(), start: 1, end: 2, name: 'Old', entries: [], prs: [] }
+        ]
+      }
+    }))
     document.body.innerHTML = ''
   })
-  afterEach(() => { act(() => { mounted.splice(0).forEach(root => root.unmount()) }) })
+  afterEach(() => {
+    act(() => {
+      mounted.splice(0).forEach(root => root.unmount())
+    })
+  })
 
   it('refuses while a workout is running', () => {
     const toast = vi.fn()
@@ -45,19 +59,31 @@ describe('log a past workout', () => {
     logPastWorkoutSheet()
     const host = mountTopSheet()
     expect(host.querySelector('h3').textContent).toBe('Log a past workout')
-    act(() => { type(host.querySelector('input[type=date]'), todayISO()) })
-    act(() => { button(host, 'Continue').click() })
+    act(() => {
+      type(host.querySelector('input[type=date]'), todayISO())
+    })
+    act(() => {
+      button(host, 'Continue').click()
+    })
     const prompt = mountTopSheet()
     expect(prompt.textContent).toContain('There is already a workout on that day.')
-    expect(['Replace', 'Add as second workout', 'Cancel'].map(t => !!button(prompt, t))).toEqual([true, true, true])
+    expect(['Replace', 'Add as second workout', 'Cancel'].map(t => !!button(prompt, t))).toEqual([
+      true,
+      true,
+      true
+    ])
     expect(useStore.getState().S.active).toBeNull()
   })
 
   it('starts a backfilled session straight away on a free day', () => {
     logPastWorkoutSheet()
     const host = mountTopSheet()
-    act(() => { type(host.querySelector('input[type=date]'), '2020-01-02') })
-    act(() => { button(host, 'Continue').click() })
+    act(() => {
+      type(host.querySelector('input[type=date]'), '2020-01-02')
+    })
+    act(() => {
+      button(host, 'Continue').click()
+    })
     const A = useStore.getState().S.active
     expect(A.d).toBe('2020-01-02')
     expect(new Date(A.start).getHours()).toBe(18)

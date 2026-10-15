@@ -41,7 +41,13 @@ function hevyApiKey() {
  */
 // Titles whose closest catalogue entry is a different movement — better a custom exercise than
 // a wrong one. Keep in sync with the note at the top of the generated map.
-const NEVER_BY_TITLE = new Set(['crunch', 'side plank', 'squat (machine)', 'triceps extension (cable)', 'rear delt reverse fly (cable)'])
+const NEVER_BY_TITLE = new Set([
+  'crunch',
+  'side plank',
+  'squat (machine)',
+  'triceps extension (cable)',
+  'rear delt reverse fly (cable)'
+])
 
 const BY_TITLE = {
   // Reported from a real import as customs — same lifts, Hevy vocabulary.
@@ -146,13 +152,19 @@ const BY_TITLE = {
   'tricep kickback (dumbbell)': '0333',
   'kickback (dumbbell)': '0333',
   'lateral raise (dumbbell)': '0334',
-  'good morning (barbell)': '0044',
+  'good morning (barbell)': '0044'
 }
 
 const EQ_PAREN = {
-  barbell: 'Barbell', dumbbell: 'Dumbbell', kettlebell: 'Kettlebell',
-  machine: 'Machine', resistance_band: 'Band', none: null, other: null,
-  plate: 'Plate', suspension: null,
+  barbell: 'Barbell',
+  dumbbell: 'Dumbbell',
+  kettlebell: 'Kettlebell',
+  machine: 'Machine',
+  resistance_band: 'Band',
+  none: null,
+  other: null,
+  plate: 'Plate',
+  suspension: null
 }
 
 function resolve(t) {
@@ -181,7 +193,8 @@ function resolve(t) {
 
 async function fetchTemplates(apiKey) {
   const items = []
-  let page = 1, pageCount = 1
+  let page = 1,
+    pageCount = 1
   while (page <= pageCount) {
     const url = `${HEVY_API}/v1/exercise_templates?page=${page}&pageSize=100`
     const res = await fetch(url, { headers: { 'api-key': apiKey } })
@@ -215,11 +228,16 @@ async function main() {
   const titleMap = {}
   const unmatched = []
   for (const t of templates) {
-    if (!t?.id || t.is_custom) { if (t?.id && t.is_custom) unmatched.push(t); continue }
+    if (!t?.id || t.is_custom) {
+      if (t?.id && t.is_custom) unmatched.push(t)
+      continue
+    }
     const id = resolve(t)
     if (id) {
       map[t.id] = id
-      const titleKey = String(t.title || '').trim().toLowerCase()
+      const titleKey = String(t.title || '')
+        .trim()
+        .toLowerCase()
       if (titleKey && !NEVER_BY_TITLE.has(titleKey) && !titleMap[titleKey]) titleMap[titleKey] = id
     } else unmatched.push(t)
   }
@@ -249,11 +267,16 @@ ${titleLines.join('\n')}
 
   writeFileSync(OUT, body)
   console.log(`Wrote ${OUT}`)
-  console.log(`Mapped ${keys.length} / ${templates.filter(t => !t.is_custom).length} (titles ${titleKeys.length})`)
+  console.log(
+    `Mapped ${keys.length} / ${templates.filter(t => !t.is_custom).length} (titles ${titleKeys.length})`
+  )
   console.log(`Unmatched ${unmatched.length} (become custom on import)`)
   if (process.env.VERBOSE) {
     unmatched.slice(0, 40).forEach(t => console.log('  -', t.title, `[${t.equipment}]`))
   }
 }
 
-main().catch(e => { console.error(e); process.exit(1) })
+main().catch(e => {
+  console.error(e)
+  process.exit(1)
+})

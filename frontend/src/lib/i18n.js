@@ -5,13 +5,31 @@
 
 import { useSyncExternalStore } from 'react'
 import {
-  LANGS, INSTR_LANGS, EXERCISE_NAME_LANGS, DATE_LOCALES,
-  getLang, dateLocale, t, instrFor, exerciseNameFor, exerciseNameSearchText, getVersion, _setLangState
+  LANGS,
+  INSTR_LANGS,
+  EXERCISE_NAME_LANGS,
+  DATE_LOCALES,
+  getLang,
+  dateLocale,
+  t,
+  instrFor,
+  exerciseNameFor,
+  exerciseNameSearchText,
+  getVersion,
+  _setLangState
 } from './i18n-core.js'
 
 export {
-  LANGS, INSTR_LANGS, EXERCISE_NAME_LANGS, DATE_LOCALES,
-  getLang, dateLocale, t, instrFor, exerciseNameFor, exerciseNameSearchText
+  LANGS,
+  INSTR_LANGS,
+  EXERCISE_NAME_LANGS,
+  DATE_LOCALES,
+  getLang,
+  dateLocale,
+  t,
+  instrFor,
+  exerciseNameFor,
+  exerciseNameSearchText
 }
 
 // Vite code-splits locale, instruction and exercise-name packs via import.meta.glob. They are
@@ -22,24 +40,45 @@ const exerciseNamePacks = import.meta.glob('../exercise-names/*.js')
 
 // React subscription bookkeeping — kept here, not in core, so core has zero React coupling.
 const subs = new Set()
-const notify = () => { subs.forEach(f => f()) }
+const notify = () => {
+  subs.forEach(f => f())
+}
 
 export async function setLang(l) {
   if (!LANGS[l]) l = 'en'
   if (l === getLang() && getVersion() > 0) return
-  let dict = {}, instr = null, exerciseNames = null
-  try { dict = l === 'en' ? {} : (await localePacks['../locales/' + l + '.js']()).default } catch (e) { dict = {} }
-  try { instr = l === 'en' || !INSTR_LANGS.includes(l) ? null : (await instrPacks['../instr/' + l + '.js']()).default } catch (e) { instr = null }
+  let dict = {},
+    instr = null,
+    exerciseNames = null
   try {
-    exerciseNames = l === 'en' || !EXERCISE_NAME_LANGS.includes(l)
-      ? null
-      : (await exerciseNamePacks['../exercise-names/' + l + '.js']()).default
-  } catch (e) { exerciseNames = null }
+    dict = l === 'en' ? {} : (await localePacks['../locales/' + l + '.js']()).default
+  } catch (e) {
+    dict = {}
+  }
+  try {
+    instr =
+      l === 'en' || !INSTR_LANGS.includes(l)
+        ? null
+        : (await instrPacks['../instr/' + l + '.js']()).default
+  } catch (e) {
+    instr = null
+  }
+  try {
+    exerciseNames =
+      l === 'en' || !EXERCISE_NAME_LANGS.includes(l)
+        ? null
+        : (await exerciseNamePacks['../exercise-names/' + l + '.js']()).default
+  } catch (e) {
+    exerciseNames = null
+  }
   _setLangState(l, dict, instr, exerciseNames)
   notify()
 }
 
 // Re-renders the subscribing component (and its children) whenever the language changes.
 export function useLang() {
-  return useSyncExternalStore(fn => { subs.add(fn); return () => subs.delete(fn) }, getVersion)
+  return useSyncExternalStore(fn => {
+    subs.add(fn)
+    return () => subs.delete(fn)
+  }, getVersion)
 }

@@ -4,23 +4,50 @@ import { localTZ } from '../lib/format.js'
 import { registerCustom } from '../lib/exercises.js'
 import { DEMO, DEMO_SEEDED } from '../lib/demo.js'
 import { guestAllowed } from '../lib/guest.js'
-import { MOBILE, initReminderSync, nativeLoad, nativeSave, syncReminder, writeAutoBackup } from '../lib/mobile.js'
+import {
+  MOBILE,
+  initReminderSync,
+  nativeLoad,
+  nativeSave,
+  syncReminder,
+  writeAutoBackup
+} from '../lib/mobile.js'
 import { loadRemote, chooseLocal, forgetRemote, connect } from '../lib/remote.js'
 
 const KEY = 'gym_state_v1'
 export const DEF = {
-  unit: 'kg', restSec: 90, restPauseSec: 15, sound: true, timerFlash: false, keepAwake: true, lang: 'en',
-  theme: 'dark', accent: 'lime', body: 'male', targetW: null,
-  bodyweight: [], routines: [], week: {}, dayPlan: {},
-  exWeights: {}, workouts: [], active: null, customEx: [], gifSize: 'full',
+  unit: 'kg',
+  restSec: 90,
+  restPauseSec: 15,
+  sound: true,
+  timerFlash: false,
+  keepAwake: true,
+  lang: 'en',
+  theme: 'dark',
+  accent: 'lime',
+  body: 'male',
+  targetW: null,
+  bodyweight: [],
+  routines: [],
+  week: {},
+  dayPlan: {},
+  exWeights: {},
+  workouts: [],
+  active: null,
+  customEx: [],
+  gifSize: 'full',
   // effort: which per-set effort scale is logged — 'none' | 'rir' | 'rpe'. null, not 'none', so
   // that a profile which never chose (loaded state is overlaid on DEF, on every path: local,
   // server pull, backup import) still falls back to the `showRir` boolean this replaced and
   // keeps the column it had. See effortOf.
-  reminder: { on: false, time: '08:00', tz: null }, effort: null, autoBackup: false,
+  reminder: { on: false, time: '08:00', tz: null },
+  effort: null,
+  autoBackup: false,
   // Equipment profiles (issue: filter Library/picker/routines by what you actually own —
   // e.g. "Home" vs "Gym" — building on the session-only equipment filter from issue #6).
-  equipProfiles: [], activeEquipId: null, equipFilterOn: false,
+  equipProfiles: [],
+  activeEquipId: null,
+  equipFilterOn: false,
   // First day of the week as a getDay() index — 1 Monday, 0 Sunday. Monday is the default so
   // every profile written before this setting existed keeps the week it has been looking at.
   // See lib/format.js: nothing reads this field directly, everything goes through the helpers.
@@ -28,7 +55,7 @@ export const DEF = {
   // Per-exercise bar weight overrides, keyed by exercise id, in the profile unit (see
   // lib/bar.js). Personal equipment, so it syncs with the account but never travels in a
   // shared plan. Logged weights stay the total — this only feeds the plate math.
-  barWeights: {},
+  barWeights: {}
 }
 const clone = o => JSON.parse(JSON.stringify(o))
 
@@ -36,11 +63,14 @@ function loadState() {
   try {
     const raw = localStorage.getItem(KEY)
     if (raw) return Object.assign(clone(DEF), JSON.parse(raw))
-  } catch (e) { /* ignore */ }
+  } catch (e) {
+    /* ignore */
+  }
   return clone(DEF)
 }
 
-const hasData = st => !!((st.workouts || []).length || (st.routines || []).length || (st.bodyweight || []).length)
+const hasData = st =>
+  !!((st.workouts || []).length || (st.routines || []).length || (st.bodyweight || []).length)
 
 // Decide whether a pulled account state may replace the local saved state. A local active workout
 // is deliberately carried forward: the server stores completed/saved state, while the in-progress
@@ -62,7 +92,11 @@ export const useStore = create((set, get) => {
   // storage eviction) and keep the native reminder schedule in step with the weekly plan.
   const nativePersist = () => {
     clearTimeout(saveTm)
-    saveTm = setTimeout(() => { saveTm = null; nativeSave(get().S); syncReminder(get().S) }, 800)
+    saveTm = setTimeout(() => {
+      saveTm = null
+      nativeSave(get().S)
+      syncReminder(get().S)
+    }, 800)
   }
 
   const persist = (S, push = true) => {
@@ -106,10 +140,20 @@ export const useStore = create((set, get) => {
   }
 
   return {
-    S: (() => { const s = loadState(); registerCustom(s.customEx); return s })(),
-    user: (() => { try { return JSON.parse(localStorage.getItem('gym_user')) || null } catch { return null } })(),
+    S: (() => {
+      const s = loadState()
+      registerCustom(s.customEx)
+      return s
+    })(),
+    user: (() => {
+      try {
+        return JSON.parse(localStorage.getItem('gym_user')) || null
+      } catch {
+        return null
+      }
+    })(),
     ready: false,
-    needsMobileOnboarding: false,   // mobile build only — set true by boot() on a genuine first launch
+    needsMobileOnboarding: false, // mobile build only — set true by boot() on a genuine first launch
 
     // Mutate a draft of S via producer fn, then persist + schedule sync.
     update(mut, push = true) {
@@ -117,7 +161,9 @@ export const useStore = create((set, get) => {
       mut(S)
       persist(S, push)
     },
-    replaceState(S, push = false) { persist(clone(S), push) },
+    replaceState(S, push = false) {
+      persist(clone(S), push)
+    },
 
     // Fires after the moments where losing local data would actually hurt — a workout just
     // logged, a routine just edited — not on every keystroke. No-op off mobile or with the
@@ -128,7 +174,11 @@ export const useStore = create((set, get) => {
     },
 
     isGuest: () => localStorage.getItem('gym_guest') === '1',
-    setGuest(v) { if (v) localStorage.setItem('gym_guest', '1'); else localStorage.removeItem('gym_guest'); set({}) },
+    setGuest(v) {
+      if (v) localStorage.setItem('gym_guest', '1')
+      else localStorage.removeItem('gym_guest')
+      set({})
+    },
 
     // Public config from /api/config (invite_only, allow_guest). null until the first successful
     // fetch — the login screen and boot both read it, so it is fetched once and cached here
@@ -136,21 +186,32 @@ export const useStore = create((set, get) => {
     config: null,
     async loadConfig() {
       if (get().config) return get().config
-      try { const c = await api('/api/config'); set({ config: c }); return c }
-      catch { return null }
+      try {
+        const c = await api('/api/config')
+        set({ config: c })
+        return c
+      } catch {
+        return null
+      }
     },
 
     setUser(u) {
-      if (u) { localStorage.setItem('gym_user', JSON.stringify(u)); localStorage.removeItem('gym_guest') }
-      else localStorage.removeItem('gym_user')
+      if (u) {
+        localStorage.setItem('gym_user', JSON.stringify(u))
+        localStorage.removeItem('gym_guest')
+      } else localStorage.removeItem('gym_user')
       set({ user: u })
     },
 
     async pushState() {
       if (!get().user) return
       clearTimeout(pushTm)
-      try { await api('/api/data', { method: 'PUT', body: JSON.stringify({ state: get().S }) }); localStorage.removeItem('gym_dirty') }
-      catch (e) { localStorage.setItem('gym_dirty', '1') }
+      try {
+        await api('/api/data', { method: 'PUT', body: JSON.stringify({ state: get().S }) })
+        localStorage.removeItem('gym_dirty')
+      } catch (e) {
+        localStorage.setItem('gym_dirty', '1')
+      }
     },
     async pullState() {
       try {
@@ -160,12 +221,21 @@ export const useStore = create((set, get) => {
         const restored = restoredStateFor(S, state, dirty)
         if (restored) {
           persist(restored, false)
-        } else if (hasData(S)) { await get().pushState() }
-      } catch (e) { /* offline — keep local */ }
+        } else if (hasData(S)) {
+          await get().pushState()
+        }
+      } catch (e) {
+        /* offline — keep local */
+      }
     },
 
     async signOut() {
-      try { await get().pushState(); await api('/api/logout', { method: 'POST', body: '{}' }) } catch (e) { /* */ }
+      try {
+        await get().pushState()
+        await api('/api/logout', { method: 'POST', body: '{}' })
+      } catch (e) {
+        /* */
+      }
       clearLocalSession()
     },
 
@@ -179,7 +249,7 @@ export const useStore = create((set, get) => {
     // Redeems the pairing code shown in the browser (Settings → "Pair the mobile app") and
     // switches this device over to that account, same as signing in on the web does.
     async connectToServer(url, code) {
-      const user = await connect(url, code)   // throws on a bad URL/expired code — caller shows it
+      const user = await connect(url, code) // throws on a bad URL/expired code — caller shows it
       get().setUser(user)
       await get().pullState()
       syncReminder(get().S)
@@ -200,7 +270,7 @@ export const useStore = create((set, get) => {
     // the sessions elsewhere are all still valid, and wiping this device's copy of the data
     // would sign the user out of the one place the bump didn't reach. Caller reports the error.
     async signOutAll() {
-      await get().pushState()   // never throws — stores gym_dirty and moves on when offline
+      await get().pushState() // never throws — stores gym_dirty and moves on when offline
       await api('/api/logout/all', { method: 'POST', body: '{}' })
       clearLocalSession()
     },
@@ -224,12 +294,14 @@ export const useStore = create((set, get) => {
         if (remote?.mode === 'remote') {
           setRemoteAuth(remote.base, remote.token)
           try {
-            const me = await api('/api/me')   // also catches a token revoked elsewhere (sign out everywhere)
+            const me = await api('/api/me') // also catches a token revoked elsewhere (sign out everywhere)
             get().setUser(me.user)
             await get().pullState()
           } catch (e) {
-            if (e.status === 401) { await forgetRemote(); get().setGuest(true) }
-            else get().setUser(remote.user)   // offline — keep going from the last-synced local copy
+            if (e.status === 401) {
+              await forgetRemote()
+              get().setGuest(true)
+            } else get().setUser(remote.user) // offline — keep going from the last-synced local copy
           }
           syncReminder(get().S)
           set({ ready: true })
@@ -240,7 +312,7 @@ export const useStore = create((set, get) => {
         if (saved && (!hasData(S) || (saved._ts || 0) >= (S._ts || 0))) {
           persist(Object.assign(clone(DEF), saved), false)
         } else if (hasData(S)) {
-          nativeSave(S)   // first run after an update from a file-less version: seed the mirror
+          nativeSave(S) // first run after an update from a file-less version: seed the mirror
         }
         get().setGuest(true)
         syncReminder(get().S)
@@ -274,7 +346,9 @@ export const useStore = create((set, get) => {
         // without needing to revisit Settings.
         const tz = localTZ()
         if (get().S.reminder?.on && get().S.reminder.tz !== tz) {
-          get().update(s => { s.reminder = { ...s.reminder, tz } })
+          get().update(s => {
+            s.reminder = { ...s.reminder, tz }
+          })
         }
       } catch (e) {
         if (e.status === 401) get().setUser(null)

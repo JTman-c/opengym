@@ -21,18 +21,22 @@ const umami = {
   name: 'opengym-umami',
   transformIndexHtml() {
     if (!umamiSrc || !umamiId) return
-    return [{
-      tag: 'script',
-      attrs: { defer: true, src: umamiSrc, 'data-website-id': umamiId },
-      injectTo: 'head'
-    }]
+    return [
+      {
+        tag: 'script',
+        attrs: { defer: true, src: umamiSrc, 'data-website-id': umamiId },
+        injectTo: 'head'
+      }
+    ]
   }
 }
 
 // The version people are asked for in #install-help and on every bug report. Read from
 // package.json so it cannot drift from the release it was built in, and inlined at build
 // time so no runtime fetch is involved.
-const pkgVersion = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')).version
+const pkgVersion = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url), 'utf8')
+).version
 
 export default defineConfig({
   define: { __APP_VERSION__: JSON.stringify(pkgVersion) },
