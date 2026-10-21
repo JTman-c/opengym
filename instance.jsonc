@@ -15,26 +15,19 @@
   // If you forked this repo, this is the one file you have to edit. Nothing in it is a secret —
   // SESSION_SECRET, the VAPID pair and ADMIN_UIDS are `wrangler secret put`, never a file.
   //
-  // ARRIVED VIA THE DEPLOY TO CLOUDFLARE BUTTON? Then this file came along with the clone and is
-  // NOT being used: the button's deploy command is `npm run deploy`, which reads wrangler.jsonc
-  // alone. Either set your values in wrangler.jsonc's `vars` and ignore this file, or replace the
-  // values below and change your Worker's deploy command to `npm run deploy:instance`.
-  //
   // See docs/CONFIG.md for what every key means.
   // ---------------------------------------------------------------------------------------
 
   "name": "opengym",
 
   // Attaches the custom domain and creates the DNS record at deploy time. Must match RP_ID.
-  // Delete this block to deploy to *.workers.dev instead — fine for a look, not for passkeys
-  // you intend to keep, because workers.dev is on the Public Suffix List (worker/README.md).
-  "routes": [{ "pattern": "opengym.rcn.sh", "custom_domain": true }],
+  "routes": [{ "pattern": "gym.jtman.dpdns.org", "custom_domain": true }],
 
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "opengym",
-      "database_id": "95de5971-bed3-49de-96a4-5d46b4b9f884",
+      "database_id": "90d727e3-2ff6-473c-9be2-c6d10c329dd7",
       "migrations_dir": "./worker/migrations"
     }
   ],
@@ -42,8 +35,8 @@
   "vars": {
     // Changing RP_ID invalidates every passkey ever registered here. It is not a setting so
     // much as a commitment.
-    "RP_ID": "opengym.rcn.sh",
-    "ORIGIN": "https://opengym.rcn.sh",
+    "RP_ID": "gym.jtman.dpdns.org",
+    "ORIGIN": "https://gym.jtman.dpdns.org",
     "RP_NAME": "openGym",
 
     // A private instance: no open signup, no guest mode, sign-ins last a quarter.
@@ -59,7 +52,5 @@
     "AUDIT_DAYS": "0"
 
     // ADMIN_UIDS is deliberately absent: it is set with `wrangler secret put ADMIN_UIDS`.
-    // It is not a credential — a uid is useless without the matching passkey — but this repo is
-    // public, and naming the admin account in it only tells someone which account to go after.
   }
 }
