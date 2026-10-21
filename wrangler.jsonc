@@ -39,8 +39,7 @@
     {
       "binding": "DB",
       "database_name": "opengym",
-      "database_id": "90d727e3-2ff6-473c-9be2-c6d10c329dd7
-",
+      "database_id": "90d727e3-2ff6-473c-9be2-c6d10c329dd7",
       "migrations_dir": "./worker/migrations"
     }
   ],
