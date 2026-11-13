@@ -80,21 +80,12 @@ A Lefthook pre-commit hook (`lefthook.yml`, installed by `npm install`) formats 
 re-stages them. Still run `npm run format` before committing: the CI `format` job fails on
 unformatted code, and the hook never sees files committed with `--no-verify` or `LEFTHOOK=0`.
 
-Upstream's CI gate is `.gitlab-ci.yml` on GitLab, its canonical remote (see README): it runs the
-`frontend/` tests on Node 22 — the same version as `web/Dockerfile` / `api/Dockerfile`
-(`node:22-alpine`) — and additionally builds and publishes the Docker images, packages the
-signed Android APK, and deploys the demo/docs site.
-
-**This fork's remote is GitHub (`rcnsh/opengym`), and its workflows do run** — upstream's note
-that they are dormant mirrors was true only of upstream's own suspended GitHub account. On this
-fork:
-
-- `.github/workflows/test.yml` runs the `frontend/` suite on every push and PR. This is the gate.
-- `.github/workflows/pages.yml` and `docker-publish.yml` have had their `push` triggers removed
-  (see the FORK comments in each). The first publishes upstream's public demo and cannot succeed
-  here; the second was pushing images to GHCR that nothing consumes. Both are still runnable by
-  hand.
-- `.gitea/workflows/` really is dormant — no Gitea remote is configured.
+CI is on GitHub (`rcnsh/opengym`). `.github/workflows/test.yml` runs the Biome `format` check, the
+`frontend/` suite (tests, build, locale checks, the fatigue probe) and the `mcp/` suite, on every
+PR and on pushes to `main` that touch those directories or the root JSON config; this is the gate.
+`.github/workflows/worker.yml` runs the Worker tests, bundles the Worker (`deploy --dry-run`, for
+both the generic and the instance config), applies migrations locally and smoke-tests it under
+`wrangler dev`, with no Cloudflare credentials.
 
 The Cloudflare deployment is continuous, via Cloudflare Workers Builds (not GitHub Actions).
 Two triggers, both connected to `rcnsh/opengym` through a GitHub App, so there is no Cloudflare
